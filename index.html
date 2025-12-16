@@ -74,33 +74,30 @@
                 height: 1px !important;
             }
             
-            /* 가로 스크롤 섹션 모바일 */
+            /* 가로 스크롤 섹션 모바일 - 가로 스크롤 유지 */
             .horizontal-scroll-container {
-                height: auto !important;
+                height: 300vh !important;
             }
             
             .horizontal-scroll-wrapper {
-                position: relative !important;
-                height: auto !important;
+                position: sticky !important;
+                height: 100vh !important;
             }
             
             .horizontal-track {
-                flex-direction: column !important;
-                width: 100% !important;
-                transform: none !important;
+                flex-direction: row !important;
+                width: 300vw !important;
             }
             
             .service-card {
-                width: 100% !important;
-                height: auto !important;
-                min-height: 70vh;
+                width: 100vw !important;
+                height: 100vh !important;
+                min-height: 100vh;
                 padding: 30px 20px !important;
-                flex-direction: column !important;
             }
             
             .service-card > div {
                 width: 100% !important;
-                padding: 0 !important;
             }
             
             .service-number {
@@ -222,25 +219,27 @@
         
         @media (max-width: 768px) {
             .horizontal-scroll-container {
-                height: auto !important;
+                height: 300vh !important;
             }
             
             .horizontal-scroll-wrapper {
-                position: relative !important;
-                height: auto !important;
+                position: sticky !important;
+                top: 0 !important;
+                height: 100vh !important;
+                overflow: hidden !important;
             }
             
             .horizontal-track {
-                flex-direction: column !important;
-                width: 100% !important;
-                transform: none !important;
+                flex-direction: row !important;
+                width: 300vw !important;
+                transform: translate3d(0, 0, 0) !important;
             }
             
             .service-card {
-                width: 100% !important;
-                height: auto !important;
-                min-height: 80vh;
-                padding: 40px 20px !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                min-height: 100vh;
+                padding: 30px 20px !important;
             }
         }
         
@@ -1456,12 +1455,6 @@ on them has light shone.
         function updateHorizontalScroll() {
             if (!horizontalSection || !track) return;
             
-            // 모바일에서는 가로 스크롤 비활성화
-            if (window.innerWidth <= 768) {
-                track.style.transform = 'none';
-                return;
-            }
-            
             const rect = horizontalSection.getBoundingClientRect();
             const sectionTop = rect.top;
             const sectionHeight = horizontalSection.offsetHeight;
@@ -1478,7 +1471,7 @@ on them has light shone.
             const cardProgress = easedProgress * (totalCards - 1);
             const translateX = -cardProgress * 100;
             
-            // GPU 가속을 위한 translate3d 사용
+            // GPU 가속을 위한 translate3d 사용 (모바일에서도 작동)
             track.style.transform = `translate3d(${translateX}vw, 0, 0)`;
         }
 
