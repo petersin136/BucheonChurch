@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부천교회 - Bucheon Church</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@200;300;400;500;600;700;800;900&family=Homenaje:wght@400&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* 티커 애니메이션 */
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .ticker-content {
+            animation: ticker 30s linear infinite;
+            display: inline-flex;
+            will-change: transform;
+        }
+        
+        
+        /* 헤더 스타일 */
+        .main-header {
+            background: #344d6b;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .header-logo {
+            height: 32px;
+            width: auto;
+        }
+        
+        .header-logo-right {
+            height: 32px;
+            width: auto;
+            margin-left: 2cm;
+        }
+        
+        .church-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            letter-spacing: 2px;
+        }
+        
+        .denomination {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.1;
+        }
+        
+        .denomination-top {
+            letter-spacing: 1px;
+        }
+        
+        .denomination-bottom {
+            letter-spacing: 8px;
+            padding-left: 4px;
+        }
+        
+        /* 가로 스크롤 섹션 */
+        .horizontal-scroll-container {
+            height: 400vh;
+            position: relative;
+        }
+        
+        .horizontal-scroll-wrapper {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .horizontal-track {
+            display: flex;
+            height: 100%;
+            will-change: transform;
+            backface-visibility: hidden;
+            transform: translate3d(0, 0, 0);
+        }
+        
+        .service-card {
+            flex-shrink: 0;
+            width: 100vw;
+            height: 100vh;
+            padding: 60px;
+        }
+        
+        .service-number {
+            font-size: clamp(150px, 25vw, 350px);
+            font-weight: 400;
+            line-height: 0.8;
+            letter-spacing: -0.05em;
+            color: rgba(0,0,0,0.9);
+        }
+        
+        /* 스택 카드 섹션 */
+        .stacking-cards-container {
+            position: relative;
+            height: 500vh;
+        }
+        
+        .stacking-cards-wrapper {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stack-card {
+            position: absolute;
+            width: 380px;
+            min-height: 450px;
+            border-radius: 24px;
+            padding: 40px;
+            transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.4s ease;
+            will-change: transform, opacity;
+        }
+        
+        /* Fade-in 애니메이션 */
+        .reveal-text {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .reveal-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 텍스트 순차적 나타남 효과 */
+        .text-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .text-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .text-reveal:nth-child(1) { transition-delay: 0.1s; }
+        .text-reveal:nth-child(2) { transition-delay: 0.3s; }
+        .text-reveal:nth-child(3) { transition-delay: 0.5s; }
+        .text-reveal:nth-child(4) { transition-delay: 0.7s; }
+        .text-reveal:nth-child(5) { transition-delay: 0.9s; }
+        .text-reveal:nth-child(6) { transition-delay: 1.1s; }
+        
+        /* 한 줄씩 아래에서 위로 나타나는 효과 */
+        .line-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .line-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .line-reveal:nth-of-type(1) { transition-delay: 0.1s; }
+        .line-reveal:nth-of-type(2) { transition-delay: 0.3s; }
+        .line-reveal:nth-of-type(3) { transition-delay: 0.5s; }
+        .line-reveal:nth-of-type(4) { transition-delay: 0.7s; }
+        .line-reveal:nth-of-type(5) { transition-delay: 0.9s; }
+        .line-reveal:nth-of-type(6) { transition-delay: 1.1s; }
+        .line-reveal:nth-of-type(7) { transition-delay: 1.3s; }
+        .line-reveal:nth-of-type(8) { transition-delay: 1.5s; }
+        .line-reveal:nth-of-type(9) { transition-delay: 1.7s; }
+        
+        /* 푸터 그라디언트 텍스트 */
+        .gradient-text {
+            background: linear-gradient(to bottom, #000000 0%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* 로고 마키 애니메이션 */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .marquee {
+            animation: marquee 20s linear infinite;
+        }
+        
+        /* 히어로 섹션 스타일 */
+        .hero-background-text {
+            position: absolute;
+            top: 15%;
+            left: 0;
+            right: 0;
+            width: 100%;
+            font-size: clamp(200px, 40vw, 600px);
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.12);
+            letter-spacing: 0.03em;
+            z-index: 1;
+            font-family: 'Inter', sans-serif;
+            line-height: 0.85;
+            text-align: center;
+            overflow: visible;
+            white-space: normal;
+            word-break: keep-all;
+        }
+        
+        .hero-grid-container {
+            position: absolute;
+            top: 45%;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 120px 120px;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .hero-verse {
+            position: absolute;
+            bottom: 160px;
+            z-index: 3;
+            max-width: 520px;
+        }
+        
+        .hero-verse-left {
+            left: 100px;
+            transform: rotate(-3deg);
+        }
+        
+        .hero-verse-right {
+            right: 100px;
+            transform: rotate(3deg);
+        }
+        
+        .verse-text {
+            font-size: 32px;
+            line-height: 1.7;
+            color: white;
+            font-weight: 300;
+            font-style: italic;
+            margin-bottom: 24px;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.6);
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+        }
+        
+        .verse-reference {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.85);
+            font-style: italic;
+            text-align: right;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body class="bg-black text-black" style="padding-top: 0; margin: 0;">
+
+    <!-- 1. 메인 헤더 (로고 + 네비게이션) -->
+    <header class="fixed top-0 left-0 w-full z-50 main-header">
+        <div class="max-w-7xl mx-auto px-8 py-1.5 flex justify-between items-center">
+            <!-- 좌측: 첫 번째 로고 + 텍스트 -->
+            <div class="flex items-center gap-3">
+                <img src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/logo.jpg" 
+                     alt="살리는 빛 부천침례교회 로고" 
+                     class="header-logo">
+                <div class="church-name">부천교회</div>
+                <div class="denomination">
+                    <div class="denomination-top">기독교한국</div>
+                    <div class="denomination-bottom">침례회</div>
+                </div>
+            </div>
+            
+            <!-- 우측: 네비게이션 + 두 번째 로고 -->
+            <div class="flex items-center gap-6">
+                <nav class="flex gap-6 text-white font-medium text-sm">
+                    <a href="#about" class="hover:text-red-400 transition">소개</a>
+                    <a href="#worship" class="hover:text-red-400 transition">예배</a>
+                    <a href="#sermon" class="hover:text-red-400 transition">설교</a>
+                    <a href="#testimonials" class="hover:text-red-400 transition">간증</a>
+                    <a href="#contact" class="hover:text-red-400 transition">오시는 길</a>
+                </nav>
+                <img src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/logo2.jpg" 
+                     alt="로고2" 
+                     class="header-logo-right">
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. 상단 티커 (헤더 아래) -->
+    <div class="fixed left-0 w-full z-40 text-white py-2 overflow-hidden" style="top: calc(38px + 6px); background-color: #FF6B6B; border-radius: 0 0 12px 12px;">
+        <div class="relative w-full h-full" style="overflow: hidden;">
+            <!-- 왼쪽 페이드 그라데이션 -->
+            <div class="absolute left-0 top-0 w-32 h-full z-20 pointer-events-none" style="background: linear-gradient(to right, #FF6B6B 0%, #FF6B6B 50%, transparent 100%);"></div>
+            <!-- 오른쪽 페이드 그라데이션 -->
+            <div class="absolute right-0 top-0 w-32 h-full z-20 pointer-events-none" style="background: linear-gradient(to left, #FF6B6B 0%, #FF6B6B 50%, transparent 100%);"></div>
+            <!-- 티커 콘텐츠 -->
+            <div class="ticker-content" style="display: inline-flex; white-space: nowrap;">
+                <span class="px-8 text-sm font-semibold">살리는 빛 부천침례교회 ✦ 주일예배 오전 11시 ✦ 금요기도회 오후 9시 ✦</span>
+                <span class="px-8 text-sm font-semibold">살리는 빛 부천침례교회 ✦ 주일예배 오전 11시 ✦ 금요기도회 오후 9시 ✦</span>
+                <span class="px-8 text-sm font-semibold">살리는 빛 부천침례교회 ✦ 주일예배 오전 11시 ✦ 금요기도회 오후 9시 ✦</span>
+                <span class="px-8 text-sm font-semibold">살리는 빛 부천침례교회 ✦ 주일예배 오전 11시 ✦ 금요기도회 오후 9시 ✦</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. 히어로 섹션 - Figma 디자인 정확히 반영 (1920 x 1006) -->
+    <section id="heroSection" class="relative w-full" style="height: calc(100vh - 80px); max-height: calc(100vh - 80px); overflow: hidden; width: 100%; margin: 0; padding: 0; margin-top: 80px; background-color: #FFFFFF; position: relative;">
+        <!-- 배경 이미지 -->
+        <img id="heroBackground" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/Image_fx%20(2).png" 
+             alt="살리는 빛 부천침례교회 히어로 이미지" 
+             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; z-index: 0;">
+        
+        <!-- 1. "The Light of Life" - 반응형 위치 -->
+        <div 
+            class="hero-text absolute z-10"
+            style="left: 4.69%; top: 41.15%; width: 90.63%; height: 31.01%; z-index: 10;">
+            <h1
+                style="font-family: 'Inter', sans-serif; font-weight: 400; font-size: clamp(40px, 11.46vw, 220px); line-height: 1.2102272727272727em; color: #FFFFFF; text-align: left; margin: 0; padding: 0; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);">
+                The Light of Life
+            </h1>
+        </div>
+
+        <!-- 2. 하단 영역 - 한글 + 영어 2개 컬럼 (반응형) -->
+        <div 
+            class="hero-text absolute"
+            style="left: 0; bottom: 0; width: 100%; height: 29.62%; z-index: 10; background: transparent;">
+            
+            <!-- 상단 가로선 -->
+            <div 
+                class="hero-line absolute bg-white"
+                style="left: 0; top: 0; width: 100%; height: 1px;">
+            </div>
+            
+            <!-- 컬럼 1: 한글 성경 구절 (왼쪽) -->
+            <div 
+                class="absolute"
+                style="left: 0.05%; top: 1.79%; width: 49.95%; height: auto; padding-right: 2%; box-sizing: border-box;">
+                <p
+                    style="font-family: 'Inter', sans-serif; font-weight: 400; font-size: clamp(14px, 1.25vw, 24px); line-height: 1.2102272510528564em; color: #FFFFFF; text-align: right; margin: 0; padding: 0; text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5); white-space: pre-line;">
+                    흑암에 행하던 백성이 큰 빛을 보고
+사망의 그늘진 땅에 거주하던 자에게
+<span style="font-size: clamp(18px, 1.6vw, 32px);">빛이 비치도다</span>
+                </p>
+                <p
+                    style="font-family: 'Inter', sans-serif; font-weight: 400; font-size: clamp(14px, 1.25vw, 24px); line-height: 1.2102272510528564em; color: #FFFFFF; text-align: right; margin: 0; padding: 0; margin-top: 1.5vh; text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);">
+                    이사야 9:2
+                </p>
+            </div>
+
+            <!-- 구분선 (세로) - 한글과 영어 사이 -->
+            <div 
+                class="hero-line absolute bg-white"
+                style="left: 50.05%; top: 0; width: 1px; height: 100%;">
+            </div>
+
+            <!-- 컬럼 2: 영어 성경 구절 (오른쪽) -->
+            <div 
+                class="absolute"
+                style="left: 50.05%; top: 1.79%; width: 49.95%; height: auto; padding-right: 2%; box-sizing: border-box;">
+                <p
+                    style="font-family: 'Inter', sans-serif; font-weight: 400; font-size: clamp(14px, 1.25vw, 24px); line-height: 1.2102272510528564em; color: #FFFFFF; text-align: right; margin: 0; padding: 0; text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5); white-space: pre-line;">
+                    The people who walked in darkness
+have seen a great light;
+those who dwelt in a land of deep darkness,
+on them has light shone.
+                </p>
+                <!-- Isaiah 9:2 -->
+                <p
+                    style="font-family: 'Inter', sans-serif; font-weight: 400; font-size: clamp(14px, 1.25vw, 24px); line-height: 1.2102272510528564em; color: #FFFFFF; text-align: right; margin: 0; padding: 0; margin-top: 1.5vh; text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);">
+                    Isaiah 9:2
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 5. 교회 소개 섹션 (연한 그레이) -->
+    <section id="about" class="py-32 px-8" style="background-color: #F5F5F5;">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-5xl md:text-6xl font-bold mb-4" style="color: #333333;">교회 소개</h2>
+                <div class="w-32 h-1 mx-auto rounded-full" style="background-color: #999999;"></div>
+            </div>
+            <div class="space-y-8 text-lg md:text-xl leading-relaxed text-gray-800 text-center">
+                <p class="text-reveal font-medium" style="color: #333333;">
+                    살리는빛부천침례교회는 하나님을 갈망하는 사람들이 모인 공동체입니다.
+                </p>
+                <p class="text-reveal leading-relaxed">
+                    우리는 영감 있는 예배를 통해 하나님을 만나고,<br>
+                    성도들과의 사랑의 교제 안에서 서로를 세워갑니다.<br>
+                    말씀을 깊이 묵상하며 훈련받아,<br>
+                    교회와 세상을 섬기는 그리스도의 제자로 자라갑니다.
+                </p>
+                <p class="text-reveal leading-relaxed">
+                    처음 오시는 분도, 오랜 신앙의 여정을 걸어온 분도,<br>
+                    이곳에서 함께 하나님을 갈망하며 성장하실 수 있습니다.
+                </p>
+                <div class="mt-12 text-reveal">
+                    <a href="#worship" class="inline-block bg-gray-800 text-white px-10 py-4 rounded-full font-semibold hover:bg-gray-700 hover:shadow-lg transition-all transform hover:scale-105 text-lg">
+                        예배 안내 →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. 목사님 소개 섹션 -->
+    <section class="py-32 px-8 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- 좌측: 목사님 이미지 + 경력 -->
+                <div class="lg:col-span-4 fade-in">
+                    <!-- 제목 -->
+                    <h3 class="text-3xl font-bold mb-6 text-gray-900 text-center lg:text-left">담임목사 이영호</h3>
+                    <div class="w-20 h-1 bg-gradient-to-r from-blue-600 to-blue-400 mb-6 mx-auto lg:mx-0"></div>
+                    
+                    <!-- 이미지 -->
+                    <div class="flex justify-center lg:justify-start mb-8">
+                        <img src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/pa.jpg" 
+                             alt="담임목사 이영호" 
+                             class="w-full max-w-[220px] rounded-2xl shadow-xl object-cover">
+                    </div>
+                    
+                    <!-- 경력 -->
+                    <div class="space-y-3 text-base leading-relaxed text-gray-700">
+                        <div class="flex items-start">
+                            <span class="text-blue-600 mr-2 font-semibold">•</span>
+                            <span>충남대학교 법과대학 행정학과 졸업</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-blue-600 mr-2 font-semibold">•</span>
+                            <span>한국침례신학대학교 신학대학원 졸업 (M.Div.)</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-blue-600 mr-2 font-semibold">•</span>
+                            <span>한국침례신학대학교 대학원 신약 전공 (Th.M.)</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-blue-600 mr-2 font-semibold">•</span>
+                            <span>에스라성경대학원대학교 박사 (D.Litt.)</span>
+                        </div>
+                        <div class="mt-5 pt-5 border-t border-gray-200">
+                            <div class="flex items-start mb-3">
+                                <span class="text-blue-600 mr-2 font-semibold text-sm">(현)</span>
+                                <span class="font-semibold text-gray-900 text-sm">침례신학대학 목회신학 전임교수</span>
+                            </div>
+                            <div class="flex items-start mt-2">
+                                <span class="text-gray-500 mr-2 text-sm">(전)</span>
+                                <span class="text-sm">대전대흥침례교회 부목사</span>
+                            </div>
+                            <div class="flex items-start mt-2">
+                                <span class="text-gray-500 mr-2 text-sm">(전)</span>
+                                <span class="text-sm">침례신학대학 신약학 강사</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 우측: 목사님 인사말 (크게, 여백 꽉 차게) -->
+                <div class="lg:col-span-8 fade-in">
+                    <div class="bg-white rounded-3xl p-10 lg:p-12 shadow-2xl h-full flex flex-col">
+                        <!-- 헤더 -->
+                        <div class="flex items-center justify-center mb-10">
+                            <div class="flex-1 h-px bg-gray-300"></div>
+                            <p class="px-6 text-xs text-gray-500 tracking-[0.3em] uppercase font-medium">GREETING</p>
+                            <div class="flex-1 h-px bg-gray-300"></div>
+                        </div>
+                        
+                        <!-- 인사말 내용 (한 줄씩 나타나는 효과) -->
+                        <div class="flex-1 flex flex-col justify-center space-y-5 text-center">
+                            <p class="line-reveal text-3xl lg:text-4xl font-light text-gray-900">
+                                환영합니다.
+                            </p>
+                            <p class="line-reveal text-xl lg:text-2xl text-gray-700 leading-relaxed">
+                                살리는빛부천침례교회 담임목사 이영호입니다.
+                            </p>
+                            
+                            <div class="pt-5 space-y-4 text-lg lg:text-xl leading-relaxed text-gray-700">
+                                <p class="line-reveal">
+                                    우리 교회는 하나님을 갈망하는 사람들의 공동체입니다.
+                                </p>
+                                <p class="line-reveal">
+                                    영감 있는 예배로 하나님을 만나고,
+                                </p>
+                                <p class="line-reveal">
+                                    사랑의 교제로 서로를 세우며,
+                                </p>
+                                <p class="line-reveal">
+                                    말씀 묵상으로 훈련받아 세상을 섬깁니다.
+                                </p>
+                                
+                                <p class="line-reveal pt-3">
+                                    신앙의 여정에서 동행할 공동체를 찾고 계시다면,
+                                </p>
+                                <p class="line-reveal">
+                                    우리 교회의 문은 언제나 열려 있습니다.
+                                </p>
+                                
+                                <p class="line-reveal pt-5 text-gray-600 italic text-base lg:text-lg">
+                                    함께 하나님을 갈망하며 성장해 가길 소망합니다.
+                                </p>
+                            </div>
+                            
+                            <!-- 서명 -->
+                            <div class="pt-10 mt-10 border-t border-gray-200">
+                                <p class="text-xl lg:text-2xl font-semibold text-gray-900 line-reveal">담임목사 이영호</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6-1. 유튜브 재생목록 섹션 -->
+    <section id="sermon" class="py-20 px-8 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <!-- 헤더 -->
+            <div class="flex justify-between items-end mb-12 fade-in">
+                <div>
+                    <p class="text-gray-500 text-sm mb-2">(주일설교)</p>
+                    <h2 class="text-4xl md:text-5xl font-light" style="color: #333333;">말씀을 듣다</h2>
+                </div>
+                <a href="https://www.youtube.com/@살리는빛부천침례교회" 
+                   target="_blank"
+                   class="hidden md:flex items-center gap-2 text-gray-600 hover:text-black transition">
+                    <span>유튜브에서 더보기</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7V17"/>
+                    </svg>
+                </a>
+            </div>
+            
+            <!-- 영상 컨테이너 -->
+            <div class="relative bg-black rounded-3xl overflow-hidden shadow-2xl fade-in">
+                <!-- 16:9 비율 유지 -->
+                <div class="relative w-full" style="padding-bottom: 56.25%;">
+                    <iframe 
+                        id="youtubePlayer"
+                        class="absolute top-0 left-0 w-full h-full"
+                        src="" 
+                        title="살리는빛부천침례교회 주일설교" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+            
+            <!-- 하단 정보 -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mt-8 gap-4 fade-in">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-medium" style="color: #333333;">살리는빛부천침례교회</p>
+                        <p class="text-sm text-gray-500">매주 주일예배 설교가 업로드됩니다</p>
+                    </div>
+                </div>
+                <a href="https://www.youtube.com/@살리는빛부천침례교회?sub_confirmation=1" 
+                   target="_blank"
+                   class="bg-red-600 text-white px-6 py-3 rounded-full font-medium hover:bg-red-700 transition flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                    </svg>
+                    구독하기
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 대형 문구 섹션 - 비전 -->
+    <section class="bg-black" style="width: 1920px; max-width: 100%; height: 500px; padding: 0; margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 60px; padding-bottom: 60px;">
+        <div style="width: 1537px; max-width: 90%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px;">
+            <h2 class="reveal-text" style="
+                    font-family: 'Homenaje', sans-serif;
+                    font-weight: 700;
+                    font-size: 56px;
+                    line-height: 1.2em;
+                    letter-spacing: 0.05em;
+                    text-align: center;
+                    color: #FFFFFF;
+                    margin: 0;
+                    padding: 0;
+                    text-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.3);
+                ">
+                우리가 가장 소중히 여기는 세 가지 가치가 있습니다.
+            </h2>
+            <p 
+                id="introStatement" 
+                class="reveal-text"
+                style="
+                    font-family: 'Homenaje', sans-serif;
+                    font-weight: 400;
+                    font-size: 36px;
+                    line-height: 1.4em;
+                    letter-spacing: 0.12em;
+                    text-align: center;
+                    color: #FFFFFF;
+                    margin: 0;
+                    padding: 0;
+                    text-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.2);
+                    white-space: pre-line;
+                ">
+                우리 교회는 '하나님을 갈망하는 사람들이 사랑의 교제 가운데 
+훈련받아 교회와 세상을 섬긴다'는 비전을 품고 있습니다.
+            </p>
+        </div>
+    </section>
+
+    <!-- 6. ⭐ 가로 스크롤 서비스 카드 섹션 -->
+    <section id="worship" class="horizontal-scroll-container">
+        <div class="horizontal-scroll-wrapper">
+            <div class="horizontal-track" id="horizontalTrack">
+                
+                <!-- 카드 01 - 영감 있는 예배 -->
+                <div class="service-card flex items-center justify-between" style="background-color: #FF6B6B;">
+                    <div class="w-1/2 pr-12">
+                        <div class="service-number">01</div>
+                        <h2 class="text-6xl font-bold mt-8 mb-6">영감 있는 예배입니다</h2>
+                        <p class="text-xl leading-relaxed opacity-90">
+                            예배는 우리 신앙의 중심입니다. 형식에 머무르지 않고,<br>
+                            성령의 감동 가운데 살아계신 하나님을 만나는 예배를 드립니다.<br>
+                            매 주일, 우리는 말씀과 찬양을 통해 영혼이 새롭게 되는 은혜를 경험합니다.
+                        </p>
+                    </div>
+                    <div class="w-1/2 flex justify-center items-center">
+                        <img src="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=1000&q=80" 
+                             alt="영감 있는 예배" 
+                             class="w-full max-w-[650px] aspect-square object-cover rounded-3xl shadow-2xl">
+                    </div>
+                </div>
+
+                <!-- 카드 02 - 사랑의 교제 -->
+                <div class="service-card flex items-center justify-between" style="background-color: #FFB800;">
+                    <div class="w-1/2 flex justify-center items-center">
+                        <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1000&q=80" 
+                             alt="사랑의 교제" 
+                             class="w-full max-w-[650px] aspect-square object-cover rounded-3xl shadow-2xl">
+                    </div>
+                    <div class="w-1/2 pl-12">
+                        <div class="service-number">02</div>
+                        <h2 class="text-6xl font-bold mt-8 mb-6">사랑의 교제입니다</h2>
+                        <p class="text-xl leading-relaxed opacity-90">
+                            교회는 서로 사랑하는 공동체입니다.<br>
+                            우리는 기쁨과 아픔을 함께 나누며, 서로를 격려하고 세워갑니다.<br>
+                            소그룹 모임과 다양한 교제를 통해 진정한 영적 가족을 경험할 수 있습니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 카드 03 - 성경공부 -->
+                <div class="service-card flex items-center justify-between" style="background-color: #87CEEB;">
+                    <div class="w-1/2 pr-12">
+                        <div class="service-number">03</div>
+                        <h2 class="text-6xl font-bold mt-8 mb-6">성경공부입니다</h2>
+                        <p class="text-xl leading-relaxed opacity-90">
+                            하나님의 말씀은 우리 삶의 기초입니다.<br>
+                            깊이 있는 성경공부를 통해 말씀을 배우고,<br>
+                            그 말씀이 삶 속에서 열매 맺도록 훈련받습니다.
+                        </p>
+                    </div>
+                    <div class="w-1/2 flex justify-center items-center">
+                        <img src="https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?w=1000&q=80" 
+                             alt="성경공부" 
+                             class="w-full max-w-[650px] aspect-square object-cover rounded-3xl shadow-2xl">
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. 대형 인용문 섹션 -->
+    <section class="py-32 px-8 bg-white">
+        <div class="max-w-5xl mx-auto">
+            <p id="quoteStatement" class="text-4xl md:text-5xl lg:text-6xl font-light italic leading-tight text-center reveal-text">
+                "믿음은 바라는 것들의 실상이요, 보이지 않는 것들의 증거니" — 히브리서 11:1
+            </p>
+        </div>
+    </section>
+
+    <!-- 8. 특징 섹션 -->
+    <section class="py-32 px-8 bg-gray-50">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div class="grid grid-cols-2 gap-6 fade-in">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80" 
+                     class="w-full h-72 object-cover rounded-2xl shadow-lg">
+                <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80" 
+                     class="w-full h-72 object-cover rounded-2xl shadow-lg mt-12">
+                <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=800&q=80" 
+                     class="col-span-2 w-full h-48 object-cover rounded-2xl shadow-lg">
+            </div>
+            <div class="space-y-12">
+                <div class="fade-in">
+                    <h3 class="text-3xl font-bold mb-4">더 빠른 결정, 더 확실한 성장</h3>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        복잡한 신앙의 질문들을 명확한 실천으로 바꿉니다. 
+                        여러분의 믿음을 확신 있게 세워나가는 데 도움이 되는 실천적 통찰력을 제공합니다.
+                    </p>
+                </div>
+                <div class="fade-in">
+                    <h3 class="text-3xl font-bold mb-4">흔들리지 않는 신앙</h3>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        실시간으로 목표를 향해 나아가는 과정을 점검합니다. 
+                        모든 성도가 한 방향으로 정렬되어 목적을 갖고 성장하도록 돕습니다.
+                    </p>
+                </div>
+                <div class="fade-in">
+                    <h3 class="text-3xl font-bold mb-4">위기 전에 찾는 기회</h3>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        영적 변화의 신호를 미리 감지합니다. 
+                        위기를 기회로 바꾸며, 앞서 나아갑니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. 하늘 배경 통계 섹션 -->
+    <section class="relative py-40 px-8 overflow-hidden" 
+             style="background: linear-gradient(135deg, #87CEEB 0%, #B8D4E8 50%, #E8F4F8 100%);">
+        <!-- 구름 패턴 -->
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-20 left-20 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+            <div class="absolute bottom-40 right-40 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+            <div class="absolute top-60 right-20 w-80 h-80 bg-white rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="relative max-w-6xl mx-auto">
+            <p class="text-4xl md:text-5xl lg:text-6xl font-light italic leading-tight text-center text-white mb-24 reveal-text">
+                우리는 복음의 진리 안에서<br>
+                하나님의 사랑을 실천합니다
+            </p>
+            
+            <div id="statsItems" class="grid grid-cols-1 md:grid-cols-3 gap-16 text-center text-white">
+                <!-- 통계 데이터는 JavaScript로 로드됩니다 -->
+                <div class="fade-in">
+                    <div class="text-sm mb-4 opacity-90">설립 연도</div>
+                    <div class="text-8xl font-bold mb-4">1985</div>
+                    <p class="text-xl opacity-90">48년간 지역사회와<br>함께 성장해왔습니다</p>
+                </div>
+                <div class="fade-in">
+                    <div class="text-sm mb-4 opacity-90">등록 성도</div>
+                    <div class="text-8xl font-bold mb-4">850+</div>
+                    <p class="text-xl opacity-90">믿음 안에서 든든한<br>관계를 맺고 있습니다</p>
+                </div>
+                <div class="fade-in">
+                    <div class="text-sm mb-4 opacity-90">소그룹</div>
+                    <div class="text-8xl font-bold mb-4">42</div>
+                    <p class="text-xl opacity-90">다양한 분야에서<br>성공적인 결실을 맺습니다</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. ⭐ 스택 카드 간증 섹션 -->
+    <section id="testimonials" class="stacking-cards-container bg-white">
+        <div class="stacking-cards-wrapper" id="stackingCardsWrapper">
+            
+            <!-- 카드 1 - 노랑 (맨 위) -->
+            <div class="stack-card" id="stackCard1" style="background-color: #FFB800;">
+                <div class="flex justify-between items-start mb-8">
+                    <div class="text-7xl font-bold">G</div>
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80" 
+                         alt="Profile" 
+                         class="w-20 h-20 rounded-full object-cover">
+                </div>
+                <blockquote class="text-2xl font-medium leading-relaxed mb-8">
+                    "전문적이고, 신뢰할 수 있으며, 이해하기 쉬운 가르침 — 
+                    이영호 목사님께서 제게 주신 말씀은 제 삶을 계획하는 데 
+                    필요한 명확함을 주었습니다."
+                </blockquote>
+                <div>
+                    <div class="text-2xl font-bold">김성훈</div>
+                    <div class="text-lg opacity-80">청년부 리더</div>
+                </div>
+            </div>
+
+            <!-- 카드 2 - 빨강 (중간) -->
+            <div class="stack-card" id="stackCard2" style="background-color: #FF6B6B;">
+                <div class="flex justify-between items-start mb-8">
+                    <div class="text-7xl font-bold">M</div>
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80" 
+                         alt="Profile" 
+                         class="w-20 h-20 rounded-full object-cover">
+                </div>
+                <blockquote class="text-2xl font-medium leading-relaxed mb-8">
+                    "명확하고 실천적인 가르침이 정말 큰 도움이 되었습니다. 
+                    제가 받은 양육은 제가 확신을 갖고 앞으로 나아갈 수 있게 
+                    해주었습니다."
+                </blockquote>
+                <div>
+                    <div class="text-2xl font-bold">박미영</div>
+                    <div class="text-lg opacity-80">여전도회 회장</div>
+                </div>
+            </div>
+
+            <!-- 카드 3 - 하늘색 (맨 아래) -->
+            <div class="stack-card" id="stackCard3" style="background-color: #87CEEB;">
+                <div class="flex justify-between items-start mb-8">
+                    <div class="text-7xl font-bold">S</div>
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&q=80" 
+                         alt="Profile" 
+                         class="w-20 h-20 rounded-full object-cover">
+                </div>
+                <blockquote class="text-2xl font-medium leading-relaxed mb-8">
+                    "솔직하고 지지적입니다. 함께 일하면서 믿음을 실천 가능한 
+                    계획으로 바꿀 수 있었고, 제가 신뢰할 수 있었습니다."
+                </blockquote>
+                <div>
+                    <div class="text-2xl font-bold">이준호</div>
+                    <div class="text-lg opacity-80">집사</div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- 11. 프로그램 섹션 -->
+    <section class="py-32 px-8 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <div class="text-gray-500 text-lg mb-4 fade-in">(Pricing)</div>
+                <h2 class="text-5xl md:text-6xl font-bold mb-8 fade-in">
+                    믿음의 여정을 위한<br>체계적인 프로그램
+                </h2>
+            </div>
+            
+            <!-- 로고 마키 -->
+            <div class="overflow-hidden my-16">
+                <div class="marquee flex gap-12 py-8">
+                    <div class="text-6xl font-bold opacity-20">✦</div>
+                    <div class="text-6xl font-bold opacity-20">살리는 빛 부천침례교회</div>
+                    <div class="text-6xl font-bold opacity-20">✦</div>
+                    <div class="text-6xl font-bold opacity-20">BUCHEON BAPTIST</div>
+                    <div class="text-6xl font-bold opacity-20">✦</div>
+                    <div class="text-6xl font-bold opacity-20">살리는 빛 부천침례교회</div>
+                    <div class="text-6xl font-bold opacity-20">✦</div>
+                    <div class="text-6xl font-bold opacity-20">BUCHEON BAPTIST</div>
+                    <div class="text-6xl font-bold opacity-20">✦</div>
+                    <div class="text-6xl font-bold opacity-20">살리는 빛 부천침례교회</div>
+                    <div class="text-6xl font-bold opacity-20">✦</div>
+                    <div class="text-6xl font-bold opacity-20">BUCHEON BAPTIST</div>
+                </div>
+            </div>
+            
+            <!-- 프로그램 카드 -->
+            <div id="programCards" class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+                <!-- 프로그램 카드는 JavaScript로 로드됩니다 -->
+                <!-- 새가족 환영 -->
+                <div class="bg-white rounded-3xl p-10 shadow-lg hover:shadow-2xl transition fade-in">
+                    <h3 class="text-3xl font-bold mb-4">새가족 환영</h3>
+                    <div class="text-gray-600 mb-6">Perfect for beginners</div>
+                    <div class="text-5xl font-bold mb-8">4주</div>
+                    <p class="text-gray-700 leading-relaxed mb-8">
+                        처음 오신 분들을 위한 교회 소개와 신앙의 기초를 다지는 시간입니다.
+                    </p>
+                    <ul class="space-y-3 text-gray-700">
+                        <li>✓ 교회 소개</li>
+                        <li>✓ 기초 신앙 교육</li>
+                        <li>✓ 소그룹 배정</li>
+                    </ul>
+                    <button class="w-full mt-8 bg-black text-white py-4 rounded-full font-semibold hover:bg-gray-800 transition">
+                        시작하기
+                    </button>
+                </div>
+
+                <!-- 제자훈련 -->
+                <div class="bg-[#FFB800] rounded-3xl p-10 shadow-lg hover:shadow-2xl transition relative fade-in">
+                    <div class="absolute top-6 right-6 bg-black text-white px-4 py-2 rounded-full text-sm font-semibold">
+                        추천
+                    </div>
+                    <h3 class="text-3xl font-bold mb-4">제자훈련</h3>
+                    <div class="text-gray-800 mb-6">Most popular choice</div>
+                    <div class="text-5xl font-bold mb-8">12주</div>
+                    <p class="text-gray-900 leading-relaxed mb-8">
+                        깊이 있는 성경 공부와 실천적 적용을 통해 성숙한 신앙인으로 성장합니다.
+                    </p>
+                    <ul class="space-y-3 text-gray-900">
+                        <li>✓ 심화 성경 공부</li>
+                        <li>✓ 멘토링 프로그램</li>
+                        <li>✓ 사역 참여 기회</li>
+                    </ul>
+                    <button class="w-full mt-8 bg-black text-white py-4 rounded-full font-semibold hover:bg-gray-800 transition">
+                        신청하기
+                    </button>
+                </div>
+
+                <!-- 사역자 훈련 -->
+                <div class="bg-white rounded-3xl p-10 shadow-lg hover:shadow-2xl transition fade-in">
+                    <h3 class="text-3xl font-bold mb-4">사역자 훈련</h3>
+                    <div class="text-gray-600 mb-6">For ministry leaders</div>
+                    <div class="text-5xl font-bold mb-8">6개월</div>
+                    <p class="text-gray-700 leading-relaxed mb-8">
+                        하나님의 부르심에 응답하여 사역자로 세워지는 전문 과정입니다.
+                    </p>
+                    <ul class="space-y-3 text-gray-700">
+                        <li>✓ 리더십 훈련</li>
+                        <li>✓ 신학 교육</li>
+                        <li>✓ 사역 실습</li>
+                    </ul>
+                    <button class="w-full mt-8 bg-black text-white py-4 rounded-full font-semibold hover:bg-gray-800 transition">
+                        문의하기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. CTA 섹션 -->
+    <section id="contact" class="py-40 px-8 bg-white">
+        <div class="max-w-5xl mx-auto text-center">
+            <h2 class="text-5xl md:text-7xl font-bold leading-tight reveal-text">
+                함께 시작하고 싶으신가요?<br>
+                방문 상담을 예약하세요.
+            </h2>
+            <button class="mt-12 bg-black text-white px-12 py-5 rounded-full text-xl font-semibold hover:bg-gray-800 transition reveal-text">
+                지금 예약하기 →
+            </button>
+        </div>
+    </section>
+
+    <!-- 13. 푸터 -->
+    <footer class="bg-gradient-to-b from-gray-50 to-white py-20 px-8">
+        <div class="max-w-7xl mx-auto">
+            <!-- 상단 -->
+            <div class="flex justify-between items-center mb-16 pb-8 border-b border-gray-200">
+                <div class="flex flex-col gap-3">
+                    <div class="flex gap-6 items-center">
+                        <a href="https://cafe.daum.net/buchonbaptist" target="_blank" class="text-xl hover:opacity-70 transition" title="다음카페">☕ 카페</a>
+                        <a href="https://blog.naver.com/bucheonbaptist" target="_blank" class="text-xl hover:opacity-70 transition" title="네이버블로그">📝 블로그</a>
+                        <a href="https://www.youtube.com/@살리는빛부천침례교회" target="_blank" class="text-xl hover:opacity-70 transition" title="유튜브">▶️ 유튜브</a>
+                    </div>
+                    <div class="text-sm text-gray-600">
+                        <div>📍 경기 부천시 중동로71번길 66</div>
+                        <div>📞 032-654-1004</div>
+                        <div>✉️ info@bucheonbaptist.com</div>
+                        <div class="mt-2 pt-2 border-t border-gray-300">
+                            <div class="font-semibold text-gray-700">헌금계좌</div>
+                            <div>💰 일반헌금: 농협은행 351-0428-5575-33</div>
+                            <div>💰 특별헌금: 농협은행 216012-51-312535</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <div class="font-semibold mb-1">© 살리는 빛 부천침례교회. 2025.</div>
+                    <div class="text-gray-600">All Rights Reserved.</div>
+                </div>
+                <div class="flex gap-8">
+                    <a href="#about" class="hover:opacity-70 transition">소개</a>
+                    <a href="#worship" class="hover:opacity-70 transition">예배</a>
+                    <a href="#contact" class="hover:opacity-70 transition">연락처</a>
+                </div>
+            </div>
+            
+            <!-- 하단 - 초대형 텍스트 -->
+            <div class="text-center py-20">
+                <h2 class="gradient-text font-bold" style="font-size: clamp(60px, 12vw, 200px); line-height: 0.9;">
+                    살리는 빛<br>부천침례교회
+                </h2>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ========================================
+        // SUPABASE 초기화
+        // ========================================
+        const SUPABASE_URL = 'https://fkqxalcwhqohrkdzwhvv.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZrcXhhbGN3aHFvaHJrZHp3aHZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ1MjE2MjAsImV4cCI6MjA1MDA5NzYyMH0.bKpBqLaWy6u1YvTG6gCtgaK8sgjYAP8CZR3Kf4p0C08';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // ========================================
+        // 데이터 로드 함수들
+        // ========================================
+        async function loadServiceCards() {
+            try {
+                const { data, error } = await supabase
+                    .from('service_cards')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('display_order', { ascending: true });
+                
+                if (error) throw error;
+                
+                if (data && data.length > 0) {
+                    const track = document.getElementById('horizontalTrack');
+                    track.innerHTML = data.map((card, index) => `
+                        <div class="service-card flex items-center justify-center" style="background-color: ${card.background_color};">
+                            <div class="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-12 items-center ${card.layout_type === 'right' ? 'md:flex-row-reverse' : ''}">
+                                <div class="${card.layout_type === 'right' ? 'md:order-2' : ''}">
+                                    <div class="service-number">${card.card_number}</div>
+                                    <h3 class="text-6xl font-bold mb-6">${card.title}</h3>
+                                    <p class="text-xl opacity-90 leading-relaxed">${card.description}</p>
+                                </div>
+                                <div class="${card.layout_type === 'right' ? 'md:order-1' : ''}">
+                                    <img src="${card.image_url}" alt="${card.title}" class="w-full h-auto rounded-2xl shadow-2xl">
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                    console.log('✅ Service cards loaded:', data.length);
+                }
+            } catch (error) {
+                console.error('❌ Error loading service cards:', error);
+            }
+        }
+        
+        async function loadTestimonialCards() {
+            try {
+                const { data, error } = await supabase
+                    .from('testimonial_cards')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('display_order', { ascending: true });
+                
+                if (error) throw error;
+                
+                if (data && data.length > 0) {
+                    const wrapper = document.getElementById('stackingCardsWrapper');
+                    wrapper.innerHTML = data.map((card, index) => `
+                        <div class="stack-card" id="stackCard${index + 1}" style="background-color: ${card.background_color};">
+                            <div class="text-8xl font-bold mb-8 opacity-20">${card.initial_letter}</div>
+                            <p class="text-xl leading-relaxed mb-8">${card.quote}</p>
+                            <div class="flex items-center gap-4 mt-auto">
+                                <img src="${card.author_image}" alt="${card.author_name}" class="w-16 h-16 rounded-full object-cover">
+                                <div>
+                                    <div class="font-bold">${card.author_name}</div>
+                                    <div class="text-sm opacity-70">${card.author_title}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                    console.log('✅ Testimonial cards loaded:', data.length);
+                }
+            } catch (error) {
+                console.error('❌ Error loading testimonial cards:', error);
+            }
+        }
+        
+        async function loadProgramCards() {
+            try {
+                const { data, error } = await supabase
+                    .from('program_cards')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('display_order', { ascending: true });
+                
+                if (error) throw error;
+                
+                if (data && data.length > 0) {
+                    const container = document.getElementById('programCards');
+                    container.innerHTML = data.map(card => `
+                        <div class="bg-white rounded-3xl p-10 shadow-lg hover:shadow-2xl transition-all duration-300 ${card.is_recommended ? 'ring-4 ring-amber-400 relative' : ''}">
+                            ${card.is_recommended ? '<div class="absolute -top-4 left-8 bg-amber-400 text-black px-6 py-2 rounded-full font-bold text-sm">RECOMMENDED</div>' : ''}
+                            <h3 class="text-3xl font-bold mb-4">${card.title}</h3>
+                            <div class="text-amber-500 text-lg font-semibold mb-6">${card.duration} ${card.duration_label || '과정'}</div>
+                            <p class="text-gray-600 leading-relaxed mb-8">${card.description}</p>
+                            <ul class="space-y-3 mb-8">
+                                ${card.features.map(feature => `<li class="flex items-center gap-3"><span class="text-amber-500">✓</span> ${feature}</li>`).join('')}
+                            </ul>
+                            <button class="w-full bg-black text-white py-4 rounded-xl font-semibold hover:bg-gray-800 transition">${card.button_text || '자세히 보기'}</button>
+                        </div>
+                    `).join('');
+                    console.log('✅ Program cards loaded:', data.length);
+                }
+            } catch (error) {
+                console.error('❌ Error loading program cards:', error);
+            }
+        }
+        
+        async function loadStatsItems() {
+            try {
+                const { data, error } = await supabase
+                    .from('stats_items')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('display_order', { ascending: true });
+                
+                if (error) throw error;
+                
+                if (data && data.length > 0) {
+                    const container = document.getElementById('statsItems');
+                    container.innerHTML = data.map(stat => `
+                        <div class="text-center">
+                            <div class="text-7xl font-bold mb-4">${stat.value}</div>
+                            <div class="text-2xl font-semibold mb-2">${stat.label}</div>
+                            <div class="text-gray-600">${stat.description}</div>
+                        </div>
+                    `).join('');
+                    console.log('✅ Stats items loaded:', data.length);
+                }
+            } catch (error) {
+                console.error('❌ Error loading stats items:', error);
+            }
+        }
+        
+        // ========================================
+        // YouTube 재생목록 최신 영상 로드 (역순)
+        // ========================================
+        async function loadLatestYouTubeVideo() {
+            try {
+                const playlistId = 'PL_0QqEAUL4K8x7GDlngrYo2QlVPVZV3WY';
+                
+                // YouTube 재생목록의 순서를 역순으로 바꾸려면 YouTube Data API가 필요합니다.
+                // 하지만 CORS 문제로 클라이언트에서 직접 호출할 수 없으므로,
+                // 서버 사이드 API를 사용하거나, 재생목록의 마지막 영상(최신)을 직접 가져와야 합니다.
+                
+                // 방법: YouTube Data API를 사용해서 재생목록의 영상 목록을 가져와서 역순으로 정렬
+                // 하지만 API 키가 필요하고 CORS 문제가 있으므로,
+                // 여기서는 재생목록의 마지막 영상(최신)을 가져와서 단일 영상으로 임베드합니다.
+                
+                // 참고: YouTube 재생목록의 영상은 기본적으로 추가된 순서대로 정렬되므로,
+                // 마지막 영상이 최신 영상입니다.
+                // 하지만 iframe으로는 재생목록의 순서를 직접 바꿀 수 없으므로,
+                // YouTube Data API를 사용해서 재생목록의 영상 목록을 가져와서
+                // 역순으로 정렬한 후, 첫 번째 영상을 임베드해야 합니다.
+                
+                // 여기서는 재생목록 URL을 그대로 사용하되,
+                // 사용자가 재생목록에서 최신 영상을 직접 선택할 수 있도록 합니다.
+                
+                // 실제 구현: YouTube Data API를 사용해서 재생목록의 영상 목록을 가져오기
+                // const apiKey = 'YOUR_API_KEY'; // YouTube Data API v3 키 필요
+                // const response = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=50&key=${apiKey}`);
+                // const data = await response.json();
+                // const videos = data.items.reverse(); // 역순으로 정렬
+                // const latestVideoId = videos[0].snippet.resourceId.videoId;
+                // iframe.src = `https://www.youtube.com/embed/${latestVideoId}?list=${playlistId}&rel=0&modestbranding=1`;
+                
+                // 임시 해결책: 재생목록 URL 사용 (순서는 YouTube에서 설정한 대로)
+                const iframe = document.getElementById('youtubePlayer');
+                if (iframe) {
+                    // 재생목록 URL 사용
+                    iframe.src = `https://www.youtube.com/embed/videoseries?list=${playlistId}&rel=0&modestbranding=1`;
+                }
+                
+                console.log('⚠️ YouTube 재생목록 순서를 역순으로 바꾸려면 YouTube Data API가 필요합니다.');
+                console.log('현재는 재생목록의 기본 순서대로 표시됩니다.');
+            } catch (error) {
+                console.error('❌ Error loading YouTube video:', error);
+                // 에러 발생 시 기본 재생목록 URL 사용
+                const iframe = document.getElementById('youtubePlayer');
+                if (iframe) {
+                    iframe.src = `https://www.youtube.com/embed/videoseries?list=PL_0QqEAUL4K8x7GDlngrYo2QlVPVZV3WY&rel=0&modestbranding=1`;
+                }
+            }
+        }
+        
+        async function loadHeroSection() {
+            try {
+                const { data, error } = await supabase
+                    .from('hero_section')
+                    .select('*')
+                    .eq('is_active', true)
+                    .single();
+                
+                if (error) throw error;
+                
+                if (data) {
+                    document.getElementById('heroTitle').textContent = data.main_title;
+                    document.getElementById('heroSubtitle').textContent = data.sub_text;
+                    console.log('✅ Hero section loaded');
+                }
+            } catch (error) {
+                console.error('❌ Error loading hero section:', error);
+            }
+        }
+        
+        async function loadLargeStatements() {
+            try {
+                const { data, error } = await supabase
+                    .from('large_statements')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('display_order', { ascending: true });
+                
+                if (error) throw error;
+                
+                if (data && data.length > 0) {
+                    // Intro statement
+                    const introStatement = data.find(s => s.section_key === 'intro');
+                    if (introStatement) {
+                        document.getElementById('introStatement').textContent = introStatement.content;
+                    }
+                    
+                    // Quote statement
+                    const quoteStatement = data.find(s => s.section_key === 'quote');
+                    if (quoteStatement) {
+                        document.getElementById('quoteStatement').textContent = quoteStatement.content;
+                    }
+                    
+                    console.log('✅ Large statements loaded:', data.length);
+                }
+            } catch (error) {
+                console.error('❌ Error loading large statements:', error);
+            }
+        }
+        
+        // ========================================
+        // 페이지 로드 시 모든 데이터 불러오기
+        // ========================================
+        window.addEventListener('DOMContentLoaded', async () => {
+            console.log('🚀 Supabase 연동 시작...');
+            await Promise.all([
+                loadHeroSection(),
+                loadLargeStatements(),
+                loadServiceCards(),
+                loadTestimonialCards(),
+                loadProgramCards(),
+                loadStatsItems(),
+                loadLatestYouTubeVideo()
+            ]);
+            console.log('✅ 모든 데이터 로드 완료!');
+            
+            // 데이터 로드 후 애니메이션 초기화
+            setTimeout(() => {
+                updateHorizontalScroll();
+                updateStackingCards();
+                
+                // Intersection Observer 재적용
+                document.querySelectorAll('.reveal-text, .fade-in, .text-reveal, .line-reveal').forEach(el => {
+                    observer.observe(el);
+                });
+            }, 100);
+        });
+        
+        // ========================================
+        // INTERSECTION OBSERVER - FADE IN
+        // ========================================
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { 
+            threshold: 0.1, 
+            rootMargin: '0px 0px -50px 0px' 
+        });
+
+        document.querySelectorAll('.reveal-text, .fade-in, .text-reveal, .line-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ========================================
+        // 가로 스크롤 섹션
+        // ========================================
+        const horizontalSection = document.querySelector('.horizontal-scroll-container');
+        const track = document.getElementById('horizontalTrack');
+        const totalCards = 3;
+
+        function updateHorizontalScroll() {
+            if (!horizontalSection || !track) return;
+            
+            const rect = horizontalSection.getBoundingClientRect();
+            const sectionTop = rect.top;
+            const sectionHeight = horizontalSection.offsetHeight;
+            const windowHeight = window.innerHeight;
+            
+            const scrollableDistance = sectionHeight - windowHeight;
+            const scrollProgress = Math.max(0, Math.min(1, -sectionTop / scrollableDistance));
+            
+            // 매우 부드러운 easing 함수 (easeInOutQuart)
+            const easedProgress = scrollProgress < 0.5
+                ? 8 * scrollProgress * scrollProgress * scrollProgress * scrollProgress
+                : 1 - Math.pow(-2 * scrollProgress + 2, 4) / 2;
+            
+            const cardProgress = easedProgress * (totalCards - 1);
+            const translateX = -cardProgress * 100;
+            
+            // GPU 가속을 위한 translate3d 사용
+            track.style.transform = `translate3d(${translateX}vw, 0, 0)`;
+        }
+
+        // ========================================
+        // 스택 카드 섹션
+        // ========================================
+        const stackingSection = document.querySelector('.stacking-cards-container');
+
+        function updateStackingCards() {
+            // 동적으로 로드된 카드들 가져오기
+            const stackCard1 = document.getElementById('stackCard1');
+            const stackCard2 = document.getElementById('stackCard2');
+            const stackCard3 = document.getElementById('stackCard3');
+            
+            // 카드가 아직 로드되지 않았으면 리턴
+            if (!stackCard1 || !stackCard2 || !stackCard3) return;
+            
+            const rect = stackingSection.getBoundingClientRect();
+            const sectionTop = rect.top;
+            const sectionHeight = stackingSection.offsetHeight;
+            const windowHeight = window.innerHeight;
+            
+            const scrollableDistance = sectionHeight - windowHeight;
+            const scrollProgress = Math.max(0, Math.min(1, -sectionTop / scrollableDistance));
+
+            // Card 1 (Yellow) - 맨 위, 처음에 보임 → 위로 날아감
+            if (scrollProgress < 0.4) {
+                const p = scrollProgress / 0.4;
+                const eased = p * p; // easeIn
+                stackCard1.style.transform = `translateY(${-eased * 300}px) rotate(${-eased * 15}deg) scale(${1 - eased * 0.1})`;
+                stackCard1.style.opacity = 1 - eased;
+                stackCard1.style.zIndex = 3;
+            } else {
+                stackCard1.style.transform = 'translateY(-300px) rotate(-15deg) scale(0.9)';
+                stackCard1.style.opacity = 0;
+                stackCard1.style.zIndex = 1;
+            }
+
+            // Card 2 (Coral) - 카드1 벗겨진 후 보임 → 위로 날아감
+            if (scrollProgress < 0.4) {
+                stackCard2.style.transform = 'translateY(20px) rotate(3deg) scale(0.95)';
+                stackCard2.style.opacity = 0.7;
+                stackCard2.style.zIndex = 2;
+            } else if (scrollProgress < 0.7) {
+                const p = (scrollProgress - 0.4) / 0.3;
+                const eased = p * p;
+                stackCard2.style.transform = `translateY(${20 - eased * 320}px) rotate(${3 - eased * 18}deg) scale(${0.95 + p * 0.05 - eased * 0.1})`;
+                stackCard2.style.opacity = 1 - eased;
+                stackCard2.style.zIndex = 3;
+            } else {
+                stackCard2.style.transform = 'translateY(-300px) rotate(-15deg) scale(0.9)';
+                stackCard2.style.opacity = 0;
+                stackCard2.style.zIndex = 1;
+            }
+
+            // Card 3 (Blue) - 맨 아래, 마지막에 정면으로
+            if (scrollProgress < 0.4) {
+                stackCard3.style.transform = 'translateY(40px) rotate(6deg) scale(0.9)';
+                stackCard3.style.opacity = 0.5;
+                stackCard3.style.zIndex = 1;
+            } else if (scrollProgress < 0.7) {
+                const p = (scrollProgress - 0.4) / 0.3;
+                stackCard3.style.transform = `translateY(${40 - p * 20}px) rotate(${6 - p * 3}deg) scale(${0.9 + p * 0.05})`;
+                stackCard3.style.opacity = 0.5 + p * 0.3;
+                stackCard3.style.zIndex = 2;
+            } else {
+                const p = (scrollProgress - 0.7) / 0.3;
+                const eased = 1 - Math.pow(1 - p, 3); // easeOut
+                stackCard3.style.transform = `translateY(${20 - eased * 20}px) rotate(${3 - eased * 3}deg) scale(${0.95 + eased * 0.05})`;
+                stackCard3.style.opacity = 0.8 + eased * 0.2;
+                stackCard3.style.zIndex = 3;
+            }
+        }
+
+        // ========================================
+        // 히어로 섹션 패럴랙스 효과
+        // ========================================
+        let lastScrollY = 0;
+        let heroBackgroundElement = null;
+        
+        function initHeroParallax() {
+            heroBackgroundElement = document.getElementById('heroBackground');
+            if (heroBackgroundElement) {
+                heroBackgroundElement.style.willChange = 'transform';
+                heroBackgroundElement.style.backfaceVisibility = 'hidden';
+            }
+        }
+        
+        function updateHeroParallax() {
+            if (!heroBackgroundElement) return;
+            
+            const heroSection = document.getElementById('heroSection');
+            if (!heroSection) return;
+            
+            const rect = heroSection.getBoundingClientRect();
+            const scrollY = window.scrollY;
+            
+            // 히어로 섹션이 뷰포트에 보일 때만 적용
+            if (rect.bottom > 0 && rect.top < window.innerHeight) {
+                // 배경 이미지만 천천히 위로 이동 (텍스트보다 느리게)
+                const backgroundOffset = scrollY * 0.3;
+                heroBackgroundElement.style.transform = `translate3d(0, ${backgroundOffset}px, 0)`;
+            } else {
+                // 뷰포트 밖에 있으면 초기화
+                heroBackgroundElement.style.transform = 'translate3d(0, 0, 0)';
+            }
+        }
+
+        // ========================================
+        // 스크롤 이벤트 (고성능 최적화)
+        // ========================================
+        let ticking = false;
+        let rafId = null;
+
+        function handleScroll() {
+            if (!ticking) {
+                rafId = window.requestAnimationFrame(() => {
+                    updateHeroParallax();
+                    updateHorizontalScroll();
+                    updateStackingCards();
+                    ticking = false;
+                    rafId = null;
+                });
+                ticking = true;
+            }
+        }
+
+        // Passive 이벤트 리스너로 성능 향상
+        window.addEventListener('scroll', handleScroll, { passive: true });
+
+        // 초기 실행
+        initHeroParallax();
+        updateHeroParallax();
+        updateHorizontalScroll();
+        updateStackingCards();
+
+        // ========================================
+        // 부드러운 스크롤
+        // ========================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        console.log('✅ 부천교회 웹사이트 로드 완료');
+        console.log('✅ 가로 스크롤 활성화 (400vh)');
+        console.log('✅ 스택 카드 애니메이션 활성화 (500vh)');
+    </script>
+
+</body>
+</html>
+

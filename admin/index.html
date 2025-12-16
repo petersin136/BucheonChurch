@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 대시보드 - 부천교회</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- 네비게이션 -->
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-bold text-gray-900">부천교회 관리자</h1>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span id="adminName" class="text-gray-700"></span>
+                    <button id="logoutBtn" class="text-gray-600 hover:text-gray-900">
+                        로그아웃
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- 환영 메시지 -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">대시보드</h2>
+            <p class="text-gray-600">부천교회 홈페이지 관리 시스템</p>
+        </div>
+
+        <!-- 통계 카드 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="text-sm text-gray-600 mb-2">새가족 등록</div>
+                <div class="text-3xl font-bold text-blue-600" id="visitorCount">0</div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="text-sm text-gray-600 mb-2">게시판 글</div>
+                <div class="text-3xl font-bold text-green-600" id="postCount">0</div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="text-sm text-gray-600 mb-2">주보 다운로드</div>
+                <div class="text-3xl font-bold text-purple-600" id="downloadCount">0</div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="text-sm text-gray-600 mb-2">설교 조회수</div>
+                <div class="text-3xl font-bold text-orange-600" id="viewCount">0</div>
+            </div>
+        </div>
+
+        <!-- 빠른 링크 -->
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">섹션 편집</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <a href="./hero.html" class="bg-white rounded-lg shadow hover:shadow-lg transition p-6 text-center">
+                    <div class="text-3xl mb-2">🏔️</div>
+                    <div class="font-semibold text-gray-900">히어로 섹션</div>
+                </a>
+                <a href="./about.html" class="bg-white rounded-lg shadow hover:shadow-lg transition p-6 text-center">
+                    <div class="text-3xl mb-2">ℹ️</div>
+                    <div class="font-semibold text-gray-900">소개 섹션</div>
+                </a>
+                <a href="./services.html" class="bg-white rounded-lg shadow hover:shadow-lg transition p-6 text-center">
+                    <div class="text-3xl mb-2">🙏</div>
+                    <div class="font-semibold text-gray-900">예배 카드</div>
+                </a>
+                <a href="./testimonials.html" class="bg-white rounded-lg shadow hover:shadow-lg transition p-6 text-center">
+                    <div class="text-3xl mb-2">💬</div>
+                    <div class="font-semibold text-gray-900">간증 카드</div>
+                </a>
+                <a href="./programs.html" class="bg-white rounded-lg shadow hover:shadow-lg transition p-6 text-center">
+                    <div class="text-3xl mb-2">📚</div>
+                    <div class="font-semibold text-gray-900">프로그램</div>
+                </a>
+                <a href="./stats.html" class="bg-white rounded-lg shadow hover:shadow-lg transition p-6 text-center">
+                    <div class="text-3xl mb-2">📊</div>
+                    <div class="font-semibold text-gray-900">통계 숫자</div>
+                </a>
+                <a href="./weekly.html" class="bg-white rounded-lg shadow hover:shadow-lg transition p-6 text-center">
+                    <div class="text-3xl mb-2">📰</div>
+                    <div class="font-semibold text-gray-900">주보 관리</div>
+                </a>
+                <a href="./settings.html" class="bg-white rounded-lg shadow hover:shadow-lg transition p-6 text-center">
+                    <div class="text-3xl mb-2">⚙️</div>
+                    <div class="font-semibold text-gray-900">기본 설정</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 최근 활동 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- 최근 새가족 등록 -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-bold text-gray-900">최근 새가족 등록</h3>
+                </div>
+                <div id="recentVisitors" class="divide-y divide-gray-200">
+                    <!-- 동적으로 채워짐 -->
+                </div>
+                <div class="p-4 text-center">
+                    <a href="#" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                        전체 보기 →
+                    </a>
+                </div>
+            </div>
+
+            <!-- 최근 게시글 -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-bold text-gray-900">최근 게시글</h3>
+                </div>
+                <div id="recentPosts" class="divide-y divide-gray-200">
+                    <!-- 동적으로 채워짐 -->
+                </div>
+                <div class="p-4 text-center">
+                    <a href="../board/index.html" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                        전체 보기 →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Supabase 설정
+        const SUPABASE_URL = 'https://fkqxalcwhqohrkdzwhvv.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_5sLcyIwutRptBow_Xe7MpA_IDKtDwXI';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // 인증 확인
+        async function checkAuth() {
+            const { data: { session } } = await supabase.auth.getSession();
+            
+            if (!session) {
+                window.location.href = './login.html';
+                return null;
+            }
+            
+            return session;
+        }
+
+        // 데이터 로드
+        async function loadDashboardData() {
+            const session = await checkAuth();
+            if (!session) return;
+
+            // 관리자 이름 표시
+            document.getElementById('adminName').textContent = session.user.email;
+
+            // 통계 데이터 로드
+            try {
+                // 새가족 등록 수
+                const { count: visitorCount } = await supabase
+                    .from('visitor_registrations')
+                    .select('*', { count: 'exact', head: true });
+                document.getElementById('visitorCount').textContent = visitorCount || 0;
+
+                // 게시글 수
+                const { count: postCount } = await supabase
+                    .from('board_posts')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('is_active', true);
+                document.getElementById('postCount').textContent = postCount || 0;
+
+                // 주보 다운로드 수 (합계)
+                const { data: bulletins } = await supabase
+                    .from('weekly_bulletins')
+                    .select('download_count');
+                const totalDownloads = bulletins?.reduce((sum, b) => sum + (b.download_count || 0), 0) || 0;
+                document.getElementById('downloadCount').textContent = totalDownloads;
+
+                // 최근 새가족 등록 5개
+                const { data: recentVisitors } = await supabase
+                    .from('visitor_registrations')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(5);
+                
+                renderRecentVisitors(recentVisitors || []);
+
+                // 최근 게시글 5개
+                const { data: recentPosts } = await supabase
+                    .from('board_posts')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('created_at', { ascending: false })
+                    .limit(5);
+                
+                renderRecentPosts(recentPosts || []);
+
+            } catch (error) {
+                console.error('데이터 로드 에러:', error);
+            }
+        }
+
+        // 최근 새가족 렌더링
+        function renderRecentVisitors(visitors) {
+            const container = document.getElementById('recentVisitors');
+            
+            if (visitors.length === 0) {
+                container.innerHTML = '<div class="p-6 text-center text-gray-500">등록된 새가족이 없습니다</div>';
+                return;
+            }
+
+            container.innerHTML = visitors.map(v => `
+                <div class="p-4 hover:bg-gray-50 transition">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="font-semibold text-gray-900">${v.name}</div>
+                            <div class="text-sm text-gray-500">${v.phone || '전화번호 없음'}</div>
+                        </div>
+                        <div class="text-xs text-gray-400">
+                            ${new Date(v.created_at).toLocaleDateString('ko-KR')}
+                        </div>
+                    </div>
+                    ${v.message ? `<div class="mt-2 text-sm text-gray-600">${v.message}</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        // 최근 게시글 렌더링
+        function renderRecentPosts(posts) {
+            const container = document.getElementById('recentPosts');
+            
+            if (posts.length === 0) {
+                container.innerHTML = '<div class="p-6 text-center text-gray-500">등록된 게시글이 없습니다</div>';
+                return;
+            }
+
+            container.innerHTML = posts.map(p => `
+                <div class="p-4 hover:bg-gray-50 transition">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="font-semibold text-gray-900">${p.title}</div>
+                            <div class="text-sm text-gray-500 mt-1">
+                                ${p.author_name} · 조회 ${p.view_count}
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-400 ml-4">
+                            ${new Date(p.created_at).toLocaleDateString('ko-KR')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 로그아웃
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await supabase.auth.signOut();
+            window.location.href = './login.html';
+        });
+
+        // 초기 로드
+        loadDashboardData();
+    </script>
+
+</body>
+</html>
+

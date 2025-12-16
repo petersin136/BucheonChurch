@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>미디어 업로드 - 살리는 빛 부천침례교회</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen py-12 px-4">
+        <div class="max-w-4xl mx-auto">
+            <!-- 헤더 -->
+            <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+                <h1 class="text-3xl font-bold mb-2">미디어 업로드</h1>
+                <p class="text-gray-600">사진, 영상, PDF 파일을 업로드하세요</p>
+            </div>
+
+            <!-- 업로드 섹션 -->
+            <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+                <h2 class="text-xl font-bold mb-4">파일 업로드</h2>
+                
+                <!-- 파일 선택 -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        파일 선택
+                    </label>
+                    <input type="file" id="fileInput" 
+                           accept="image/*,video/*,.pdf"
+                           multiple
+                           class="block w-full text-sm text-gray-500
+                                  file:mr-4 file:py-2 file:px-4
+                                  file:rounded-full file:border-0
+                                  file:text-sm file:font-semibold
+                                  file:bg-blue-50 file:text-blue-700
+                                  hover:file:bg-blue-100">
+                    <p class="mt-2 text-sm text-gray-500">
+                        지원 형식: JPG, PNG, GIF, WebP, MP4, WebM, MOV, PDF (최대 50MB)
+                    </p>
+                </div>
+
+                <!-- 카테고리 선택 -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        카테고리
+                    </label>
+                    <select id="categorySelect" 
+                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <option value="worship">예배</option>
+                        <option value="sermon">설교</option>
+                        <option value="event">행사</option>
+                        <option value="youth">청년부</option>
+                        <option value="kids">주일학교</option>
+                        <option value="general">기타</option>
+                    </select>
+                </div>
+
+                <!-- 업로드 버튼 -->
+                <button onclick="uploadFiles()" 
+                        id="uploadBtn"
+                        class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                    업로드
+                </button>
+
+                <!-- 진행 상태 -->
+                <div id="progressContainer" class="mt-4 hidden">
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div id="progressBar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                    <p id="progressText" class="text-sm text-gray-600 mt-2 text-center"></p>
+                </div>
+
+                <!-- 메시지 -->
+                <div id="message" class="mt-4 hidden"></div>
+            </div>
+
+            <!-- 업로드된 파일 목록 -->
+            <div class="bg-white rounded-lg shadow-md p-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">업로드된 미디어</h2>
+                    <button onclick="loadMediaList()" 
+                            class="text-blue-600 hover:text-blue-800">
+                        🔄 새로고침
+                    </button>
+                </div>
+                <div id="mediaList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- 미디어 목록이 여기에 표시됩니다 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Supabase 초기화
+        const SUPABASE_URL = 'https://fkqxalcwhqohrkdzwhvv.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZrcXhhbGN3aHFvaHJrZHp3aHZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ1MjE2MjAsImV4cCI6MjA1MDA5NzYyMH0.bKpBqLaWy6u1YvTG6gCtgaK8sgjYAP8CZR3Kf4p0C08';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // 파일 업로드 함수
+        async function uploadFiles() {
+            const fileInput = document.getElementById('fileInput');
+            const category = document.getElementById('categorySelect').value;
+            const uploadBtn = document.getElementById('uploadBtn');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const messageDiv = document.getElementById('message');
+
+            const files = fileInput.files;
+            if (files.length === 0) {
+                showMessage('파일을 선택해주세요.', 'error');
+                return;
+            }
+
+            // UI 업데이트
+            uploadBtn.disabled = true;
+            progressContainer.classList.remove('hidden');
+            messageDiv.classList.add('hidden');
+
+            let successCount = 0;
+            let errorCount = 0;
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const progress = ((i + 1) / files.length * 100).toFixed(0);
+                progressBar.style.width = progress + '%';
+                progressText.textContent = `업로드 중... (${i + 1}/${files.length})`;
+
+                try {
+                    // 파일명 생성 (타임스탬프 + 원본 파일명)
+                    const timestamp = new Date().getTime();
+                    const fileName = `${category}/${timestamp}_${file.name}`;
+
+                    // Supabase Storage에 업로드
+                    const { data, error } = await supabase.storage
+                        .from('media')
+                        .upload(fileName, file, {
+                            cacheControl: '3600',
+                            upsert: false
+                        });
+
+                    if (error) throw error;
+
+                    // 공개 URL 가져오기
+                    const { data: urlData } = supabase.storage
+                        .from('media')
+                        .getPublicUrl(fileName);
+
+                    // media_library 테이블에 메타데이터 저장
+                    const { error: dbError } = await supabase
+                        .from('media_library')
+                        .insert({
+                            file_name: fileName,
+                            original_name: file.name,
+                            file_url: urlData.publicUrl,
+                            file_type: file.type,
+                            file_size: file.size,
+                            folder: category
+                        });
+
+                    if (dbError) throw dbError;
+
+                    successCount++;
+                    console.log('✅ 업로드 성공:', file.name);
+
+                } catch (error) {
+                    errorCount++;
+                    console.error('❌ 업로드 실패:', file.name, error);
+                }
+            }
+
+            // 완료 메시지
+            uploadBtn.disabled = false;
+            progressText.textContent = '업로드 완료!';
+            
+            if (errorCount === 0) {
+                showMessage(`✅ ${successCount}개 파일이 성공적으로 업로드되었습니다!`, 'success');
+            } else {
+                showMessage(`⚠️ ${successCount}개 성공, ${errorCount}개 실패`, 'warning');
+            }
+
+            // 파일 입력 초기화
+            fileInput.value = '';
+
+            // 목록 새로고침
+            setTimeout(() => {
+                loadMediaList();
+            }, 1000);
+        }
+
+        // 메시지 표시 함수
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.classList.remove('hidden');
+            
+            const bgColor = type === 'success' ? 'bg-green-100 text-green-800' :
+                           type === 'error' ? 'bg-red-100 text-red-800' :
+                           'bg-yellow-100 text-yellow-800';
+            
+            messageDiv.className = `mt-4 p-4 rounded-lg ${bgColor}`;
+            messageDiv.textContent = text;
+        }
+
+        // 미디어 목록 로드
+        async function loadMediaList() {
+            const mediaList = document.getElementById('mediaList');
+            mediaList.innerHTML = '<p class="text-gray-500 col-span-3 text-center py-8">로딩 중...</p>';
+
+            try {
+                const { data, error } = await supabase
+                    .from('media_library')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(50);
+
+                if (error) throw error;
+
+                if (data.length === 0) {
+                    mediaList.innerHTML = '<p class="text-gray-500 col-span-3 text-center py-8">업로드된 미디어가 없습니다.</p>';
+                    return;
+                }
+
+                mediaList.innerHTML = data.map(item => {
+                    const isImage = item.file_type?.startsWith('image/');
+                    const isVideo = item.file_type?.startsWith('video/');
+                    const sizeInMB = (item.file_size / 1024 / 1024).toFixed(2);
+
+                    return `
+                        <div class="border rounded-lg p-4 hover:shadow-lg transition">
+                            ${isImage ? `
+                                <img src="${item.file_url}" alt="${item.original_name}" 
+                                     class="w-full h-40 object-cover rounded mb-2">
+                            ` : isVideo ? `
+                                <video src="${item.file_url}" 
+                                       class="w-full h-40 object-cover rounded mb-2"
+                                       controls></video>
+                            ` : `
+                                <div class="w-full h-40 bg-gray-200 rounded mb-2 flex items-center justify-center">
+                                    <span class="text-4xl">📄</span>
+                                </div>
+                            `}
+                            <p class="font-semibold text-sm truncate">${item.original_name}</p>
+                            <p class="text-xs text-gray-500">${item.folder} · ${sizeInMB} MB</p>
+                            <div class="mt-2 flex gap-2">
+                                <button onclick="copyUrl('${item.file_url}')" 
+                                        class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200 flex-1">
+                                    URL 복사
+                                </button>
+                                <button onclick="deleteMedia('${item.id}', '${item.file_name}')" 
+                                        class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded hover:bg-red-200">
+                                    삭제
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                console.log('✅ 미디어 목록 로드 완료:', data.length);
+
+            } catch (error) {
+                console.error('❌ 미디어 목록 로드 실패:', error);
+                mediaList.innerHTML = '<p class="text-red-500 col-span-3 text-center py-8">로드 실패</p>';
+            }
+        }
+
+        // URL 복사
+        function copyUrl(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                alert('URL이 클립보드에 복사되었습니다!');
+            });
+        }
+
+        // 미디어 삭제
+        async function deleteMedia(id, fileName) {
+            if (!confirm('정말 삭제하시겠습니까?')) return;
+
+            try {
+                // Storage에서 파일 삭제
+                const { error: storageError } = await supabase.storage
+                    .from('media')
+                    .remove([fileName]);
+
+                if (storageError) throw storageError;
+
+                // DB에서 메타데이터 삭제
+                const { error: dbError } = await supabase
+                    .from('media_library')
+                    .delete()
+                    .eq('id', id);
+
+                if (dbError) throw dbError;
+
+                showMessage('✅ 삭제되었습니다.', 'success');
+                loadMediaList();
+
+            } catch (error) {
+                console.error('❌ 삭제 실패:', error);
+                showMessage('❌ 삭제 실패: ' + error.message, 'error');
+            }
+        }
+
+        // 페이지 로드 시 미디어 목록 로드
+        window.addEventListener('DOMContentLoaded', () => {
+            loadMediaList();
+        });
+    </script>
+</body>
+</html>
+
+
+
+
