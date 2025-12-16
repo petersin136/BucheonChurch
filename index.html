@@ -22,6 +22,143 @@
             overflow-x: hidden;
         }
         
+        /* 모바일 최적화 */
+        @media (max-width: 768px) {
+            .main-header {
+                padding: 8px 16px !important;
+            }
+            
+            .header-logo, .header-logo-right {
+                height: 24px !important;
+            }
+            
+            .church-name {
+                font-size: 14px !important;
+            }
+            
+            .denomination-top, .denomination-bottom {
+                font-size: 7px !important;
+            }
+            
+            nav {
+                display: none !important;
+            }
+            
+            /* 히어로 섹션 모바일 */
+            #heroSection {
+                height: calc(100vh - 50px) !important;
+                margin-top: 50px !important;
+            }
+            
+            .hero-text h1 {
+                font-size: clamp(28px, 7vw, 50px) !important;
+                line-height: 1.2 !important;
+            }
+            
+            .verse-text {
+                font-size: 12px !important;
+                line-height: 1.5 !important;
+            }
+            
+            /* 히어로 하단 영역 모바일 */
+            #heroSection .hero-text[style*="bottom: 0"] {
+                height: 35% !important;
+                padding: 10px !important;
+            }
+            
+            #heroSection .hero-text[style*="bottom: 0"] > div {
+                padding: 5px !important;
+            }
+            
+            #heroSection .hero-line {
+                height: 1px !important;
+            }
+            
+            /* 가로 스크롤 섹션 모바일 */
+            .horizontal-scroll-container {
+                height: auto !important;
+            }
+            
+            .horizontal-scroll-wrapper {
+                position: relative !important;
+                height: auto !important;
+            }
+            
+            .horizontal-track {
+                flex-direction: column !important;
+                width: 100% !important;
+                transform: none !important;
+            }
+            
+            .service-card {
+                width: 100% !important;
+                height: auto !important;
+                min-height: 70vh;
+                padding: 30px 20px !important;
+                flex-direction: column !important;
+            }
+            
+            .service-card > div {
+                width: 100% !important;
+                padding: 0 !important;
+            }
+            
+            .service-number {
+                font-size: 60px !important;
+                letter-spacing: 4px !important;
+            }
+            
+            .service-card h2 {
+                font-size: 1.75rem !important;
+                margin-top: 15px !important;
+                margin-bottom: 15px !important;
+            }
+            
+            .service-card p {
+                font-size: 15px !important;
+                line-height: 1.6 !important;
+            }
+            
+            .service-card img {
+                max-width: 100% !important;
+                margin-top: 20px !important;
+                max-width: 400px !important;
+            }
+            
+            /* 대형 문구 섹션 모바일 */
+            #introStatement {
+                font-size: 24px !important;
+                padding: 20px !important;
+            }
+            
+            /* 교회 소개 섹션 모바일 */
+            #about {
+                padding: 40px 20px !important;
+            }
+            
+            #about h2 {
+                font-size: 2rem !important;
+            }
+            
+            #about p {
+                font-size: 16px !important;
+            }
+            
+            /* 목사님 섹션 모바일 */
+            .grid {
+                grid-template-columns: 1fr !important;
+            }
+            
+            /* 유튜브 섹션 모바일 */
+            #sermon {
+                padding: 40px 20px !important;
+            }
+            
+            #sermon h2 {
+                font-size: 2rem !important;
+            }
+        }
+        
         /* 티커 애니메이션 */
         @keyframes ticker {
             0% { transform: translateX(0); }
@@ -83,6 +220,30 @@
             position: relative;
         }
         
+        @media (max-width: 768px) {
+            .horizontal-scroll-container {
+                height: auto !important;
+            }
+            
+            .horizontal-scroll-wrapper {
+                position: relative !important;
+                height: auto !important;
+            }
+            
+            .horizontal-track {
+                flex-direction: column !important;
+                width: 100% !important;
+                transform: none !important;
+            }
+            
+            .service-card {
+                width: 100% !important;
+                height: auto !important;
+                min-height: 80vh;
+                padding: 40px 20px !important;
+            }
+        }
+        
         .horizontal-scroll-wrapper {
             position: sticky;
             top: 0;
@@ -106,7 +267,7 @@
         }
         
         .service-number {
-            font-size: clamp(150px, 25vw, 350px);
+            font-size: clamp(80px, 25vw, 350px);
             font-weight: 400;
             line-height: 0.8;
             letter-spacing: -0.05em;
@@ -295,22 +456,22 @@
 
     <!-- 1. 메인 헤더 (로고 + 네비게이션) -->
     <header class="fixed top-0 left-0 w-full z-50 main-header">
-        <div class="max-w-7xl mx-auto px-8 py-1.5 flex justify-between items-center">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 py-1.5 flex justify-between items-center">
             <!-- 좌측: 첫 번째 로고 + 텍스트 -->
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 md:gap-3">
                 <img src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/logo.jpg" 
                      alt="살리는 빛 부천침례교회 로고" 
                      class="header-logo">
-                <div class="church-name">부천교회</div>
-                <div class="denomination">
+                <div class="church-name text-sm md:text-base">부천교회</div>
+                <div class="denomination hidden sm:block">
                     <div class="denomination-top">기독교한국</div>
                     <div class="denomination-bottom">침례회</div>
                 </div>
             </div>
             
             <!-- 우측: 네비게이션 + 두 번째 로고 -->
-            <div class="flex items-center gap-6">
-                <nav class="flex gap-6 text-white font-medium text-sm">
+            <div class="flex items-center gap-3 md:gap-6">
+                <nav class="hidden md:flex gap-4 lg:gap-6 text-white font-medium text-xs md:text-sm">
                     <a href="#about" class="hover:text-red-400 transition">소개</a>
                     <a href="#worship" class="hover:text-red-400 transition">예배</a>
                     <a href="#sermon" class="hover:text-red-400 transition">설교</a>
@@ -319,30 +480,30 @@
                 </nav>
                 <img src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/logo2.jpg" 
                      alt="로고2" 
-                     class="header-logo-right">
+                     class="header-logo-right hidden md:block">
             </div>
         </div>
     </header>
 
     <!-- 2. 상단 티커 (헤더 아래) -->
-    <div class="fixed left-0 w-full z-40 text-white py-2 overflow-hidden" style="top: calc(38px + 6px); background-color: #FF6B6B; border-radius: 0 0 12px 12px;">
+    <div class="fixed left-0 w-full z-40 text-white py-1.5 md:py-2 overflow-hidden" style="top: calc(38px + 6px); background-color: #FF6B6B; border-radius: 0 0 12px 12px;">
         <div class="relative w-full h-full" style="overflow: hidden;">
             <!-- 왼쪽 페이드 그라데이션 -->
-            <div class="absolute left-0 top-0 w-32 h-full z-20 pointer-events-none" style="background: linear-gradient(to right, #FF6B6B 0%, #FF6B6B 50%, transparent 100%);"></div>
+            <div class="absolute left-0 top-0 w-16 md:w-32 h-full z-20 pointer-events-none" style="background: linear-gradient(to right, #FF6B6B 0%, #FF6B6B 50%, transparent 100%);"></div>
             <!-- 오른쪽 페이드 그라데이션 -->
-            <div class="absolute right-0 top-0 w-32 h-full z-20 pointer-events-none" style="background: linear-gradient(to left, #FF6B6B 0%, #FF6B6B 50%, transparent 100%);"></div>
+            <div class="absolute right-0 top-0 w-16 md:w-32 h-full z-20 pointer-events-none" style="background: linear-gradient(to left, #FF6B6B 0%, #FF6B6B 50%, transparent 100%);"></div>
             <!-- 티커 콘텐츠 -->
             <div class="ticker-content" style="display: inline-flex; white-space: nowrap;">
-                <span class="px-8 text-sm font-semibold">살리는 빛 부천침례교회 ✦ 주일예배 오전 11시 ✦ 금요기도회 오후 9시 ✦</span>
-                <span class="px-8 text-sm font-semibold">살리는 빛 부천침례교회 ✦ 주일예배 오전 11시 ✦ 금요기도회 오후 9시 ✦</span>
-                <span class="px-8 text-sm font-semibold">살리는 빛 부천침례교회 ✦ 주일예배 오전 11시 ✦ 금요기도회 오후 9시 ✦</span>
-                <span class="px-8 text-sm font-semibold">살리는 빛 부천침례교회 ✦ 주일예배 오전 11시 ✦ 금요기도회 오후 9시 ✦</span>
+                <span class="px-4 md:px-8 text-xs md:text-sm font-semibold">살리는 빛 부천침례교회 ✦ 주일예배 오전 11시 ✦ 금요기도회 오후 9시 ✦</span>
+                <span class="px-4 md:px-8 text-xs md:text-sm font-semibold">살리는 빛 부천침례교회 ✦ 주일예배 오전 11시 ✦ 금요기도회 오후 9시 ✦</span>
+                <span class="px-4 md:px-8 text-xs md:text-sm font-semibold">살리는 빛 부천침례교회 ✦ 주일예배 오전 11시 ✦ 금요기도회 오후 9시 ✦</span>
+                <span class="px-4 md:px-8 text-xs md:text-sm font-semibold">살리는 빛 부천침례교회 ✦ 주일예배 오전 11시 ✦ 금요기도회 오후 9시 ✦</span>
             </div>
         </div>
     </div>
 
     <!-- 3. 히어로 섹션 - Figma 디자인 정확히 반영 (1920 x 1006) -->
-    <section id="heroSection" class="relative w-full" style="height: calc(100vh - 80px); max-height: calc(100vh - 80px); overflow: hidden; width: 100%; margin: 0; padding: 0; margin-top: 80px; background-color: #FFFFFF; position: relative;">
+    <section id="heroSection" class="relative w-full" style="height: calc(100vh - 60px); max-height: calc(100vh - 60px); overflow: hidden; width: 100%; margin: 0; padding: 0; margin-top: 60px; background-color: #FFFFFF; position: relative;">
         <!-- 배경 이미지 -->
         <img id="heroBackground" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/Image_fx%20(2).png" 
              alt="살리는 빛 부천침례교회 히어로 이미지" 
@@ -413,28 +574,28 @@ on them has light shone.
 
 
     <!-- 5. 교회 소개 섹션 (연한 그레이) -->
-    <section id="about" class="py-32 px-8" style="background-color: #F5F5F5;">
+    <section id="about" class="py-16 md:py-32 px-4 md:px-8" style="background-color: #F5F5F5;">
         <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="text-5xl md:text-6xl font-bold mb-4" style="color: #333333;">교회 소개</h2>
-                <div class="w-32 h-1 mx-auto rounded-full" style="background-color: #999999;"></div>
+            <div class="text-center mb-8 md:mb-16 fade-in">
+                <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-4" style="color: #333333;">교회 소개</h2>
+                <div class="w-24 md:w-32 h-1 mx-auto rounded-full" style="background-color: #999999;"></div>
             </div>
-            <div class="space-y-8 text-lg md:text-xl leading-relaxed text-gray-800 text-center">
+            <div class="space-y-6 md:space-y-8 text-base md:text-lg lg:text-xl leading-relaxed text-gray-800 text-center">
                 <p class="text-reveal font-medium" style="color: #333333;">
                     살리는빛부천침례교회는 하나님을 갈망하는 사람들이 모인 공동체입니다.
                 </p>
                 <p class="text-reveal leading-relaxed">
-                    우리는 영감 있는 예배를 통해 하나님을 만나고,<br>
-                    성도들과의 사랑의 교제 안에서 서로를 세워갑니다.<br>
-                    말씀을 깊이 묵상하며 훈련받아,<br>
+                    우리는 영감 있는 예배를 통해 하나님을 만나고,<br class="hidden md:block">
+                    성도들과의 사랑의 교제 안에서 서로를 세워갑니다.<br class="hidden md:block">
+                    말씀을 깊이 묵상하며 훈련받아,<br class="hidden md:block">
                     교회와 세상을 섬기는 그리스도의 제자로 자라갑니다.
                 </p>
                 <p class="text-reveal leading-relaxed">
-                    처음 오시는 분도, 오랜 신앙의 여정을 걸어온 분도,<br>
+                    처음 오시는 분도, 오랜 신앙의 여정을 걸어온 분도,<br class="hidden md:block">
                     이곳에서 함께 하나님을 갈망하며 성장하실 수 있습니다.
                 </p>
-                <div class="mt-12 text-reveal">
-                    <a href="#worship" class="inline-block bg-gray-800 text-white px-10 py-4 rounded-full font-semibold hover:bg-gray-700 hover:shadow-lg transition-all transform hover:scale-105 text-lg">
+                <div class="mt-8 md:mt-12 text-reveal">
+                    <a href="#worship" class="inline-block bg-gray-800 text-white px-6 md:px-10 py-3 md:py-4 rounded-full font-semibold hover:bg-gray-700 hover:shadow-lg transition-all transform hover:scale-105 text-base md:text-lg">
                         예배 안내 →
                     </a>
                 </div>
@@ -443,24 +604,24 @@ on them has light shone.
     </section>
 
     <!-- 6. 목사님 소개 섹션 -->
-    <section class="py-32 px-8 bg-gray-50">
+    <section class="py-16 md:py-32 px-4 md:px-8 bg-gray-50">
         <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-start">
                 <!-- 좌측: 목사님 이미지 + 경력 -->
                 <div class="lg:col-span-4 fade-in">
                     <!-- 제목 -->
-                    <h3 class="text-3xl font-bold mb-6 text-gray-900 text-center lg:text-left">담임목사 이영호</h3>
-                    <div class="w-20 h-1 bg-gradient-to-r from-blue-600 to-blue-400 mb-6 mx-auto lg:mx-0"></div>
+                    <h3 class="text-2xl md:text-3xl font-bold mb-4 md:mb-6 text-gray-900 text-center lg:text-left">담임목사 이영호</h3>
+                    <div class="w-16 md:w-20 h-1 bg-gradient-to-r from-blue-600 to-blue-400 mb-4 md:mb-6 mx-auto lg:mx-0"></div>
                     
                     <!-- 이미지 -->
-                    <div class="flex justify-center lg:justify-start mb-8">
+                    <div class="flex justify-center lg:justify-start mb-6 md:mb-8">
                         <img src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/pa.jpg" 
                              alt="담임목사 이영호" 
-                             class="w-full max-w-[220px] rounded-2xl shadow-xl object-cover">
+                             class="w-full max-w-[180px] md:max-w-[220px] rounded-2xl shadow-xl object-cover">
                     </div>
                     
                     <!-- 경력 -->
-                    <div class="space-y-3 text-base leading-relaxed text-gray-700">
+                    <div class="space-y-2 md:space-y-3 text-sm md:text-base leading-relaxed text-gray-700">
                         <div class="flex items-start">
                             <span class="text-blue-600 mr-2 font-semibold">•</span>
                             <span>충남대학교 법과대학 행정학과 졸업</span>
@@ -496,24 +657,24 @@ on them has light shone.
                 
                 <!-- 우측: 목사님 인사말 (크게, 여백 꽉 차게) -->
                 <div class="lg:col-span-8 fade-in">
-                    <div class="bg-white rounded-3xl p-10 lg:p-12 shadow-2xl h-full flex flex-col">
+                    <div class="bg-white rounded-2xl md:rounded-3xl p-6 md:p-10 lg:p-12 shadow-2xl h-full flex flex-col">
                         <!-- 헤더 -->
-                        <div class="flex items-center justify-center mb-10">
+                        <div class="flex items-center justify-center mb-6 md:mb-10">
                             <div class="flex-1 h-px bg-gray-300"></div>
-                            <p class="px-6 text-xs text-gray-500 tracking-[0.3em] uppercase font-medium">GREETING</p>
+                            <p class="px-4 md:px-6 text-xs text-gray-500 tracking-[0.3em] uppercase font-medium">GREETING</p>
                             <div class="flex-1 h-px bg-gray-300"></div>
                         </div>
                         
                         <!-- 인사말 내용 (한 줄씩 나타나는 효과) -->
-                        <div class="flex-1 flex flex-col justify-center space-y-5 text-center">
-                            <p class="line-reveal text-3xl lg:text-4xl font-light text-gray-900">
+                        <div class="flex-1 flex flex-col justify-center space-y-3 md:space-y-5 text-center">
+                            <p class="line-reveal text-2xl md:text-3xl lg:text-4xl font-light text-gray-900">
                                 환영합니다.
                             </p>
-                            <p class="line-reveal text-xl lg:text-2xl text-gray-700 leading-relaxed">
+                            <p class="line-reveal text-lg md:text-xl lg:text-2xl text-gray-700 leading-relaxed">
                                 살리는빛부천침례교회 담임목사 이영호입니다.
                             </p>
                             
-                            <div class="pt-5 space-y-4 text-lg lg:text-xl leading-relaxed text-gray-700">
+                            <div class="pt-3 md:pt-5 space-y-3 md:space-y-4 text-base md:text-lg lg:text-xl leading-relaxed text-gray-700">
                                 <p class="line-reveal">
                                     우리 교회는 하나님을 갈망하는 사람들의 공동체입니다.
                                 </p>
@@ -527,21 +688,21 @@ on them has light shone.
                                     말씀 묵상으로 훈련받아 세상을 섬깁니다.
                                 </p>
                                 
-                                <p class="line-reveal pt-3">
+                                <p class="line-reveal pt-2 md:pt-3">
                                     신앙의 여정에서 동행할 공동체를 찾고 계시다면,
                                 </p>
                                 <p class="line-reveal">
                                     우리 교회의 문은 언제나 열려 있습니다.
                                 </p>
                                 
-                                <p class="line-reveal pt-5 text-gray-600 italic text-base lg:text-lg">
+                                <p class="line-reveal pt-3 md:pt-5 text-gray-600 italic text-sm md:text-base lg:text-lg">
                                     함께 하나님을 갈망하며 성장해 가길 소망합니다.
                                 </p>
                             </div>
                             
                             <!-- 서명 -->
-                            <div class="pt-10 mt-10 border-t border-gray-200">
-                                <p class="text-xl lg:text-2xl font-semibold text-gray-900 line-reveal">담임목사 이영호</p>
+                            <div class="pt-6 md:pt-10 mt-6 md:mt-10 border-t border-gray-200">
+                                <p class="text-lg md:text-xl lg:text-2xl font-semibold text-gray-900 line-reveal">담임목사 이영호</p>
                             </div>
                         </div>
                     </div>
@@ -551,17 +712,17 @@ on them has light shone.
     </section>
 
     <!-- 6-1. 유튜브 재생목록 섹션 -->
-    <section id="sermon" class="py-20 px-8 bg-white">
+    <section id="sermon" class="py-12 md:py-20 px-4 md:px-8 bg-white">
         <div class="max-w-6xl mx-auto">
             <!-- 헤더 -->
-            <div class="flex justify-between items-end mb-12 fade-in">
-                <div>
-                    <p class="text-gray-500 text-sm mb-2">(주일설교)</p>
-                    <h2 class="text-4xl md:text-5xl font-light" style="color: #333333;">말씀을 듣다</h2>
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-12 fade-in">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-gray-500 text-xs md:text-sm mb-2">(주일설교)</p>
+                    <h2 class="text-2xl md:text-4xl lg:text-5xl font-light" style="color: #333333;">말씀을 듣다</h2>
                 </div>
                 <a href="https://www.youtube.com/@살리는빛부천침례교회" 
                    target="_blank"
-                   class="hidden md:flex items-center gap-2 text-gray-600 hover:text-black transition">
+                   class="flex items-center gap-2 text-gray-600 hover:text-black transition text-sm md:text-base">
                     <span>유튜브에서 더보기</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7V17"/>
@@ -611,18 +772,18 @@ on them has light shone.
     </section>
 
     <!-- 4. 대형 문구 섹션 - 비전 -->
-    <section class="bg-black" style="width: 1920px; max-width: 100%; height: 500px; padding: 0; margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 60px; padding-bottom: 60px;">
-        <div style="width: 1537px; max-width: 90%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px;">
+    <section class="bg-black" style="width: 100%; max-width: 100%; min-height: 300px; padding: 40px 20px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div style="width: 100%; max-width: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
             <h2 class="reveal-text" style="
                     font-family: 'Homenaje', sans-serif;
                     font-weight: 700;
-                    font-size: 56px;
-                    line-height: 1.2em;
+                    font-size: clamp(20px, 4.5vw, 56px);
+                    line-height: 1.3em;
                     letter-spacing: 0.05em;
                     text-align: center;
                     color: #FFFFFF;
                     margin: 0;
-                    padding: 0;
+                    padding: 0 10px;
                     text-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.3);
                 ">
                 우리가 가장 소중히 여기는 세 가지 가치가 있습니다.
@@ -633,13 +794,13 @@ on them has light shone.
                 style="
                     font-family: 'Homenaje', sans-serif;
                     font-weight: 400;
-                    font-size: 36px;
-                    line-height: 1.4em;
-                    letter-spacing: 0.12em;
+                    font-size: clamp(14px, 3vw, 36px);
+                    line-height: 1.5em;
+                    letter-spacing: 0.08em;
                     text-align: center;
                     color: #FFFFFF;
                     margin: 0;
-                    padding: 0;
+                    padding: 0 10px;
                     text-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.2);
                     white-space: pre-line;
                 ">
@@ -655,56 +816,56 @@ on them has light shone.
             <div class="horizontal-track" id="horizontalTrack">
                 
                 <!-- 카드 01 - 영감 있는 예배 -->
-                <div class="service-card flex items-center justify-between" style="background-color: #FF6B6B;">
-                    <div class="w-1/2 pr-12">
+                <div class="service-card flex flex-col md:flex-row items-center justify-between" style="background-color: #FF6B6B;">
+                    <div class="w-full md:w-1/2 md:pr-12 mb-6 md:mb-0">
                         <div class="service-number">01</div>
-                        <h2 class="text-6xl font-bold mt-8 mb-6">영감 있는 예배입니다</h2>
-                        <p class="text-xl leading-relaxed opacity-90">
-                            예배는 우리 신앙의 중심입니다. 형식에 머무르지 않고,<br>
-                            성령의 감동 가운데 살아계신 하나님을 만나는 예배를 드립니다.<br>
+                        <h2 class="text-3xl md:text-6xl font-bold mt-4 md:mt-8 mb-4 md:mb-6">영감 있는 예배입니다</h2>
+                        <p class="text-base md:text-xl leading-relaxed opacity-90">
+                            예배는 우리 신앙의 중심입니다. 형식에 머무르지 않고,<br class="hidden md:block">
+                            성령의 감동 가운데 살아계신 하나님을 만나는 예배를 드립니다.<br class="hidden md:block">
                             매 주일, 우리는 말씀과 찬양을 통해 영혼이 새롭게 되는 은혜를 경험합니다.
                         </p>
                     </div>
-                    <div class="w-1/2 flex justify-center items-center">
+                    <div class="w-full md:w-1/2 flex justify-center items-center mt-4 md:mt-0">
                         <img src="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=1000&q=80" 
                              alt="영감 있는 예배" 
-                             class="w-full max-w-[650px] aspect-square object-cover rounded-3xl shadow-2xl">
+                             class="w-full max-w-[400px] md:max-w-[650px] aspect-square object-cover rounded-3xl shadow-2xl">
                     </div>
                 </div>
 
                 <!-- 카드 02 - 사랑의 교제 -->
-                <div class="service-card flex items-center justify-between" style="background-color: #FFB800;">
-                    <div class="w-1/2 flex justify-center items-center">
+                <div class="service-card flex flex-col md:flex-row items-center justify-between" style="background-color: #FFB800;">
+                    <div class="w-full md:w-1/2 flex justify-center items-center mb-6 md:mb-0 order-2 md:order-1">
                         <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1000&q=80" 
                              alt="사랑의 교제" 
-                             class="w-full max-w-[650px] aspect-square object-cover rounded-3xl shadow-2xl">
+                             class="w-full max-w-[400px] md:max-w-[650px] aspect-square object-cover rounded-3xl shadow-2xl">
                     </div>
-                    <div class="w-1/2 pl-12">
+                    <div class="w-full md:w-1/2 md:pl-12 order-1 md:order-2">
                         <div class="service-number">02</div>
-                        <h2 class="text-6xl font-bold mt-8 mb-6">사랑의 교제입니다</h2>
-                        <p class="text-xl leading-relaxed opacity-90">
-                            교회는 서로 사랑하는 공동체입니다.<br>
-                            우리는 기쁨과 아픔을 함께 나누며, 서로를 격려하고 세워갑니다.<br>
+                        <h2 class="text-3xl md:text-6xl font-bold mt-4 md:mt-8 mb-4 md:mb-6">사랑의 교제입니다</h2>
+                        <p class="text-base md:text-xl leading-relaxed opacity-90">
+                            교회는 서로 사랑하는 공동체입니다.<br class="hidden md:block">
+                            우리는 기쁨과 아픔을 함께 나누며, 서로를 격려하고 세워갑니다.<br class="hidden md:block">
                             소그룹 모임과 다양한 교제를 통해 진정한 영적 가족을 경험할 수 있습니다.
                         </p>
                     </div>
                 </div>
 
                 <!-- 카드 03 - 성경공부 -->
-                <div class="service-card flex items-center justify-between" style="background-color: #87CEEB;">
-                    <div class="w-1/2 pr-12">
+                <div class="service-card flex flex-col md:flex-row items-center justify-between" style="background-color: #87CEEB;">
+                    <div class="w-full md:w-1/2 md:pr-12 mb-6 md:mb-0">
                         <div class="service-number">03</div>
-                        <h2 class="text-6xl font-bold mt-8 mb-6">성경공부입니다</h2>
-                        <p class="text-xl leading-relaxed opacity-90">
-                            하나님의 말씀은 우리 삶의 기초입니다.<br>
-                            깊이 있는 성경공부를 통해 말씀을 배우고,<br>
+                        <h2 class="text-3xl md:text-6xl font-bold mt-4 md:mt-8 mb-4 md:mb-6">성경공부입니다</h2>
+                        <p class="text-base md:text-xl leading-relaxed opacity-90">
+                            하나님의 말씀은 우리 삶의 기초입니다.<br class="hidden md:block">
+                            깊이 있는 성경공부를 통해 말씀을 배우고,<br class="hidden md:block">
                             그 말씀이 삶 속에서 열매 맺도록 훈련받습니다.
                         </p>
                     </div>
-                    <div class="w-1/2 flex justify-center items-center">
+                    <div class="w-full md:w-1/2 flex justify-center items-center mt-4 md:mt-0">
                         <img src="https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?w=1000&q=80" 
                              alt="성경공부" 
-                             class="w-full max-w-[650px] aspect-square object-cover rounded-3xl shadow-2xl">
+                             class="w-full max-w-[400px] md:max-w-[650px] aspect-square object-cover rounded-3xl shadow-2xl">
                     </div>
                 </div>
                 
@@ -1294,6 +1455,12 @@ on them has light shone.
 
         function updateHorizontalScroll() {
             if (!horizontalSection || !track) return;
+            
+            // 모바일에서는 가로 스크롤 비활성화
+            if (window.innerWidth <= 768) {
+                track.style.transform = 'none';
+                return;
+            }
             
             const rect = horizontalSection.getBoundingClientRect();
             const sectionTop = rect.top;
