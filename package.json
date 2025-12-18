@@ -1,0 +1,14 @@
+{
+  "name": "bucheon-church",
+  "version": "1.0.0",
+  "description": "Bucheon Baptist Church Website",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
+

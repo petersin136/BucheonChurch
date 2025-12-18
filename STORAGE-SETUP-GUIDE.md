@@ -125,12 +125,16 @@ USING (bucket_id = 'media');
 
 ---
 
-## 🚀 빠른 설정 (SQL Editor 사용)
+## 🚀 빠른 설정 (SQL Editor 사용) ⭐ 추천
 
-위의 4개 정책을 한 번에 생성하려면:
+**가장 빠른 방법**: `fix-storage-rls.sql` 파일을 사용하세요!
 
 1. **SQL Editor** 메뉴로 이동
-2. 아래 코드를 복사해서 붙여넣기:
+2. `fix-storage-rls.sql` 파일 내용 전체 복사
+3. **New query** → 붙여넣기 → **Run** 실행
+4. 성공 메시지 확인
+
+또는 아래 코드를 직접 사용:
 
 ```sql
 -- 기존 정책 삭제 (있다면)
@@ -159,6 +163,15 @@ CREATE POLICY "Anyone can delete media"
 ON storage.objects FOR DELETE
 TO public
 USING (bucket_id = 'media');
+
+-- media_library 테이블 정책도 수정
+DROP POLICY IF EXISTS "Admin write media" ON media_library;
+DROP POLICY IF EXISTS "Public read media" ON media_library;
+
+CREATE POLICY "Public read media" ON media_library FOR SELECT TO public USING (true);
+CREATE POLICY "Public write media" ON media_library FOR INSERT TO public WITH CHECK (true);
+CREATE POLICY "Public update media" ON media_library FOR UPDATE TO public USING (true);
+CREATE POLICY "Public delete media" ON media_library FOR DELETE TO public USING (true);
 ```
 
 3. **RUN** 버튼 클릭
@@ -218,6 +231,9 @@ WITH CHECK (bucket_id = 'media');
    4. DELETE (삭제)
 
 이제 미디어 업로드 시스템을 사용할 수 있습니다! 🎉
+
+
+
 
 
 
