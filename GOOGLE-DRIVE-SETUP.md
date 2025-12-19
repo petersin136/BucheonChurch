@@ -145,3 +145,5 @@ const GOOGLE_CLIENT_ID = '여기에_클라이언트_ID_붙여넣기';
 - [Google Picker API 문서](https://developers.google.com/picker)
 - [Google Drive API 문서](https://developers.google.com/drive)
 - [OAuth 2.0 설정 가이드](https://developers.google.com/identity/protocols/oauth2)
+
+

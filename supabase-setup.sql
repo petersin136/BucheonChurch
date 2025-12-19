@@ -88,7 +88,7 @@ CREATE TABLE large_statements (
 -- 초기 데이터
 INSERT INTO large_statements (section_key, content, display_order) VALUES
 ('intro', '우리는 복음 안에서 하나 되어 서로를 세워가며, 지역 사회에 그리스도의 사랑을 전하는 교회입니다.', 1),
-('quote', '"믿음은 바라는 것들의 실상이요, 보이지 않는 것들의 증거니" — 히브리서 11:1', 2),
+('quote', '너희는 세상의 빛이라<br>산 위에 있는 동네가 숨겨지지 못할 것이요', 2),
 ('sky_text', '우리는 복음의 진리 안에서 하나님의 사랑을 실천합니다', 3);
 
 -- ================================================================
@@ -422,6 +422,7 @@ CREATE INDEX idx_sermons_date ON sermon_videos(sermon_date DESC);
 -- 2. Authentication 설정 (Email/Password 활성화)
 -- 3. API Keys 확인
 -- ================================================================
+
 
 
 

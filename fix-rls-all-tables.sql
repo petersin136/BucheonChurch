@@ -62,3 +62,6 @@ CREATE POLICY "Public read access" ON stats_items FOR SELECT USING (is_active = 
 -- 이제 메인 페이지에서 모든 데이터를 읽을 수 있습니다.
 -- ================================================================
 
+
+
+
