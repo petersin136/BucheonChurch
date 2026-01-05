@@ -1493,7 +1493,6 @@
                         <div id="church-menu" class="nav-dropdown-menu" style="display: none; position: absolute; top: 100%; left: 0; margin-top: 8px; background: rgba(45, 45, 45, 0.95); backdrop-filter: blur(10px); border-radius: 8px; padding: 8px 0; min-width: 160px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 1000;">
                             <a href="#about" class="dropdown-item">교회 소개</a>
                             <a href="#pastor" class="dropdown-item">담임목사</a>
-                            <a href="#vision" class="dropdown-item">교회 비전</a>
                         </div>
                     </div>
                     
@@ -1577,7 +1576,6 @@
             <div id="mobile-church-menu" class="mobile-nav-dropdown" style="display: none;">
                 <a href="#about" onclick="closeMobileMenu()">교회 소개</a>
                 <a href="#pastor" onclick="closeMobileMenu()">담임목사</a>
-                <a href="#vision" onclick="closeMobileMenu()">교회 비전</a>
             </div>
             
             <div class="mobile-nav-item" onclick="toggleMobileSubmenu('mobile-worship-menu')">
@@ -1614,11 +1612,26 @@
     </div>
 
     <!-- 3. 히어로 섹션 - Figma 디자인 정확히 반영 (1920 x 1006) -->
-    <section id="heroSection" class="relative w-full" style="height: calc(100vh - 40px); max-height: calc(100vh - 40px); overflow: hidden; width: 100%; margin: 0; padding: 0; margin-top: 40px; background-color: #FFFFFF; position: relative;">
-        <!-- 배경 이미지 -->
-        <img id="heroBackground" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/Image_fx%20(2).png" 
-             alt="살리는 빛 부천침례교회 히어로 이미지" 
-             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; z-index: 0;">
+    <section id="heroSection" class="relative w-full" style="height: calc(100vh - 40px); max-height: calc(100vh - 40px); overflow: hidden; width: 100%; margin: 0; padding: 0; margin-top: 40px; background-color: #000000; position: relative;">
+        <!-- 배경 이미지 슬라이드쇼 -->
+        <div id="heroSlideshow" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;">
+            <img class="hero-slide active" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/001.jpg" alt="부천교회 슬라이드 1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 1; transition: opacity 1s ease-in-out;">
+            <img class="hero-slide" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/002.jpg" alt="부천교회 슬라이드 2" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 0; transition: opacity 1s ease-in-out;">
+            <img class="hero-slide" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/004.jpg" alt="부천교회 슬라이드 3" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 0; transition: opacity 1s ease-in-out;">
+            <img class="hero-slide" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/003.jpg" alt="부천교회 슬라이드 4" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 0; transition: opacity 1s ease-in-out;">
+            <img class="hero-slide" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/005.jpg" alt="부천교회 슬라이드 5" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 0; transition: opacity 1s ease-in-out;">
+            <img class="hero-slide" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/006.jpg" alt="부천교회 슬라이드 6" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 0; transition: opacity 1s ease-in-out;">
+            <img class="hero-slide" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/007.jpg" alt="부천교회 슬라이드 7" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 0; transition: opacity 1s ease-in-out;">
+            <img class="hero-slide" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/008.jpg" alt="부천교회 슬라이드 8" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 0; transition: opacity 1s ease-in-out;">
+            <img class="hero-slide" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/009%20(1).jpg" alt="부천교회 슬라이드 9" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 0; transition: opacity 1s ease-in-out;">
+            <img class="hero-slide" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/010.jpg" alt="부천교회 슬라이드 10" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 0; transition: opacity 1s ease-in-out;">
+            <img class="hero-slide" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/011.jpg" alt="부천교회 슬라이드 11" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 0; transition: opacity 1s ease-in-out;">
+            <img class="hero-slide" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/012.jpg" alt="부천교회 슬라이드 12" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 0; transition: opacity 1s ease-in-out;">
+            <img class="hero-slide" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/013.jpg" alt="부천교회 슬라이드 13" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 0; transition: opacity 1s ease-in-out;">
+        </div>
+        
+        <!-- 검정 오버레이 레이어 -->
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); z-index: 1; pointer-events: none;"></div>
         
         <!-- 1. "The Light of Life" - 반응형 위치 -->
         <div 
@@ -1970,7 +1983,7 @@ and glorify your Father in heaven.
     <!-- 6. 목사님 소개 섹션 (Canva 디자인 99% 정밀 구현 - position absolute) -->
     <section id="pastor" class="pastor-section-canva" style="background-color: #E8E4DE; position: relative; width: 100%; min-height: 100vh; overflow: hidden;">
         <!-- 배경 이미지 레이어 -->
-        <div style="position: absolute; inset: 0; pointer-events: none; background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.35; z-index: 0;"></div>
+        <div style="position: absolute; inset: 0; pointer-events: none; background-image: url('https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/004.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.35; z-index: 0;"></div>
         
         <!-- 배경 오버레이 (텍스트 가독성 향상) -->
         <div style="position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, rgba(232, 228, 222, 0.55) 0%, rgba(232, 228, 222, 0.45) 100%); z-index: 1;"></div>
@@ -2073,8 +2086,8 @@ and glorify your Father in heaven.
                 margin: 0;
                 padding: 0 15px;
                 white-space: pre-line;
-            ">하나님의 말씀을 중심으로 한 <strong style="font-weight: 400;">성경적 가치</strong>, 서로를 아끼고 돌보는 <strong style="font-weight: 400;">사랑의 공동체</strong>,<br>
-지역사회에 그리스도의 사랑을 전하는 <strong style="font-weight: 400;">섬김과 전도의 사명</strong>을 우리의 핵심 가치로 삼습니다.</p>
+            ">하나님의 말씀을 중심으로 한 <strong style="font-weight: 700; font-size: 1.3em; color: #FFB800;">성경적 가치</strong>, 서로를 아끼고 돌보는 <strong style="font-weight: 700; font-size: 1.3em; color: #FF6B6B;">사랑의 공동체</strong>,<br>
+지역사회에 그리스도의 사랑을 전하는 <strong style="font-weight: 700; font-size: 1.3em; color: #87CEEB;">섬김과 전도의 사명</strong>을 우리의 핵심 가치로 삼습니다.</p>
             
         </div>
     </section>
@@ -2084,56 +2097,56 @@ and glorify your Father in heaven.
         <div class="horizontal-scroll-wrapper">
             <div class="horizontal-track" id="horizontalTrack">
                 
-                <!-- 카드 01 - 영감 있는 예배 -->
-                <div class="service-card flex flex-col md:flex-row items-center justify-between" style="background-color: #FF6B6B;">
+                <!-- 카드 01 - 성경적 가치 -->
+                <div class="service-card flex flex-col md:flex-row items-center justify-between" style="background-color: #FFB800;">
                     <div class="w-full md:w-1/2 md:pr-12 mb-6 md:mb-0">
                         <div class="service-number">01</div>
-                        <h2 class="text-3xl md:text-6xl font-bold mt-4 md:mt-8 mb-4 md:mb-6">영감 있는 예배</h2>
+                        <h2 class="text-3xl md:text-6xl font-bold mt-4 md:mt-8 mb-4 md:mb-6">성경적 가치</h2>
                         <p class="text-base md:text-xl leading-relaxed opacity-90">
-                            예배는 우리 신앙의 중심입니다. 형식에 머무르지 않고,<br class="hidden md:block">
-                            성령의 감동 가운데 살아계신 하나님을 만나는 예배를 드립니다.<br class="hidden md:block">
-                            매 주일, 우리는 말씀과 찬양을 통해 영혼이 새롭게 되는 은혜를 경험합니다.
+                            하나님의 말씀은 우리 삶의 유일한 기준입니다.<br class="hidden md:block">
+                            성경의 진리 위에 서서 세상의 가치가 아닌,<br class="hidden md:block">
+                            하나님 나라의 가치를 따라 살아가는 공동체입니다.
                         </p>
                     </div>
                     <div class="w-full md:w-1/2 flex justify-center items-center mt-4 md:mt-0">
-                        <img src="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=1000&q=80" 
-                             alt="영감 있는 예배" 
+                        <img src="https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=1000&q=80" 
+                             alt="성경적 가치" 
                              class="w-full max-w-[400px] md:max-w-[650px] aspect-square object-cover rounded-3xl shadow-2xl">
                     </div>
                 </div>
 
-                <!-- 카드 02 - 사랑의 교제 -->
-                <div class="service-card flex flex-col md:flex-row items-center justify-between" style="background-color: #FFB800;">
+                <!-- 카드 02 - 사랑의 공동체 -->
+                <div class="service-card flex flex-col md:flex-row items-center justify-between" style="background-color: #FF6B6B;">
                     <div class="w-full md:w-1/2 flex justify-center items-center mb-6 md:mb-0 order-2 md:order-1">
-                        <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1000&q=80" 
-                             alt="사랑의 교제" 
+                        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1000&q=80" 
+                             alt="사랑의 공동체" 
                              class="w-full max-w-[400px] md:max-w-[650px] aspect-square object-cover rounded-3xl shadow-2xl">
                     </div>
                     <div class="w-full md:w-1/2 md:pl-12 order-1 md:order-2">
                         <div class="service-number" style="margin-bottom: 30px;">02</div>
-                        <h2 class="text-3xl md:text-6xl font-bold mb-4 md:mb-6" style="margin-top: 0;">사랑의 교제</h2>
+                        <h2 class="text-3xl md:text-6xl font-bold mb-4 md:mb-6" style="margin-top: 0;">사랑의 공동체</h2>
                         <p class="text-base md:text-xl leading-relaxed opacity-90">
-                            교회는 서로 사랑하는 공동체입니다.<br class="hidden md:block">
-                            우리는 기쁨과 아픔을 함께 나누며, 서로를 격려하고 세워갑니다.<br class="hidden md:block">
-                            소그룹 모임과 다양한 교제를 통해 진정한 영적 가족을 경험할 수 있습니다.
+                            서로를 아끼고 돌보는 따뜻한 공동체입니다.<br class="hidden md:block">
+                            기쁨과 아픔을 함께 나누며, 서로를 격려하고 세워갑니다.<br class="hidden md:block">
+                            진정한 영적 가족 안에서 그리스도의 사랑을 경험합니다.
                         </p>
                     </div>
                 </div>
 
-                <!-- 카드 03 - 성경공부 -->
+                <!-- 카드 03 - 섬김과 전도의 사명 -->
                 <div class="service-card flex flex-col md:flex-row items-center justify-between" style="background-color: #87CEEB;">
                     <div class="w-full md:w-1/2 md:pr-12 mb-6 md:mb-0">
                         <div class="service-number" style="margin-bottom: 30px;">03</div>
-                        <h2 class="text-3xl md:text-6xl font-bold mb-4 md:mb-6" style="margin-top: 0;">성경공부</h2>
+                        <h2 class="text-3xl md:text-6xl font-bold mb-4 md:mb-6" style="margin-top: 0;">섬김과 전도</h2>
                         <p class="text-base md:text-xl leading-relaxed opacity-90">
-                            하나님의 말씀은 우리 삶의 기초입니다.<br class="hidden md:block">
-                            깊이 있는 성경공부를 통해 말씀을 배우고,<br class="hidden md:block">
-                            그 말씀이 삶 속에서 열매 맺도록 훈련받습니다.
+                            지역사회에 그리스도의 사랑을 전합니다.<br class="hidden md:block">
+                            이웃을 섬기고 복음을 나누는 사명을 감당하며,<br class="hidden md:block">
+                            세상을 향한 빛과 소금의 역할을 다합니다.
                         </p>
                     </div>
                     <div class="w-full md:w-1/2 flex justify-center items-center mt-4 md:mt-0">
-                        <img src="https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?w=1000&q=80" 
-                             alt="성경공부" 
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1000&q=80" 
+                             alt="섬김과 전도" 
                              class="w-full max-w-[400px] md:max-w-[650px] aspect-square object-cover rounded-3xl shadow-2xl">
                     </div>
                 </div>
@@ -4576,6 +4589,37 @@ and glorify your Father in heaven.
                 }
             }
         });
+        
+        // ========================================
+        // 히어로 슬라이드쇼 (3초 간격)
+        // ========================================
+        function initHeroSlideshow() {
+            const slides = document.querySelectorAll('.hero-slide');
+            if (slides.length === 0) return;
+            
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+            
+            setInterval(() => {
+                // 현재 슬라이드 페이드 아웃
+                slides[currentSlide].style.opacity = '0';
+                
+                // 다음 슬라이드로 이동
+                currentSlide = (currentSlide + 1) % totalSlides;
+                
+                // 다음 슬라이드 페이드 인
+                slides[currentSlide].style.opacity = '1';
+            }, 3000); // 3초 간격
+            
+            console.log('🖼️ 히어로 슬라이드쇼 시작 - ' + totalSlides + '개 이미지');
+        }
+        
+        // DOM 로드 후 슬라이드쇼 시작
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initHeroSlideshow);
+        } else {
+            initHeroSlideshow();
+        }
         
         // ========================================
         // 페이지 로드 시 모든 데이터 불러오기
