@@ -51,22 +51,29 @@
                 display: none !important;
             }
             
-            /* 히어로 섹션 모바일 - 16:9 비율 */
+            /* 히어로 섹션 모바일 - 데스크톱 비율 유지 */
             #heroSection {
-                height: auto !important;
-                aspect-ratio: 16 / 9 !important;
+                height: 60vh !important;
+                min-height: 300px !important;
+                max-height: 500px !important;
+                aspect-ratio: auto !important;
                 margin-top: 50px !important;
-                max-height: none !important;
             }
             
-            #heroSection img {
+            #heroSection img,
+            #heroSection .hero-slide {
                 object-fit: cover !important;
                 object-position: center !important;
             }
             
-            /* 히어로 텍스트 숨기기 (모바일) */
+            /* 히어로 텍스트 모바일 최적화 */
             #heroSection .hero-text {
-                display: none !important;
+                display: block !important;
+            }
+            
+            #heroSection .hero-text h1 {
+                font-size: 28px !important;
+                text-shadow: 1px 1px 4px rgba(0,0,0,0.7) !important;
             }
             
             /* 히어로 하단 영역 숨기기 (모바일) */
@@ -253,68 +260,114 @@
                 padding-right: 20px !important;
             }
             
-            /* 갤러리 섹션 모바일 */
+            /* 갤러리 섹션 모바일 - 데스크톱과 유사하게 최적화 */
             #gallery {
-                padding: 20px 15px !important;
+                padding: 15px 10px !important;
                 min-height: auto !important;
             }
             
             #gallery h2 {
-                font-size: 24px !important;
-                margin-bottom: 6px !important;
+                font-size: 20px !important;
+                margin-bottom: 4px !important;
             }
             
             #gallery .text-gray-700 {
-                font-size: 12px !important;
-                margin-bottom: 12px !important;
+                font-size: 11px !important;
+                margin-bottom: 8px !important;
             }
             
             .gallery-category-btn {
-                font-size: 12px !important;
-                padding: 6px 10px !important;
-                margin: 3px !important;
+                font-size: 10px !important;
+                padding: 4px 8px !important;
+                margin: 2px !important;
             }
             
             .gallery-container {
                 min-height: auto !important;
+                position: relative !important;
             }
             
             .polaroid-grid {
                 grid-template-columns: repeat(2, 1fr) !important;
-                gap: 10px !important;
-                padding: 15px 5px !important;
+                gap: 8px !important;
+                padding: 8px 0 !important;
                 min-height: auto !important;
             }
             
             .polaroid {
-                transform: scale(1) !important;
-                padding: 10px 10px 16px 10px !important;
+                transform: rotate(0deg) scale(1) !important;
+                padding: 6px 6px 12px 6px !important;
+                margin: 0 !important;
+            }
+            
+            .polaroid img {
+                width: 100% !important;
+                height: auto !important;
+                aspect-ratio: 4/3 !important;
+                object-fit: cover !important;
             }
             
             .polaroid-caption {
-                font-size: 14px !important;
-                margin-top: 6px !important;
+                font-size: 10px !important;
+                margin-top: 4px !important;
+                line-height: 1.2 !important;
             }
             
             .polaroid-filename {
-                font-size: 16px !important;
-                margin-top: 4px !important;
+                font-size: 12px !important;
+                margin-top: 2px !important;
             }
             
             .gallery-nav-btn {
-                width: 36px !important;
-                height: 36px !important;
-                left: 10px !important;
-                right: 10px !important;
+                display: none !important;
+            }
+            
+            #gallery-prev, #gallery-next {
+                display: none !important;
             }
             
             .gallery-pagination {
-                margin-top: 12px !important;
+                margin-top: 10px !important;
             }
             
             .gallery-pagination button {
-                font-size: 14px !important;
-                padding: 6px 12px !important;
+                font-size: 12px !important;
+                padding: 4px 10px !important;
+            }
+            
+            /* 라이트박스 모바일 전체화면 최적화 */
+            #lightbox {
+                padding: 0 !important;
+            }
+            
+            #lightbox-image {
+                max-width: 100vw !important;
+                max-height: 100vh !important;
+                width: 100vw !important;
+                height: auto !important;
+                object-fit: contain !important;
+                border-radius: 0 !important;
+            }
+            
+            #lightbox-close {
+                top: 10px !important;
+                right: 10px !important;
+                font-size: 32px !important;
+                z-index: 10002 !important;
+            }
+            
+            .lightbox-nav-btn {
+                width: 44px !important;
+                height: 44px !important;
+                font-size: 20px !important;
+            }
+            
+            #lightbox-prev {
+                left: 5px !important;
+            }
+            
+            #lightbox-next {
+                right: 5px !important;
             }
             
             /* 공지사항/기도제목 모바일 */
@@ -834,8 +887,10 @@
         }
         
         @media (max-width: 768px) {
+            /* 횡스크롤 - 데스크톱과 동일하게 세로 스크롤 → 가로 이동 */
             .horizontal-scroll-container {
-                height: 150vh !important;
+                height: 250vh !important;
+                position: relative !important;
             }
             
             .horizontal-scroll-wrapper {
@@ -843,7 +898,6 @@
                 top: 0 !important;
                 height: 100vh !important;
                 overflow: hidden !important;
-                -webkit-overflow-scrolling: touch !important;
             }
             
             .horizontal-track {
@@ -851,19 +905,27 @@
                 flex-direction: row !important;
                 width: 300vw !important;
                 height: 100% !important;
-                transform: translate3d(0, 0, 0) !important;
-                will-change: transform !important;
             }
             
             .service-card {
                 width: 100vw !important;
                 height: 100vh !important;
                 min-height: 100vh !important;
-                padding: 30px 20px !important;
+                padding: 20px 16px !important;
                 flex-shrink: 0 !important;
                 flex-direction: column !important;
                 justify-content: center !important;
                 align-items: center !important;
+                margin: 0 !important;
+                box-sizing: border-box !important;
+            }
+            
+            .service-card:first-child {
+                margin-left: 0 !important;
+            }
+            
+            .service-card:last-child {
+                margin-right: 0 !important;
             }
             
             .service-card > div {
@@ -874,32 +936,128 @@
             }
             
             .service-card .service-number {
-                font-size: 48px !important;
+                font-size: 42px !important;
                 letter-spacing: 2px !important;
-                margin-bottom: 12px !important;
+                margin-bottom: 8px !important;
             }
             
             .service-card h2 {
-                font-size: 28px !important;
-                margin: 12px 0 !important;
+                font-size: 24px !important;
+                margin: 8px 0 !important;
                 line-height: 1.2 !important;
             }
             
             .service-card p {
-                font-size: 14px !important;
-                line-height: 1.4 !important;
-                margin-bottom: 16px !important;
+                font-size: 13px !important;
+                line-height: 1.5 !important;
+                margin-bottom: 12px !important;
             }
             
             .service-card img {
                 width: 100% !important;
-                max-width: 240px !important;
+                max-width: 200px !important;
                 height: auto !important;
-                margin-top: 12px !important;
+                margin-top: 8px !important;
+                border-radius: 16px !important;
             }
             
             .service-card br.hidden {
                 display: none !important;
+            }
+            
+            /* 간증 섹션 모바일 - 데스크톱과 동일하게 스크롤 기반 카드 전환 */
+            .stacking-cards-container {
+                height: 400vh !important;
+                position: relative !important;
+            }
+            
+            .stacking-cards-wrapper {
+                position: sticky !important;
+                top: 0 !important;
+                height: 100vh !important;
+                overflow: hidden !important;
+            }
+            
+            /* 타이틀 영역 - 상단에 배치, 이미지 숨김 (모바일에서는 타이틀만) */
+            .testimonial-title-box {
+                position: absolute !important;
+                left: 50% !important;
+                top: 5% !important;
+                transform: translateX(-50%) !important;
+                width: 90% !important;
+                max-width: 320px !important;
+                padding: 0 !important;
+                text-align: center !important;
+                z-index: 5 !important;
+            }
+            
+            .testimonial-title-box img {
+                display: none !important;
+            }
+            
+            .testimonial-title-box p {
+                font-size: 10px !important;
+                margin-bottom: 4px !important;
+            }
+            
+            .testimonial-title-box h2 {
+                font-size: 24px !important;
+                line-height: 1.2 !important;
+            }
+            
+            .testimonial-title-box h2 span {
+                font-size: 24px !important;
+            }
+            
+            .testimonial-title-box .w-20 {
+                width: 40px !important;
+                margin: 8px auto 0 auto !important;
+            }
+            
+            /* 간증 카드들 - 중앙에 배치 */
+            .stack-card {
+                position: absolute !important;
+                left: 50% !important;
+                top: 28% !important;
+                transform: translateX(-50%) !important;
+                width: 88% !important;
+                max-width: 340px !important;
+                height: auto !important;
+                min-height: 380px !important;
+                padding: 20px !important;
+                border-radius: 20px !important;
+            }
+            
+            .stack-card .flex {
+                margin-bottom: 16px !important;
+            }
+            
+            .stack-card .text-6xl {
+                font-size: 40px !important;
+            }
+            
+            .stack-card img {
+                width: 100px !important;
+                height: 100px !important;
+                border-radius: 14px !important;
+            }
+            
+            .stack-card blockquote {
+                font-size: 14px !important;
+                line-height: 1.5 !important;
+                margin-bottom: 16px !important;
+            }
+            
+            .stack-card .text-xl {
+                font-size: 16px !important;
+            }
+            
+            .stack-card .text-sm {
+                font-size: 12px !important;
+            }
+            
+            .stack-card .text-sm {
+                font-size: 12px !important;
             }
         }
         
@@ -1283,6 +1441,12 @@
         @media (max-width: 1024px) {
             .stack-card {
                 left: 50%;
+            }
+        }
+        
+        @media (min-width: 768px) and (max-width: 1400px) {
+            .stack-card {
+                left: 70% !important;
             }
         }
         
@@ -3023,10 +3187,48 @@ and glorify your Father in heaven.
         }
         
         @media (max-width: 768px) {
+            #lightbox {
+                padding: 0 !important;
+                background: rgba(0, 0, 0, 0.95) !important;
+            }
+            
+            #lightbox-image {
+                max-width: 100vw !important;
+                max-height: 85vh !important;
+                width: auto !important;
+                height: auto !important;
+                object-fit: contain !important;
+                border-radius: 0 !important;
+            }
+            
+            #lightbox-close {
+                position: fixed !important;
+                top: 10px !important;
+                right: 10px !important;
+                font-size: 36px !important;
+                z-index: 10002 !important;
+                background: rgba(0,0,0,0.5) !important;
+                border-radius: 50% !important;
+                width: 44px !important;
+                height: 44px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
             .lightbox-nav-btn {
-                width: 50px !important;
-                height: 50px !important;
-                font-size: 20px !important;
+                width: 44px !important;
+                height: 44px !important;
+                font-size: 18px !important;
+                background: rgba(255,255,255,0.2) !important;
+            }
+            
+            #lightbox-prev {
+                left: 8px !important;
+            }
+            
+            #lightbox-next {
+                right: 8px !important;
             }
         }
         
@@ -4713,15 +4915,7 @@ and glorify your Father in heaven.
         function updateHorizontalScroll() {
             if (!horizontalSection || !track) return;
             
-            // 모바일에서는 터치 스와이프로 제어
-            if (isMobile) {
-                const translateX = -currentCardIndex * 100;
-                track.style.transform = `translate3d(${translateX}vw, 0, 0)`;
-                track.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-                return;
-            }
-            
-            // 데스크탑에서는 스크롤 기반
+            // 모바일/데스크탑 모두 스크롤 기반으로 작동
             const rect = horizontalSection.getBoundingClientRect();
             const sectionTop = rect.top;
             const sectionHeight = horizontalSection.offsetHeight;
@@ -4738,7 +4932,7 @@ and glorify your Father in heaven.
             const cardProgress = easedProgress * (totalCards - 1);
             const translateX = -cardProgress * 100;
             
-            // GPU 가속을 위한 translate3d 사용 (모바일에서도 작동)
+            // GPU 가속을 위한 translate3d 사용
             track.style.transform = `translate3d(${translateX}vw, 0, 0)`;
         }
         
@@ -4801,56 +4995,79 @@ and glorify your Father in heaven.
             const stackCard4 = document.getElementById('stackCard4');
             const stackCard5 = document.getElementById('stackCard5');
             
-            // iPad에서 간격을 더 넓히기 위한 배수 (768px ~ 1024px)
-            const isTablet = window.innerWidth >= 768 && window.innerWidth <= 1024;
-            const spacingMultiplier = isTablet ? 2.5 : 1;
+            // iPad/태블릿에서 카드를 오른쪽으로 이동하여 간격 확보 (768px ~ 1400px)
+            const isTablet = window.innerWidth >= 768 && window.innerWidth <= 1400;
+            const isMobileView = window.innerWidth <= 768;
+            
+            // 모바일/데스크탑에 따른 기본 transform
+            const baseTransform = isMobileView ? 'translateX(-50%)' : 'translate(-50%, -50%)';
             
             if (stackCard1) {
-                stackCard1.style.transform = 'translate(-50%, -50%)';
+                stackCard1.style.transform = baseTransform;
                 stackCard1.style.opacity = '1';
                 stackCard1.style.zIndex = '5';
-                if (window.innerWidth > 1024) {
+                if (isMobileView) {
+                    stackCard1.style.left = '50%';
+                } else if (window.innerWidth > 1400) {
                     stackCard1.style.left = 'calc(50% + 5cm)';
+                } else if (isTablet) {
+                    stackCard1.style.left = '70%';
                 } else {
                     stackCard1.style.left = '50%';
                 }
             }
             if (stackCard2) {
-                stackCard2.style.transform = `translate(-50%, -50%) translateY(${20 * spacingMultiplier}px) rotate(2deg) scale(0.95)`;
+                stackCard2.style.transform = `${baseTransform} translateY(20px) rotate(2deg) scale(0.95)`;
                 stackCard2.style.opacity = '0.7';
                 stackCard2.style.zIndex = '4';
-                if (window.innerWidth > 1024) {
+                if (isMobileView) {
+                    stackCard2.style.left = '50%';
+                } else if (window.innerWidth > 1400) {
                     stackCard2.style.left = 'calc(50% + 5cm)';
+                } else if (isTablet) {
+                    stackCard2.style.left = '70%';
                 } else {
                     stackCard2.style.left = '50%';
                 }
             }
             if (stackCard3) {
-                stackCard3.style.transform = `translate(-50%, -50%) translateY(${40 * spacingMultiplier}px) rotate(-2deg) scale(0.9)`;
+                stackCard3.style.transform = `${baseTransform} translateY(40px) rotate(-2deg) scale(0.9)`;
                 stackCard3.style.opacity = '0.5';
                 stackCard3.style.zIndex = '3';
-                if (window.innerWidth > 1024) {
+                if (isMobileView) {
+                    stackCard3.style.left = '50%';
+                } else if (window.innerWidth > 1400) {
                     stackCard3.style.left = 'calc(50% + 5cm)';
+                } else if (isTablet) {
+                    stackCard3.style.left = '70%';
                 } else {
                     stackCard3.style.left = '50%';
                 }
             }
             if (stackCard4) {
-                stackCard4.style.transform = `translate(-50%, -50%) translateY(${60 * spacingMultiplier}px) rotate(2deg) scale(0.85)`;
+                stackCard4.style.transform = `${baseTransform} translateY(60px) rotate(2deg) scale(0.85)`;
                 stackCard4.style.opacity = '0.4';
                 stackCard4.style.zIndex = '2';
-                if (window.innerWidth > 1024) {
+                if (isMobileView) {
+                    stackCard4.style.left = '50%';
+                } else if (window.innerWidth > 1400) {
                     stackCard4.style.left = 'calc(50% + 5cm)';
+                } else if (isTablet) {
+                    stackCard4.style.left = '70%';
                 } else {
                     stackCard4.style.left = '50%';
                 }
             }
             if (stackCard5) {
-                stackCard5.style.transform = `translate(-50%, -50%) translateY(${80 * spacingMultiplier}px) rotate(-2deg) scale(0.8)`;
+                stackCard5.style.transform = `${baseTransform} translateY(80px) rotate(-2deg) scale(0.8)`;
                 stackCard5.style.opacity = '0.3';
                 stackCard5.style.zIndex = '1';
-                if (window.innerWidth > 1024) {
+                if (isMobileView) {
+                    stackCard5.style.left = '50%';
+                } else if (window.innerWidth > 1400) {
                     stackCard5.style.left = 'calc(50% + 5cm)';
+                } else if (isTablet) {
+                    stackCard5.style.left = '70%';
                 } else {
                     stackCard5.style.left = '50%';
                 }
@@ -4890,114 +5107,115 @@ and glorify your Father in heaven.
             
             const scrollableDistance = sectionHeight - windowHeight;
             const scrollProgress = Math.max(0, Math.min(1, -sectionTop / scrollableDistance));
-
-            // iPad에서 간격을 더 넓히기 위한 배수 (768px ~ 1024px)
-            const isTablet = window.innerWidth >= 768 && window.innerWidth <= 1024;
-            const spacingMultiplier = isTablet ? 2.5 : 1;
+            
+            // 모바일 여부 확인
+            const isMobileView = window.innerWidth <= 768;
+            // 모바일/데스크탑에 따른 기본 transform
+            const baseTransform = isMobileView ? 'translateX(-50%)' : 'translate(-50%, -50%)';
 
             // Card 1 (Yellow) - 맨 위, 처음에 보임 → 위로 날아감
             if (scrollProgress < 0.3) {
                 const p = scrollProgress / 0.3;
                 const eased = p * p; // easeIn
-                stackCard1.style.transform = `translate(-50%, -50%) translateY(${-eased * 300}px) rotate(${-eased * 5}deg) scale(${1 - eased * 0.1})`;
+                stackCard1.style.transform = `${baseTransform} translateY(${-eased * 300}px) rotate(${-eased * 5}deg) scale(${1 - eased * 0.1})`;
                 stackCard1.style.opacity = 1 - eased;
                 stackCard1.style.zIndex = 4;
             } else {
-                stackCard1.style.transform = 'translate(-50%, -50%) translateY(-300px) rotate(-5deg) scale(0.9)';
+                stackCard1.style.transform = `${baseTransform} translateY(-300px) rotate(-5deg) scale(0.9)`;
                 stackCard1.style.opacity = 0;
                 stackCard1.style.zIndex = 1;
             }
 
             // Card 2 (Red) - 카드1 벗겨진 후 보임 → 위로 날아감
             if (scrollProgress < 0.3) {
-                stackCard2.style.transform = `translate(-50%, -50%) translateY(${20 * spacingMultiplier}px) rotate(2deg) scale(0.95)`;
+                stackCard2.style.transform = `${baseTransform} translateY(20px) rotate(2deg) scale(0.95)`;
                 stackCard2.style.opacity = 0.7;
                 stackCard2.style.zIndex = 3;
             } else if (scrollProgress < 0.55) {
                 const p = (scrollProgress - 0.3) / 0.25;
                 const eased = p * p;
-                stackCard2.style.transform = `translate(-50%, -50%) translateY(${20 * spacingMultiplier - eased * 320}px) rotate(${2 - eased * 7}deg) scale(${0.95 + p * 0.05 - eased * 0.1})`;
+                stackCard2.style.transform = `${baseTransform} translateY(${20 - eased * 320}px) rotate(${2 - eased * 7}deg) scale(${0.95 + p * 0.05 - eased * 0.1})`;
                 stackCard2.style.opacity = 1 - eased;
                 stackCard2.style.zIndex = 4;
             } else {
-                stackCard2.style.transform = 'translate(-50%, -50%) translateY(-300px) rotate(-5deg) scale(0.9)';
+                stackCard2.style.transform = `${baseTransform} translateY(-300px) rotate(-5deg) scale(0.9)`;
                 stackCard2.style.opacity = 0;
                 stackCard2.style.zIndex = 1;
             }
 
             // Card 3 (Blue) - 카드2 벗겨진 후 보임 → 위로 날아감
             if (scrollProgress < 0.3) {
-                stackCard3.style.transform = `translate(-50%, -50%) translateY(${40 * spacingMultiplier}px) rotate(-2deg) scale(0.9)`;
+                stackCard3.style.transform = `${baseTransform} translateY(40px) rotate(-2deg) scale(0.9)`;
                 stackCard3.style.opacity = 0.5;
                 stackCard3.style.zIndex = 2;
             } else if (scrollProgress < 0.55) {
                 const p = (scrollProgress - 0.3) / 0.25;
-                stackCard3.style.transform = `translate(-50%, -50%) translateY(${40 * spacingMultiplier - p * 20}px) rotate(${-2 + p * 2}deg) scale(${0.9 + p * 0.05})`;
+                stackCard3.style.transform = `${baseTransform} translateY(${40 - p * 20}px) rotate(${-2 + p * 2}deg) scale(${0.9 + p * 0.05})`;
                 stackCard3.style.opacity = 0.5 + p * 0.3;
                 stackCard3.style.zIndex = 3;
             } else if (scrollProgress < 0.8) {
                 const p = (scrollProgress - 0.55) / 0.25;
                 const eased = p * p;
-                stackCard3.style.transform = `translate(-50%, -50%) translateY(${20 * spacingMultiplier - eased * 320}px) rotate(${0 - eased * 5}deg) scale(${0.95 + p * 0.05 - eased * 0.1})`;
+                stackCard3.style.transform = `${baseTransform} translateY(${20 - eased * 320}px) rotate(${0 - eased * 5}deg) scale(${0.95 + p * 0.05 - eased * 0.1})`;
                 stackCard3.style.opacity = 1 - eased;
                 stackCard3.style.zIndex = 4;
             } else {
-                stackCard3.style.transform = 'translate(-50%, -50%) translateY(-300px) rotate(-5deg) scale(0.9)';
+                stackCard3.style.transform = `${baseTransform} translateY(-300px) rotate(-5deg) scale(0.9)`;
                 stackCard3.style.opacity = 0;
                 stackCard3.style.zIndex = 1;
             }
 
             // Card 4 (Green) - 카드3 벗겨진 후 보임 → 위로 날아감
             if (scrollProgress < 0.3) {
-                stackCard4.style.transform = `translate(-50%, -50%) translateY(${60 * spacingMultiplier}px) rotate(-3deg) scale(0.85)`;
+                stackCard4.style.transform = `${baseTransform} translateY(60px) rotate(-3deg) scale(0.85)`;
                 stackCard4.style.opacity = 0.3;
                 stackCard4.style.zIndex = 1;
             } else if (scrollProgress < 0.55) {
                 const p = (scrollProgress - 0.3) / 0.25;
-                stackCard4.style.transform = `translate(-50%, -50%) translateY(${60 * spacingMultiplier - p * 20}px) rotate(${-3 + p * 3}deg) scale(${0.85 + p * 0.05})`;
+                stackCard4.style.transform = `${baseTransform} translateY(${60 - p * 20}px) rotate(${-3 + p * 3}deg) scale(${0.85 + p * 0.05})`;
                 stackCard4.style.opacity = 0.3 + p * 0.2;
                 stackCard4.style.zIndex = 2;
             } else if (scrollProgress < 0.8) {
                 const p = (scrollProgress - 0.55) / 0.25;
-                stackCard4.style.transform = `translate(-50%, -50%) translateY(${40 * spacingMultiplier - p * 20}px) rotate(${0 - p * 2}deg) scale(${0.9 + p * 0.05})`;
+                stackCard4.style.transform = `${baseTransform} translateY(${40 - p * 20}px) rotate(${0 - p * 2}deg) scale(${0.9 + p * 0.05})`;
                 stackCard4.style.opacity = 0.5 + p * 0.3;
                 stackCard4.style.zIndex = 3;
             } else if (scrollProgress < 0.9) {
                 const p = (scrollProgress - 0.8) / 0.1;
                 const eased = p * p;
-                stackCard4.style.transform = `translate(-50%, -50%) translateY(${20 * spacingMultiplier - eased * 320}px) rotate(${-2 - eased * 3}deg) scale(${0.95 + p * 0.05 - eased * 0.1})`;
+                stackCard4.style.transform = `${baseTransform} translateY(${20 - eased * 320}px) rotate(${-2 - eased * 3}deg) scale(${0.95 + p * 0.05 - eased * 0.1})`;
                 stackCard4.style.opacity = 1 - eased;
                 stackCard4.style.zIndex = 4;
             } else {
-                stackCard4.style.transform = 'translate(-50%, -50%) translateY(-300px) rotate(-5deg) scale(0.9)';
+                stackCard4.style.transform = `${baseTransform} translateY(-300px) rotate(-5deg) scale(0.9)`;
                 stackCard4.style.opacity = 0;
                 stackCard4.style.zIndex = 1;
             }
 
             // Card 5 (Purple) - 맨 아래, 마지막에 정면으로
             if (scrollProgress < 0.3) {
-                stackCard5.style.transform = `translate(-50%, -50%) translateY(${80 * spacingMultiplier}px) rotate(2deg) scale(0.8)`;
+                stackCard5.style.transform = `${baseTransform} translateY(80px) rotate(2deg) scale(0.8)`;
                 stackCard5.style.opacity = 0.2;
                 stackCard5.style.zIndex = 0;
             } else if (scrollProgress < 0.55) {
                 const p = (scrollProgress - 0.3) / 0.25;
-                stackCard5.style.transform = `translate(-50%, -50%) translateY(${80 * spacingMultiplier - p * 20}px) rotate(${2 - p * 2}deg) scale(${0.8 + p * 0.05})`;
+                stackCard5.style.transform = `${baseTransform} translateY(${80 - p * 20}px) rotate(${2 - p * 2}deg) scale(${0.8 + p * 0.05})`;
                 stackCard5.style.opacity = 0.2 + p * 0.2;
                 stackCard5.style.zIndex = 1;
             } else if (scrollProgress < 0.8) {
                 const p = (scrollProgress - 0.55) / 0.25;
-                stackCard5.style.transform = `translate(-50%, -50%) translateY(${60 * spacingMultiplier - p * 20}px) rotate(${0 - p * 2}deg) scale(${0.85 + p * 0.05})`;
+                stackCard5.style.transform = `${baseTransform} translateY(${60 - p * 20}px) rotate(${0 - p * 2}deg) scale(${0.85 + p * 0.05})`;
                 stackCard5.style.opacity = 0.4 + p * 0.3;
                 stackCard5.style.zIndex = 2;
             } else if (scrollProgress < 0.9) {
                 const p = (scrollProgress - 0.8) / 0.1;
-                stackCard5.style.transform = `translate(-50%, -50%) translateY(${40 * spacingMultiplier - p * 20}px) rotate(${-2 + p * 2}deg) scale(${0.9 + p * 0.05})`;
+                stackCard5.style.transform = `${baseTransform} translateY(${40 - p * 20}px) rotate(${-2 + p * 2}deg) scale(${0.9 + p * 0.05})`;
                 stackCard5.style.opacity = 0.7 + p * 0.2;
                 stackCard5.style.zIndex = 3;
             } else {
                 const p = (scrollProgress - 0.9) / 0.1;
                 const eased = 1 - Math.pow(1 - p, 3); // easeOut
-                stackCard5.style.transform = `translate(-50%, -50%) translateY(${20 * spacingMultiplier - eased * 20}px) rotate(${0 - eased * 2}deg) scale(${0.95 + eased * 0.05})`;
+                stackCard5.style.transform = `${baseTransform} translateY(${20 - eased * 20}px) rotate(${0 - eased * 2}deg) scale(${0.95 + eased * 0.05})`;
                 stackCard5.style.opacity = 0.9 + eased * 0.1;
                 stackCard5.style.zIndex = 4;
             }

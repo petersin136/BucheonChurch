@@ -67,6 +67,17 @@
 </head>
 <body class="bg-gray-50">
 
+    <script>
+        // 인증 체크 (필수!)
+        (function() {
+            const isAuth = sessionStorage.getItem('bucheon_admin_auth');
+            if (isAuth !== 'authenticated') {
+                window.location.href = './login.html';
+                throw new Error('인증 필요');
+            }
+        })();
+    </script>
+
     <!-- 네비게이션 -->
     <nav class="bg-white shadow-sm border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -56,6 +56,17 @@
     </style>
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-gray-100">
+    <script>
+        // 인증 체크 (필수!)
+        (function() {
+            const isAuth = sessionStorage.getItem('bucheon_admin_auth');
+            if (isAuth !== 'authenticated') {
+                window.location.href = './login.html';
+                throw new Error('인증 필요');
+            }
+        })();
+    </script>
+
     <div class="min-h-screen py-8 px-4">
         <div class="max-w-7xl mx-auto">
             <!-- 헤더 -->

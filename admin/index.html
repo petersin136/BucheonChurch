@@ -145,55 +145,52 @@
     </div>
 
     <script>
+        // ============================================
+        // 인증 체크 (필수!)
+        // ============================================
+        (function() {
+            const isAuth = sessionStorage.getItem('bucheon_admin_auth');
+            if (isAuth !== 'authenticated') {
+                window.location.href = './login.html';
+                throw new Error('인증 필요');
+            }
+        })();
+
         // Supabase 설정
         const SUPABASE_URL = 'https://fkqxalcwhqohrkdzwhvv.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_5sLcyIwutRptBow_Xe7MpA_IDKtDwXI';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // 인증 확인
-        async function checkAuth() {
-            const { data: { session } } = await supabase.auth.getSession();
-            
-            if (!session) {
-                window.location.href = './login.html';
-                return null;
-            }
-            
-            return session;
-        }
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZrcXhhbGN3aHFvaHJrZHp3aHZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU2MzE1NzUsImV4cCI6MjA1MTIwNzU3NX0.3lagvXnuXPVJJhNFKKjXgOl9NcSULBzGzLwX7NzCVvE';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // 데이터 로드
         async function loadDashboardData() {
-            const session = await checkAuth();
-            if (!session) return;
-
             // 관리자 이름 표시
-            document.getElementById('adminName').textContent = session.user.email;
+            const adminUser = sessionStorage.getItem('bucheon_admin_user') || '관리자';
+            document.getElementById('adminName').textContent = adminUser;
 
             // 통계 데이터 로드
             try {
                 // 새가족 등록 수
-                const { count: visitorCount } = await supabase
+                const { count: visitorCount } = await supabaseClient
                     .from('visitor_registrations')
                     .select('*', { count: 'exact', head: true });
                 document.getElementById('visitorCount').textContent = visitorCount || 0;
 
                 // 게시글 수
-                const { count: postCount } = await supabase
+                const { count: postCount } = await supabaseClient
                     .from('board_posts')
                     .select('*', { count: 'exact', head: true })
                     .eq('is_active', true);
                 document.getElementById('postCount').textContent = postCount || 0;
 
                 // 주보 다운로드 수 (합계)
-                const { data: bulletins } = await supabase
+                const { data: bulletins } = await supabaseClient
                     .from('weekly_bulletins')
                     .select('download_count');
                 const totalDownloads = bulletins?.reduce((sum, b) => sum + (b.download_count || 0), 0) || 0;
                 document.getElementById('downloadCount').textContent = totalDownloads;
 
                 // 최근 새가족 등록 5개
-                const { data: recentVisitors } = await supabase
+                const { data: recentVisitors } = await supabaseClient
                     .from('visitor_registrations')
                     .select('*')
                     .order('created_at', { ascending: false })
@@ -202,7 +199,7 @@
                 renderRecentVisitors(recentVisitors || []);
 
                 // 최근 게시글 5개
-                const { data: recentPosts } = await supabase
+                const { data: recentPosts } = await supabaseClient
                     .from('board_posts')
                     .select('*')
                     .eq('is_active', true)
@@ -268,8 +265,9 @@
         }
 
         // 로그아웃
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            await supabase.auth.signOut();
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            sessionStorage.removeItem('bucheon_admin_auth');
+            sessionStorage.removeItem('bucheon_admin_user');
             window.location.href = './login.html';
         });
 
