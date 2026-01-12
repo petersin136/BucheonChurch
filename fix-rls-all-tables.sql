@@ -65,3 +65,20 @@ CREATE POLICY "Public read access" ON stats_items FOR SELECT USING (is_active = 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

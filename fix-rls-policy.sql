@@ -28,3 +28,20 @@ CREATE POLICY "Public write prayer_requests" ON prayer_requests FOR ALL USING (t
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
