@@ -39,11 +39,19 @@
     
     <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="google7e27154133f5a148" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Preconnect to external domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://fkqxalcwhqohrkdzwhvv.supabase.co">
+    
+    <!-- Fonts with display=swap (already optimized) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@200;300;400;500;600;700;800;900&family=Noto+Serif+KR:wght@400;700&family=Homenaje:wght@400&family=Playfair+Display:wght@400;500;600;700&family=Space+Mono&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+    
+    <!-- JavaScript - Tailwind must load immediately, Supabase can defer -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     
     <style>
         * {
@@ -1993,7 +2001,7 @@
     <section id="heroSection" class="relative w-full" style="height: calc(100vh - 40px); max-height: calc(100vh - 40px); overflow: hidden; width: 100%; margin: 0; padding: 0; margin-top: 40px; background-color: #000000; position: relative;">
         <!-- 배경 이미지 슬라이드쇼 -->
         <div id="heroSlideshow" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;">
-            <img class="hero-slide active" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/001.jpg" alt="부천교회 슬라이드 1" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 1; transition: opacity 1s ease-in-out;">
+            <img class="hero-slide active" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/001.jpg" alt="부천교회 슬라이드 1" fetchpriority="high" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 1; transition: opacity 1s ease-in-out;">
             <img class="hero-slide" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/002.jpg" alt="부천교회 슬라이드 2" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 0; transition: opacity 1s ease-in-out;">
             <img class="hero-slide" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/004.jpg" alt="부천교회 슬라이드 3" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 0; transition: opacity 1s ease-in-out;">
             <img class="hero-slide" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/003.jpg" alt="부천교회 슬라이드 4" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 0; transition: opacity 1s ease-in-out;">
@@ -2208,6 +2216,7 @@ and glorify your Father in heaven.
         <div class="absolute inset-0 z-0">
             <img src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/KakaoTalk_Photo_2025-12-16-19-24-26%20001.jpg" 
                  alt="배경" 
+                 loading="lazy"
                  class="w-full h-full object-cover object-center">
             <div class="absolute inset-0" style="background: rgba(0, 0, 0, 0.5);"></div>
         </div>
@@ -2391,6 +2400,7 @@ and glorify your Father in heaven.
         <div class="pastor-photo-container reveal-text" style="position: absolute; left: 42%; top: 28%; width: 18%; padding: 12px; background: linear-gradient(135deg, rgba(232, 228, 222, 0.8) 0%, rgba(255, 255, 255, 0.9) 50%, rgba(232, 228, 222, 0.8) 100%); border-radius: 16px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6); z-index: 10;">
             <img src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/pa.jpg" 
                  alt="담임목사 이영호" 
+                 loading="lazy"
                  style="width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); display: block;">
                             </div>
                             
@@ -2680,6 +2690,7 @@ and glorify your Father in heaven.
                     <div class="text-6xl font-bold" style="font-size: 64px;">이</div>
                     <img src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/KakaoTalk_Photo_2025-12-16-19-22-45.jpg" 
                          alt="이주희 성도" 
+                         loading="lazy"
                          style="width: 140px; height: 140px; border-radius: 16px; object-fit: cover;">
                 </div>
                 <blockquote class="text-base font-normal leading-relaxed mb-12" style="font-size: 16px; line-height: 1.6; flex: 1; margin-top: 16px;">
@@ -2697,6 +2708,7 @@ and glorify your Father in heaven.
                     <div class="text-6xl font-bold" style="font-size: 64px;">고</div>
                     <img src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/KakaoTalk_Photo_2025-12-16-19-23-41.jpg" 
                          alt="고이경 셀리더" 
+                         loading="lazy"
                          style="width: 140px; height: 140px; border-radius: 16px; object-fit: cover;">
                 </div>
                 <blockquote class="text-base font-normal leading-relaxed mb-12" style="font-size: 16px; line-height: 1.6; flex: 1; margin-top: 16px;">
@@ -2714,6 +2726,7 @@ and glorify your Father in heaven.
                     <div class="text-6xl font-bold" style="font-size: 64px;">김</div>
                     <img src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/KakaoTalk_Photo_2025-12-16-19-23-52.jpg" 
                          alt="김지수 집사" 
+                         loading="lazy"
                          style="width: 140px; height: 140px; border-radius: 16px; object-fit: cover;">
                 </div>
                 <blockquote class="text-base font-normal leading-relaxed mb-12" style="font-size: 16px; line-height: 1.6; flex: 1; margin-top: 16px;">
@@ -2731,6 +2744,7 @@ and glorify your Father in heaven.
                     <div class="text-6xl font-bold" style="font-size: 64px;">백</div>
                     <img src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/KakaoTalk_Photo_2025-12-16-19-24-00.jpg" 
                          alt="백현준 형제" 
+                         loading="lazy"
                          style="width: 140px; height: 140px; border-radius: 16px; object-fit: cover;">
                 </div>
                 <blockquote class="text-base font-normal leading-relaxed mb-12" style="font-size: 16px; line-height: 1.6; flex: 1; margin-top: 16px;">
