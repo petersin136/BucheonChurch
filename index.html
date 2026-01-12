@@ -4309,52 +4309,56 @@ and glorify your Father in heaven.
         }
         
         // ========================================
-        // YouTube 재생목록 최신 영상 로드 (역순)
+        // YouTube 재생목록 최신 영상 로드 (API 사용)
         // ========================================
         async function loadLatestYouTubeVideo() {
+            const apiKey = 'AIzaSyDcGTEeXo5wDMcNLhmcylPvIGQPFQcAyuk';
+            const playlistId = 'PL_0QqEAUL4K8x7GDlngrYo2QlVPVZV3WY';
+            const iframe = document.getElementById('youtubePlayer');
+            
             try {
-                const playlistId = 'PL_0QqEAUL4K8x7GDlngrYo2QlVPVZV3WY';
+                // YouTube Data API v3를 사용해서 재생목록의 모든 영상 가져오기
+                let allVideos = [];
+                let nextPageToken = '';
                 
-                // YouTube 재생목록의 순서를 역순으로 바꾸려면 YouTube Data API가 필요합니다.
-                // 하지만 CORS 문제로 클라이언트에서 직접 호출할 수 없으므로,
-                // 서버 사이드 API를 사용하거나, 재생목록의 마지막 영상(최신)을 직접 가져와야 합니다.
+                // 모든 페이지의 영상을 가져옴 (재생목록에 50개 이상 있을 수 있음)
+                do {
+                    const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=50&key=${apiKey}${nextPageToken ? '&pageToken=' + nextPageToken : ''}`;
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    if (data.error) {
+                        throw new Error(data.error.message);
+                    }
+                    
+                    if (data.items && data.items.length > 0) {
+                        allVideos = allVideos.concat(data.items);
+                    }
+                    
+                    nextPageToken = data.nextPageToken || '';
+                } while (nextPageToken);
                 
-                // 방법: YouTube Data API를 사용해서 재생목록의 영상 목록을 가져와서 역순으로 정렬
-                // 하지만 API 키가 필요하고 CORS 문제가 있으므로,
-                // 여기서는 재생목록의 마지막 영상(최신)을 가져와서 단일 영상으로 임베드합니다.
-                
-                // 참고: YouTube 재생목록의 영상은 기본적으로 추가된 순서대로 정렬되므로,
-                // 마지막 영상이 최신 영상입니다.
-                // 하지만 iframe으로는 재생목록의 순서를 직접 바꿀 수 없으므로,
-                // YouTube Data API를 사용해서 재생목록의 영상 목록을 가져와서
-                // 역순으로 정렬한 후, 첫 번째 영상을 임베드해야 합니다.
-                
-                // 여기서는 재생목록 URL을 그대로 사용하되,
-                // 사용자가 재생목록에서 최신 영상을 직접 선택할 수 있도록 합니다.
-                
-                // 실제 구현: YouTube Data API를 사용해서 재생목록의 영상 목록을 가져오기
-                // const apiKey = 'YOUR_API_KEY'; // YouTube Data API v3 키 필요
-                // const response = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=50&key=${apiKey}`);
-                // const data = await response.json();
-                // const videos = data.items.reverse(); // 역순으로 정렬
-                // const latestVideoId = videos[0].snippet.resourceId.videoId;
-                // iframe.src = `https://www.youtube.com/embed/${latestVideoId}?list=${playlistId}&rel=0&modestbranding=1`;
-                
-                // 임시 해결책: 재생목록 URL 사용 (순서는 YouTube에서 설정한 대로)
-                const iframe = document.getElementById('youtubePlayer');
-                if (iframe) {
-                    // 재생목록 URL 사용
-                    iframe.src = `https://www.youtube.com/embed/videoseries?list=${playlistId}&rel=0&modestbranding=1`;
+                if (allVideos.length > 0) {
+                    // 마지막 영상이 최신 영상 (재생목록에 가장 나중에 추가된 영상)
+                    const latestVideo = allVideos[allVideos.length - 1];
+                    const latestVideoId = latestVideo.snippet.resourceId.videoId;
+                    const videoTitle = latestVideo.snippet.title;
+                    
+                    console.log('✅ 최신 설교 영상 로드:', videoTitle);
+                    
+                    if (iframe) {
+                        // 최신 영상을 재생목록과 함께 임베드 (최신 영상부터 시작)
+                        iframe.src = `https://www.youtube.com/embed/${latestVideoId}?rel=0&modestbranding=1`;
+                    }
+                } else {
+                    throw new Error('재생목록에 영상이 없습니다.');
                 }
                 
-                console.log('⚠️ YouTube 재생목록 순서를 역순으로 바꾸려면 YouTube Data API가 필요합니다.');
-                console.log('현재는 재생목록의 기본 순서대로 표시됩니다.');
             } catch (error) {
-                console.error('❌ Error loading YouTube video:', error);
+                console.error('❌ YouTube API 에러:', error);
                 // 에러 발생 시 기본 재생목록 URL 사용
-                const iframe = document.getElementById('youtubePlayer');
                 if (iframe) {
-                    iframe.src = `https://www.youtube.com/embed/videoseries?list=PL_0QqEAUL4K8x7GDlngrYo2QlVPVZV3WY&rel=0&modestbranding=1`;
+                    iframe.src = `https://www.youtube.com/embed/videoseries?list=${playlistId}&rel=0&modestbranding=1`;
                 }
             }
         }
