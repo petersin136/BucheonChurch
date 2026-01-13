@@ -1149,9 +1149,14 @@
         }
         
         @media (max-width: 768px) {
-            /* ========== 비전 섹션 텍스트 줄바꿈 (모바일) ========== */
+            /* ========== 비전 섹션 (모바일) ========== */
+            #vision {
+                padding: 80px 20px 85px 20px !important;
+            }
+            
             #vision h2.reveal-text {
                 word-break: keep-all !important;
+                font-size: 28px !important;
             }
             
             /* ========== 가로 스크롤 카드 섹션 (모바일) - 세로스크롤→가로이동 ========== */
@@ -1293,109 +1298,163 @@
                 order: unset !important;
             }
             
-            /* 간증 섹션 모바일 - 이미지 상단(30vh) + 카드 하단 분리 */
-            .stacking-cards-container {
-                height: 300vh !important;
+            /* ========================================
+               간증 섹션 모바일 - 완벽 최적화 버전
+               ======================================== */
+            
+            /* 컨테이너 - 스크롤 공간 최소화 (5개 카드에 딱 맞게) */
+            section#testimonials.stacking-cards-container {
+                display: block !important;
+                height: 180vh !important;
+                min-height: 180vh !important;
                 position: relative !important;
+                background: #fff !important;
+                overflow: visible !important;
             }
             
-            .stacking-cards-wrapper {
+            /* 래퍼 - 화면에 고정 (sticky 필수) */
+            section#testimonials .stacking-cards-wrapper {
+                position: -webkit-sticky !important;
                 position: sticky !important;
                 top: 0 !important;
-                height: 100vh !important;
-                overflow: visible !important;
-                padding: 0 !important;
-            }
-            
-            /* 타이틀 영역 - 상단 30vh 고정 */
-            .testimonial-title-box {
-                position: absolute !important;
                 left: 0 !important;
                 right: 0 !important;
-                top: 0 !important;
-                height: 32vh !important;
+                height: 100vh !important;
+                height: 100dvh !important;
                 width: 100% !important;
-                max-width: none !important;
-                padding: 10px !important;
-                text-align: center !important;
-                z-index: 2 !important;
-                transform: none !important;
+                max-width: 100% !important;
+                display: block !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                overflow: visible !important;
+                background: #fff !important;
+                will-change: transform !important;
+                z-index: 1 !important;
+            }
+            
+            /* 타이틀 박스 - 중앙 정렬, 내부는 이미지 너비에 맞춤 */
+            section#testimonials .testimonial-title-box {
+                position: absolute !important;
+                top: 25px !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                width: 90% !important;
+                max-width: 240px !important;
+                padding: 0 !important;
+                text-align: left !important;
+                z-index: 100 !important;
                 display: flex !important;
                 flex-direction: column !important;
                 align-items: center !important;
-                justify-content: center !important;
-                background: #fff !important;
+                background: transparent !important;
             }
             
-            /* 이미지 - 정상 비율로 보이게 */
-            .testimonial-title-box img {
+            /* 이미지 - 중앙 정렬 */
+            section#testimonials .testimonial-title-box > img {
                 display: block !important;
-                width: auto !important;
-                max-width: 90% !important;
+                width: 100% !important;
+                max-width: 240px !important;
                 height: auto !important;
-                max-height: 22vh !important;
                 object-fit: contain !important;
-                margin: 0 auto 8px auto !important;
-                border-radius: 12px !important;
+                border-radius: 0 !important;
+                margin: 0 auto 20px auto !important;
+                box-shadow: none !important;
             }
             
-            /* 타이틀 텍스트 - 이미지 밑에 작게 */
-            .testimonial-title-box p {
+            /* 텍스트 컨테이너 - 이미지 너비에 맞춰 왼쪽 정렬 */
+            section#testimonials .testimonial-title-box > p,
+            section#testimonials .testimonial-title-box > h2 {
+                width: 100% !important;
+                max-width: 240px !important;
+                text-align: left !important;
+            }
+            
+            /* TESTIMONIALS 텍스트 */
+            section#testimonials .testimonial-title-box p.testimonial-fade,
+            section#testimonials .testimonial-title-box .text-gray-400 {
                 display: block !important;
-                font-size: 10px !important;
-                margin-bottom: 2px !important;
-                letter-spacing: 0.1em !important;
+                font-size: 11px !important;
+                letter-spacing: 0.2em !important;
+                color: #888 !important;
+                margin-bottom: 8px !important;
+                text-align: left !important;
             }
             
-            .testimonial-title-box h2 {
+            /* 타이틀 - 세 줄로 표시, 줄간격 훨씬 줄임 */
+            section#testimonials .testimonial-title-box h2 {
+                display: block !important;
+                font-size: 36px !important;
+                line-height: 0.75 !important;
+                margin: 0 0 30px 0 !important;
+                text-align: left !important;
+            }
+            
+            /* 데스크탑 애니메이션 유지, 모바일 스타일만 오버라이드 */
+            section#testimonials .testimonial-title-box h2 .testimonial-slide {
+                display: block !important;
+                white-space: normal !important;
+                font-size: 36px !important;
+                line-height: 0.75 !important;
+                margin-top: -5px !important;
+                /* opacity는 데스크탑 애니메이션이 제어하므로 !important 제거 */
+            }
+            
+            section#testimonials .testimonial-title-box h2 .testimonial-slide:first-of-type {
+                margin-top: 0 !important;
+            }
+            
+            section#testimonials .testimonial-title-box h2 br {
+                display: block !important;
+            }
+            
+            /* 밑줄 숨김 */
+            section#testimonials .testimonial-title-box .w-20,
+            section#testimonials .testimonial-title-box .testimonial-line {
                 display: none !important;
             }
             
-            .testimonial-title-box .w-20 {
-                display: none !important;
-            }
-            
-            /* 카드들 - 35vh 아래에 배치 (겹치지 않게) */
-            /* transform은 !important 없이 JS가 조작할 수 있게 */
-            .stack-card {
+            /* 카드 - 텍스트 아래 간격 두고 배치 */
+            section#testimonials .stack-card {
                 position: absolute !important;
+                top: 320px !important;
                 left: 50% !important;
-                top: 36vh !important;
-                width: 90% !important;
-                max-width: 340px !important;
+                width: 88% !important;
+                max-width: 320px !important;
                 height: auto !important;
-                min-height: 260px !important;
+                min-height: 280px !important;
                 padding: 18px !important;
-                border-radius: 18px !important;
+                border-radius: 16px !important;
                 box-shadow: 0 6px 24px rgba(0,0,0,0.12) !important;
+                /* transform은 JS가 제어 */
             }
             
-            .stack-card .flex {
-                margin-bottom: 12px !important;
+            /* 카드 내부 요소 */
+            section#testimonials .stack-card .flex {
+                margin-bottom: 8px !important;
             }
             
-            .stack-card .text-6xl {
-                font-size: 32px !important;
-                line-height: 1 !important;
+            section#testimonials .stack-card .text-6xl {
+                font-size: 28px !important;
             }
             
-            .stack-card img {
-                width: 80px !important;
-                height: 80px !important;
-                border-radius: 12px !important;
+            section#testimonials .stack-card .flex img {
+                width: 50px !important;
+                height: 50px !important;
+                border-radius: 8px !important;
             }
             
-            .stack-card blockquote {
-                font-size: 13px !important;
+            section#testimonials .stack-card blockquote {
+                font-size: 12px !important;
                 line-height: 1.5 !important;
-                margin-bottom: 12px !important;
+                margin-top: 6px !important;
+                margin-bottom: 10px !important;
             }
             
-            .stack-card .text-xl {
-                font-size: 15px !important;
+            section#testimonials .stack-card .text-xl {
+                font-size: 14px !important;
             }
             
-            .stack-card .text-sm {
+            section#testimonials .stack-card .text-sm {
                 font-size: 11px !important;
             }
         }
@@ -5492,10 +5551,14 @@ and glorify your Father in heaven.
             const isTablet = window.innerWidth >= 768 && window.innerWidth <= 1400;
             const isMobileView = window.innerWidth <= 768;
             
-            // 모바일/데스크탑에 따른 기본 transform
+            // 모바일/데스크탑에 따른 기본 transform 및 top
             const baseTransform = isMobileView ? 'translateX(-50%)' : 'translate(-50%, -50%)';
+            const cardTop = isMobileView ? '320px' : '50%';
             
             if (stackCard1) {
+                if (isMobileView) {
+                    stackCard1.style.top = cardTop;
+                }
                 stackCard1.style.transform = baseTransform;
                 stackCard1.style.opacity = '1';
                 stackCard1.style.zIndex = '5';
@@ -5510,6 +5573,9 @@ and glorify your Father in heaven.
                 }
             }
             if (stackCard2) {
+                if (isMobileView) {
+                    stackCard2.style.top = cardTop;
+                }
                 stackCard2.style.transform = `${baseTransform} translateY(20px) rotate(2deg) scale(0.95)`;
                 stackCard2.style.opacity = '0.7';
                 stackCard2.style.zIndex = '4';
@@ -5524,6 +5590,9 @@ and glorify your Father in heaven.
                 }
             }
             if (stackCard3) {
+                if (isMobileView) {
+                    stackCard3.style.top = cardTop;
+                }
                 stackCard3.style.transform = `${baseTransform} translateY(40px) rotate(-2deg) scale(0.9)`;
                 stackCard3.style.opacity = '0.5';
                 stackCard3.style.zIndex = '3';
@@ -5538,6 +5607,9 @@ and glorify your Father in heaven.
                 }
             }
             if (stackCard4) {
+                if (isMobileView) {
+                    stackCard4.style.top = cardTop;
+                }
                 stackCard4.style.transform = `${baseTransform} translateY(60px) rotate(2deg) scale(0.85)`;
                 stackCard4.style.opacity = '0.4';
                 stackCard4.style.zIndex = '2';
@@ -5552,6 +5624,9 @@ and glorify your Father in heaven.
                 }
             }
             if (stackCard5) {
+                if (isMobileView) {
+                    stackCard5.style.top = cardTop;
+                }
                 stackCard5.style.transform = `${baseTransform} translateY(80px) rotate(-2deg) scale(0.8)`;
                 stackCard5.style.opacity = '0.3';
                 stackCard5.style.zIndex = '1';
@@ -5568,6 +5643,11 @@ and glorify your Father in heaven.
         }
         
         function updateStackingCards() {
+            // stackingSection이 없으면 리턴
+            if (!stackingSection) {
+                return;
+            }
+            
             // 동적으로 로드된 카드들 가져오기
             const stackCard1 = document.getElementById('stackCard1');
             const stackCard2 = document.getElementById('stackCard2');
@@ -5577,19 +5657,6 @@ and glorify your Father in heaven.
             
             // 카드가 아직 로드되지 않았으면 리턴
             if (!stackCard1 || !stackCard2 || !stackCard3 || !stackCard4 || !stackCard5) {
-                console.warn('⚠️ Some testimonial cards not found, retrying...');
-                // 약간의 지연 후 다시 시도
-                setTimeout(() => {
-                    const retryCard1 = document.getElementById('stackCard1');
-                    const retryCard2 = document.getElementById('stackCard2');
-                    const retryCard3 = document.getElementById('stackCard3');
-                    const retryCard4 = document.getElementById('stackCard4');
-                    const retryCard5 = document.getElementById('stackCard5');
-                    if (retryCard1 && retryCard2 && retryCard3 && retryCard4 && retryCard5) {
-                        initStackingCards();
-                        updateStackingCards();
-                    }
-                }, 100);
                 return;
             }
             
@@ -5598,17 +5665,38 @@ and glorify your Father in heaven.
             const sectionHeight = stackingSection.offsetHeight;
             const windowHeight = window.innerHeight;
             
+            // 섹션이 뷰포트에 들어왔는지 확인
+            if (sectionTop > windowHeight || rect.bottom < 0) {
+                return;
+            }
+            
             const scrollableDistance = sectionHeight - windowHeight;
-            const scrollProgress = Math.max(0, Math.min(1, -sectionTop / scrollableDistance));
+            
+            // 스크롤 가능한 거리가 없으면 리턴
+            if (scrollableDistance <= 0) {
+                return;
+            }
+            
+            // 섹션이 뷰포트 상단에 도달했을 때부터 스크롤 진행도 계산
+            // sectionTop이 windowHeight에서 시작해서 0이 되면 (섹션이 상단에 붙으면) 스크롤 시작
+            // sectionTop이 -scrollableDistance가 되면 (섹션이 끝나면) 스크롤 완료
+            // 섹션이 뷰포트에 들어오자마자 (sectionTop < windowHeight) 카드 벗겨지기 시작
+            const scrollStart = windowHeight;
+            const scrollEnd = -scrollableDistance;
+            const currentPosition = sectionTop;
+            
+            // 진행도 계산: 0 (섹션 진입) ~ 1 (섹션 완료)
+            const scrollProgress = Math.max(0, Math.min(1, (scrollStart - currentPosition) / (scrollStart - scrollEnd)));
             
             // 모바일 여부 확인
             const isMobileView = window.innerWidth <= 768;
             // 모바일/데스크탑에 따른 기본 transform
             const baseTransform = isMobileView ? 'translateX(-50%)' : 'translate(-50%, -50%)';
 
-            // Card 1 (Yellow) - 맨 위, 처음에 보임 → 위로 날아감
-            if (scrollProgress < 0.3) {
-                const p = scrollProgress / 0.3;
+            // 5개 카드를 0~1 범위에 균등하게 분배 (각 카드당 0.2씩)
+            // Card 1 (Yellow) - 0~0.2
+            if (scrollProgress < 0.2) {
+                const p = scrollProgress / 0.2;
                 const eased = p * p; // easeIn
                 stackCard1.style.transform = `${baseTransform} translateY(${-eased * 300}px) rotate(${-eased * 5}deg) scale(${1 - eased * 0.1})`;
                 stackCard1.style.opacity = 1 - eased;
@@ -5619,13 +5707,13 @@ and glorify your Father in heaven.
                 stackCard1.style.zIndex = 1;
             }
 
-            // Card 2 (Red) - 카드1 벗겨진 후 보임 → 위로 날아감
-            if (scrollProgress < 0.3) {
+            // Card 2 (Red) - 0.2~0.4
+            if (scrollProgress < 0.2) {
                 stackCard2.style.transform = `${baseTransform} translateY(20px) rotate(2deg) scale(0.95)`;
                 stackCard2.style.opacity = 0.7;
                 stackCard2.style.zIndex = 3;
-            } else if (scrollProgress < 0.55) {
-                const p = (scrollProgress - 0.3) / 0.25;
+            } else if (scrollProgress < 0.4) {
+                const p = (scrollProgress - 0.2) / 0.2;
                 const eased = p * p;
                 stackCard2.style.transform = `${baseTransform} translateY(${20 - eased * 320}px) rotate(${2 - eased * 7}deg) scale(${0.95 + p * 0.05 - eased * 0.1})`;
                 stackCard2.style.opacity = 1 - eased;
@@ -5636,18 +5724,18 @@ and glorify your Father in heaven.
                 stackCard2.style.zIndex = 1;
             }
 
-            // Card 3 (Blue) - 카드2 벗겨진 후 보임 → 위로 날아감
-            if (scrollProgress < 0.3) {
+            // Card 3 (Blue) - 0.2~0.4 (겹침), 0.4~0.6 (벗겨짐)
+            if (scrollProgress < 0.2) {
                 stackCard3.style.transform = `${baseTransform} translateY(40px) rotate(-2deg) scale(0.9)`;
                 stackCard3.style.opacity = 0.5;
                 stackCard3.style.zIndex = 2;
-            } else if (scrollProgress < 0.55) {
-                const p = (scrollProgress - 0.3) / 0.25;
+            } else if (scrollProgress < 0.4) {
+                const p = (scrollProgress - 0.2) / 0.2;
                 stackCard3.style.transform = `${baseTransform} translateY(${40 - p * 20}px) rotate(${-2 + p * 2}deg) scale(${0.9 + p * 0.05})`;
                 stackCard3.style.opacity = 0.5 + p * 0.3;
                 stackCard3.style.zIndex = 3;
-            } else if (scrollProgress < 0.8) {
-                const p = (scrollProgress - 0.55) / 0.25;
+            } else if (scrollProgress < 0.6) {
+                const p = (scrollProgress - 0.4) / 0.2;
                 const eased = p * p;
                 stackCard3.style.transform = `${baseTransform} translateY(${20 - eased * 320}px) rotate(${0 - eased * 5}deg) scale(${0.95 + p * 0.05 - eased * 0.1})`;
                 stackCard3.style.opacity = 1 - eased;
@@ -5658,23 +5746,23 @@ and glorify your Father in heaven.
                 stackCard3.style.zIndex = 1;
             }
 
-            // Card 4 (Green) - 카드3 벗겨진 후 보임 → 위로 날아감
-            if (scrollProgress < 0.3) {
+            // Card 4 (Green) - 0.2~0.6 (겹침), 0.6~0.8 (벗겨짐)
+            if (scrollProgress < 0.2) {
                 stackCard4.style.transform = `${baseTransform} translateY(60px) rotate(-3deg) scale(0.85)`;
                 stackCard4.style.opacity = 0.3;
                 stackCard4.style.zIndex = 1;
-            } else if (scrollProgress < 0.55) {
-                const p = (scrollProgress - 0.3) / 0.25;
+            } else if (scrollProgress < 0.4) {
+                const p = (scrollProgress - 0.2) / 0.2;
                 stackCard4.style.transform = `${baseTransform} translateY(${60 - p * 20}px) rotate(${-3 + p * 3}deg) scale(${0.85 + p * 0.05})`;
                 stackCard4.style.opacity = 0.3 + p * 0.2;
                 stackCard4.style.zIndex = 2;
-            } else if (scrollProgress < 0.8) {
-                const p = (scrollProgress - 0.55) / 0.25;
+            } else if (scrollProgress < 0.6) {
+                const p = (scrollProgress - 0.4) / 0.2;
                 stackCard4.style.transform = `${baseTransform} translateY(${40 - p * 20}px) rotate(${0 - p * 2}deg) scale(${0.9 + p * 0.05})`;
                 stackCard4.style.opacity = 0.5 + p * 0.3;
                 stackCard4.style.zIndex = 3;
-            } else if (scrollProgress < 0.9) {
-                const p = (scrollProgress - 0.8) / 0.1;
+            } else if (scrollProgress < 0.8) {
+                const p = (scrollProgress - 0.6) / 0.2;
                 const eased = p * p;
                 stackCard4.style.transform = `${baseTransform} translateY(${20 - eased * 320}px) rotate(${-2 - eased * 3}deg) scale(${0.95 + p * 0.05 - eased * 0.1})`;
                 stackCard4.style.opacity = 1 - eased;
@@ -5685,28 +5773,28 @@ and glorify your Father in heaven.
                 stackCard4.style.zIndex = 1;
             }
 
-            // Card 5 (Purple) - 맨 아래, 마지막에 정면으로
-            if (scrollProgress < 0.3) {
+            // Card 5 (Purple) - 0.2~0.8 (겹침), 0.8~1.0 (정면)
+            if (scrollProgress < 0.2) {
                 stackCard5.style.transform = `${baseTransform} translateY(80px) rotate(2deg) scale(0.8)`;
                 stackCard5.style.opacity = 0.2;
                 stackCard5.style.zIndex = 0;
-            } else if (scrollProgress < 0.55) {
-                const p = (scrollProgress - 0.3) / 0.25;
+            } else if (scrollProgress < 0.4) {
+                const p = (scrollProgress - 0.2) / 0.2;
                 stackCard5.style.transform = `${baseTransform} translateY(${80 - p * 20}px) rotate(${2 - p * 2}deg) scale(${0.8 + p * 0.05})`;
                 stackCard5.style.opacity = 0.2 + p * 0.2;
                 stackCard5.style.zIndex = 1;
-            } else if (scrollProgress < 0.8) {
-                const p = (scrollProgress - 0.55) / 0.25;
+            } else if (scrollProgress < 0.6) {
+                const p = (scrollProgress - 0.4) / 0.2;
                 stackCard5.style.transform = `${baseTransform} translateY(${60 - p * 20}px) rotate(${0 - p * 2}deg) scale(${0.85 + p * 0.05})`;
                 stackCard5.style.opacity = 0.4 + p * 0.3;
                 stackCard5.style.zIndex = 2;
-            } else if (scrollProgress < 0.9) {
-                const p = (scrollProgress - 0.8) / 0.1;
+            } else if (scrollProgress < 0.8) {
+                const p = (scrollProgress - 0.6) / 0.2;
                 stackCard5.style.transform = `${baseTransform} translateY(${40 - p * 20}px) rotate(${-2 + p * 2}deg) scale(${0.9 + p * 0.05})`;
                 stackCard5.style.opacity = 0.7 + p * 0.2;
                 stackCard5.style.zIndex = 3;
             } else {
-                const p = (scrollProgress - 0.9) / 0.1;
+                const p = (scrollProgress - 0.8) / 0.2;
                 const eased = 1 - Math.pow(1 - p, 3); // easeOut
                 stackCard5.style.transform = `${baseTransform} translateY(${20 - eased * 20}px) rotate(${0 - eased * 2}deg) scale(${0.95 + eased * 0.05})`;
                 stackCard5.style.opacity = 0.9 + eased * 0.1;
