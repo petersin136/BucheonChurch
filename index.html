@@ -1750,47 +1750,58 @@
                 display: none !important;
             }
             
-            /* 카드 캐러셀 컨테이너 */
+            /* 카드 수평 스크롤 컨테이너 */
             section#testimonials .stacking-cards-wrapper {
                 width: 100% !important;
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 20px !important;
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+                padding-bottom: 10px !important;
+                align-items: stretch !important;
+                overflow-x: auto !important;
+                overflow-y: hidden !important;
+                -webkit-overflow-scrolling: touch !important;
+                scroll-behavior: smooth !important;
+                /* 스크롤바 스타일 */
+                scrollbar-width: thin !important;
+                scrollbar-color: rgba(0,0,0,0.2) transparent !important;
             }
             
-            /* 카드들을 수평 스크롤로 배치 */
+            section#testimonials .stacking-cards-wrapper::-webkit-scrollbar {
+                height: 4px !important;
+            }
+            
+            section#testimonials .stacking-cards-wrapper::-webkit-scrollbar-track {
+                background: transparent !important;
+            }
+            
+            section#testimonials .stacking-cards-wrapper::-webkit-scrollbar-thumb {
+                background: rgba(0,0,0,0.2) !important;
+                border-radius: 2px !important;
+            }
+            
+            /* 카드 스타일 */
             section#testimonials .stack-card {
                 position: relative !important;
                 top: auto !important;
                 left: auto !important;
                 transform: none !important;
-                display: none !important; /* 기본 숨김, JS로 활성화 */
-                width: 85% !important;
+                display: flex !important;
+                flex-direction: column !important;
+                flex-shrink: 0 !important;
+                width: 85vw !important;
                 max-width: 340px !important;
                 min-width: 280px !important;
                 height: auto !important;
                 min-height: 320px !important;
                 padding: 24px !important;
-                margin: 0 auto !important;
+                margin: 0 !important;
                 border-radius: 20px !important;
                 box-shadow: 0 12px 40px rgba(0,0,0,0.12) !important;
                 opacity: 1 !important;
                 z-index: 1 !important;
-            }
-            
-            /* 활성 카드만 표시 */
-            section#testimonials .stack-card.mobile-active {
-                display: flex !important;
-                flex-direction: column !important;
-                animation: cardFadeIn 0.4s ease-out !important;
-            }
-            
-            @keyframes cardFadeIn {
-                from {
-                    opacity: 0;
-                    transform: scale(0.95) translateY(10px);
-                }
-                to {
-                    opacity: 1;
-                    transform: scale(1) translateY(0);
-                }
             }
             
             /* 카드 내부 요소 */
@@ -1836,52 +1847,9 @@
                 opacity: 0.7 !important;
             }
             
-            /* 캐러셀 네비게이션 인디케이터 */
+            /* 네비게이션 숨기기 (수평 스크롤 사용) */
             .testimonial-carousel-nav {
-                display: flex !important;
-                justify-content: center !important;
-                align-items: center !important;
-                gap: 10px !important;
-                margin-top: 25px !important;
-                padding: 0 20px !important;
-            }
-            
-            .testimonial-carousel-dot {
-                width: 10px !important;
-                height: 10px !important;
-                border-radius: 50% !important;
-                background: #ddd !important;
-                border: none !important;
-                cursor: pointer !important;
-                transition: all 0.3s ease !important;
-                padding: 0 !important;
-            }
-            
-            .testimonial-carousel-dot.active {
-                background: #FFB800 !important;
-                transform: scale(1.3) !important;
-            }
-            
-            /* 좌우 버튼 */
-            .testimonial-carousel-btn {
-                width: 36px !important;
-                height: 36px !important;
-                border-radius: 50% !important;
-                background: white !important;
-                border: 1px solid #eee !important;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
-                cursor: pointer !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                transition: all 0.2s ease !important;
-                color: #666 !important;
-                font-size: 16px !important;
-            }
-            
-            .testimonial-carousel-btn:active {
-                transform: scale(0.95) !important;
-                background: #f5f5f5 !important;
+                display: none !important;
             }
             
             /* 예배시간 섹션 */
@@ -6236,44 +6204,13 @@ and glorify your Father in heaven.
             const cards = wrapper.querySelectorAll('.stack-card');
             if (cards.length === 0) return;
             
-            // 모든 카드 숨기고 첫 번째 카드만 표시
-            cards.forEach((card, index) => {
+            // 모든 카드를 표시 (수평 스크롤용)
+            cards.forEach((card) => {
                 card.classList.remove('mobile-active');
-                if (index === mobileTestimonialIndex) {
-                    card.classList.add('mobile-active');
-                }
+                // 모든 카드가 표시되도록 함 (CSS에서 display: flex로 설정됨)
             });
             
-            // 네비게이션 생성
-            const nav = document.createElement('div');
-            nav.className = 'testimonial-carousel-nav';
-            nav.innerHTML = `
-                <button class="testimonial-carousel-btn testimonial-prev" onclick="changeTestimonialCard(-1)">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="15,18 9,12 15,6"></polyline>
-                    </svg>
-                </button>
-                ${Array.from(cards).map((_, i) => `
-                    <button class="testimonial-carousel-dot ${i === mobileTestimonialIndex ? 'active' : ''}" 
-                            onclick="goToTestimonialCard(${i})"></button>
-                `).join('')}
-                <button class="testimonial-carousel-btn testimonial-next" onclick="changeTestimonialCard(1)">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="9,18 15,12 9,6"></polyline>
-                    </svg>
-                </button>
-            `;
-            
-            // 네비게이션을 wrapper 뒤에 추가
-            wrapper.parentElement.appendChild(nav);
-            
-            // 터치 스와이프 이벤트 추가
-            wrapper.removeEventListener('touchstart', handleTestimonialTouchStart);
-            wrapper.removeEventListener('touchend', handleTestimonialTouchEnd);
-            wrapper.addEventListener('touchstart', handleTestimonialTouchStart, { passive: true });
-            wrapper.addEventListener('touchend', handleTestimonialTouchEnd, { passive: true });
-            
-            console.log('✅ Mobile testimonial carousel initialized');
+            console.log('✅ Mobile testimonial horizontal scroll initialized');
         }
         
         function handleTestimonialTouchStart(e) {
