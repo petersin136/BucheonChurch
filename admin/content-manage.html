@@ -63,6 +63,67 @@
         .loading {
             animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
+
+        @media (max-width: 640px) {
+            .admin-header {
+                flex-direction: column;
+                align-items: flex-start;
+                height: auto;
+                gap: 8px;
+                padding: 12px 0;
+            }
+
+            .admin-header-left,
+            .admin-header-right {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .admin-tabs {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .tab-button {
+                flex: 1 1 calc(50% - 8px);
+                text-align: center;
+                padding: 12px 8px;
+                font-size: 14px;
+            }
+
+            .admin-section-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .admin-section-header h2 {
+                text-align: left;
+            }
+
+            .admin-section-header button {
+                width: 100%;
+            }
+
+            .card .flex.justify-between.items-start {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .card .flex.gap-2,
+            .card .flex.gap-2.ml-4 {
+                width: 100%;
+                margin-left: 0;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .card .flex.gap-2 button {
+                flex: 1 1 calc(50% - 8px);
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -81,12 +142,12 @@
     <!-- 네비게이션 -->
     <nav class="bg-white shadow-sm border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center gap-4">
+            <div class="flex justify-between h-16 admin-header">
+                <div class="flex items-center gap-4 admin-header-left">
                     <a href="index.html" class="text-gray-600 hover:text-gray-900">← 대시보드</a>
                     <h1 class="text-xl font-bold text-gray-900">콘텐츠 관리</h1>
                 </div>
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-4 admin-header-right">
                     <a href="../index.html" target="_blank" class="text-sm text-gray-600 hover:text-gray-900">사이트 보기</a>
                 </div>
             </div>
@@ -98,7 +159,7 @@
         
         <!-- 탭 메뉴 -->
         <div class="mb-8">
-            <div class="flex gap-2 border-b border-gray-200">
+            <div class="flex gap-2 border-b border-gray-200 admin-tabs">
                 <button class="tab-button px-6 py-3 font-semibold rounded-t-lg active" data-tab="worship">
                     예배시간
                 </button>
@@ -116,7 +177,7 @@
 
         <!-- 예배시간 탭 -->
         <div id="worship-tab" class="tab-content">
-            <div class="mb-6 flex justify-between items-center">
+            <div class="mb-6 flex justify-between items-center admin-section-header">
                 <h2 class="text-2xl font-bold text-gray-900">예배시간 관리</h2>
                 <button id="add-worship-btn" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
                     + 새 예배 추가
@@ -129,7 +190,7 @@
 
         <!-- 공지사항 탭 -->
         <div id="notice-tab" class="tab-content hidden">
-            <div class="mb-6 flex justify-between items-center">
+            <div class="mb-6 flex justify-between items-center admin-section-header">
                 <h2 class="text-2xl font-bold text-gray-900">공지사항 관리</h2>
                 <button id="add-notice-btn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
                     + 새 공지사항 추가
@@ -142,7 +203,7 @@
 
         <!-- 기도제목 탭 -->
         <div id="prayer-tab" class="tab-content hidden">
-            <div class="mb-6 flex justify-between items-center">
+            <div class="mb-6 flex justify-between items-center admin-section-header">
                 <h2 class="text-2xl font-bold text-gray-900">기도제목 관리</h2>
                 <button id="add-prayer-btn" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">
                     + 새 기도제목 추가
