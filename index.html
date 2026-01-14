@@ -118,7 +118,6 @@
             html, body {
                 -webkit-overflow-scrolling: touch !important;
                 scroll-behavior: auto !important;
-                overscroll-behavior: none !important;
             }
             
             * {
@@ -1630,22 +1629,29 @@
                 position: relative !important;
                 top: auto !important;
                 left: auto !important;
-                height: auto !important;
+                height: 100vh !important;
                 width: 100vw !important;
                 max-width: 100vw !important;
-                overflow: visible !important;
+                overflow-x: auto !important;
+                overflow-y: hidden !important;
                 -webkit-overflow-scrolling: touch !important;
+                scroll-snap-type: x mandatory !important;
                 background: transparent !important;
+            }
+            
+            #worship .horizontal-scroll-wrapper > *,
+            #worship .horizontal-track {
+                scroll-snap-align: start !important;
             }
             
             #worship .horizontal-track,
             #worship #horizontalTrack {
                 display: flex !important;
-                flex-direction: column !important;
+                flex-direction: row !important;
                 flex-wrap: nowrap !important;
-                width: 100vw !important;
-                height: auto !important;
-                transform: none !important;
+                width: 300vw !important;
+                height: 100vh !important;
+                will-change: transform !important;
             }
             
             #worship .service-card,
@@ -1654,8 +1660,8 @@
                 width: 100vw !important;
                 min-width: 100vw !important;
                 max-width: 100vw !important;
-                height: auto !important;
-                min-height: 80vh !important;
+                height: 100vh !important;
+                min-height: 100vh !important;
                 padding: 70px 20px 30px 20px !important;
                 flex-shrink: 0 !important;
                 flex-grow: 0 !important;
@@ -1665,7 +1671,8 @@
                 justify-content: center !important;
                 align-items: center !important;
                 box-sizing: border-box !important;
-                overflow: visible !important;
+                overflow: hidden !important;
+                scroll-snap-align: start !important;
             }
             
             /* 카드 내부 - 텍스트 영역 먼저 */
@@ -6138,14 +6145,57 @@ and glorify your Father in heaven.
         let currentCardIndex = 0;
         let isMobile = window.innerWidth <= 768;
         
-        // 모바일에서 가로 스크롤 섹션 초기화 - 비활성화
-        // 모바일에서는 일반 세로 레이아웃 사용 (CSS에서 처리)
+        // 모바일에서 가로 스크롤 섹션 초기화
+        // ⚠️ 기존 cssText 방식은 카드의 inline background-color를 지워서(노란색/빨강/하늘색) 색이 깨졌음
         function initHorizontalScrollMobile() {
-            // 모바일에서는 JS 스타일 조작 없이 CSS만 사용
-            if (isMobile) {
-                console.log('✅ 모바일: 세로 레이아웃 사용 (JS 조작 없음)');
-                return;
-            }
+            if (!horizontalSection || !track || !horizontalWrapper) return;
+
+            if (!isMobile) return;
+
+            // 모바일: "세로 스크롤 → (섹션에서 멈춤) → 가로 이동" 속도 제어
+            // 카드 3장이면 500vh (첫 화면 100vh + 전환 2번 * 200vh)로 느리게(급 스크롤에도 다음 카드가 '살짝' 보이는 문제 완화)
+            const sectionVh = (totalCards - 1) * 200 + 100; // ex) 3 cards => 500vh
+            horizontalSection.style.setProperty('height', `${sectionVh}vh`, 'important');
+            horizontalSection.style.setProperty('min-height', `${sectionVh}vh`, 'important');
+            horizontalSection.style.setProperty('position', 'relative', 'important');
+            horizontalSection.style.setProperty('width', '100vw', 'important');
+            horizontalSection.style.setProperty('max-width', '100vw', 'important');
+            horizontalSection.style.setProperty('margin-left', 'calc(-50vw + 50%)', 'important');
+            horizontalSection.style.setProperty('margin-right', 'calc(-50vw + 50%)', 'important');
+            horizontalSection.style.setProperty('overflow', 'visible', 'important');
+
+            // sticky 대신 JS로 fixed/absolute를 전환해서 모바일에서도 확실히 "멈춤" 구현
+            horizontalWrapper.style.setProperty('position', 'absolute', 'important');
+            horizontalWrapper.style.setProperty('top', '0px', 'important');
+            horizontalWrapper.style.setProperty('left', '0px', 'important');
+            horizontalWrapper.style.setProperty('height', '100vh', 'important');
+            horizontalWrapper.style.setProperty('width', '100vw', 'important');
+            horizontalWrapper.style.setProperty('max-width', '100vw', 'important');
+            horizontalWrapper.style.setProperty('overflow', 'hidden', 'important');
+            horizontalWrapper.style.setProperty('background', 'transparent', 'important');
+
+            track.style.setProperty('display', 'flex', 'important');
+            track.style.setProperty('flex-direction', 'row', 'important');
+            track.style.setProperty('flex-wrap', 'nowrap', 'important');
+            track.style.setProperty('width', `${totalCards * 100}vw`, 'important');
+            track.style.setProperty('height', '100vh', 'important');
+            track.style.setProperty('will-change', 'transform', 'important');
+            // 스냅처럼 보이게(카드가 '꽉 찬 상태'로 머무르게)
+            track.style.setProperty('transition', 'transform 260ms cubic-bezier(0.22, 1, 0.36, 1)', 'important');
+            track.style.setProperty('transform', 'translate3d(0px, 0, 0)', 'important');
+
+            // 각 카드: 크기만 강제 (배경색은 건드리지 않음!)
+            const cards = track.querySelectorAll('.service-card');
+            cards.forEach(card => {
+                card.style.setProperty('width', '100vw', 'important');
+                card.style.setProperty('min-width', '100vw', 'important');
+                card.style.setProperty('max-width', '100vw', 'important');
+                card.style.setProperty('height', '100vh', 'important');
+                card.style.setProperty('min-height', '100vh', 'important');
+                card.style.setProperty('flex-shrink', '0', 'important');
+            });
+
+            console.log('✅ 모바일 가로 스크롤 초기화 완료 (pinning: fixed/absolute)');
         }
 
         // 초기화 실행
@@ -6157,9 +6207,36 @@ and glorify your Father in heaven.
         function updateHorizontalScroll() {
             if (!horizontalSection || !track) return;
             
-            // 모바일: 스크롤 조작 비활성화 (세로 스크롤만 사용)
-            if (isMobile) {
-                // 모바일에서는 JS 스크롤 조작 없이 일반 세로 스크롤
+            // 모바일: 세로 스크롤 → (섹션에서 고정) → 가로 이동
+            if (isMobile && horizontalWrapper) {
+                const scrollY = window.scrollY || window.pageYOffset || 0;
+                const start = horizontalSection.offsetTop;
+                const end = start + horizontalSection.offsetHeight - window.innerHeight;
+
+                if (end <= start) return;
+
+                if (scrollY < start) {
+                    horizontalWrapper.style.setProperty('position', 'absolute', 'important');
+                    horizontalWrapper.style.setProperty('top', '0px', 'important');
+                    horizontalWrapper.style.setProperty('left', '0px', 'important');
+                } else if (scrollY > end) {
+                    horizontalWrapper.style.setProperty('position', 'absolute', 'important');
+                    horizontalWrapper.style.setProperty('top', `${end - start}px`, 'important');
+                    horizontalWrapper.style.setProperty('left', '0px', 'important');
+                } else {
+                    horizontalWrapper.style.setProperty('position', 'fixed', 'important');
+                    horizontalWrapper.style.setProperty('top', '0px', 'important');
+                    horizontalWrapper.style.setProperty('left', '0px', 'important');
+                }
+
+                const progressRaw = Math.max(0, Math.min(1, (scrollY - start) / (end - start)));
+                // ✅ 부드러운 횡스크롤 느낌: 연속 이동 + easing
+                const progress = easeInOutCubic(progressRaw);
+                const translateXPx = -progress * (totalCards - 1) * window.innerWidth;
+                mobileTrackTargetX = translateXPx;
+                if (!mobileTrackRaf) {
+                    mobileTrackRaf = window.requestAnimationFrame(animateMobileTrack);
+                }
                 return;
             }
             
@@ -6184,8 +6261,49 @@ and glorify your Father in heaven.
             track.style.transform = `translate3d(${translateX}vw, 0, 0)`;
         }
         
-        // 모바일 터치 이벤트 - 스크롤 조작 비활성화
-        // 모바일에서는 일반 세로 스크롤만 사용하므로 터치 이벤트 불필요
+        // 모바일 터치 이벤트 처리
+        if (horizontalSection && track) {
+            horizontalSection.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+                isHorizontalScrolling = false;
+            }, { passive: true });
+            
+            horizontalSection.addEventListener('touchmove', (e) => {
+                if (!isHorizontalScrolling) {
+                    const deltaX = Math.abs(e.touches[0].clientX - touchStartX);
+                    const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
+                    isHorizontalScrolling = deltaX > deltaY && deltaX > 10;
+                }
+            }, { passive: true });
+            
+            horizontalSection.addEventListener('touchend', (e) => {
+                if (!isMobile) return;
+                
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                const deltaX = touchStartX - touchEndX;
+                const deltaY = touchStartY - touchEndY;
+                
+                if (isHorizontalScrolling && Math.abs(deltaX) > 50) {
+                    if (deltaX > 0 && currentCardIndex < totalCards - 1) {
+                        // 왼쪽으로 스와이프 = 다음 카드
+                        currentCardIndex++;
+                    } else if (deltaX < 0 && currentCardIndex > 0) {
+                        // 오른쪽으로 스와이프 = 이전 카드
+                        currentCardIndex--;
+                    }
+                    // 스와이프 시 해당 카드 위치로 "세로 스크롤"을 이동시켜 가로 이동이 자연스럽게 맞물리게 함
+                    if (horizontalSection) {
+                        const start = horizontalSection.offsetTop;
+                        const end = start + horizontalSection.offsetHeight - window.innerHeight;
+                        const targetProgress = totalCards <= 1 ? 0 : (currentCardIndex / (totalCards - 1));
+                        const targetY = start + (end - start) * targetProgress;
+                        window.scrollTo({ top: targetY, behavior: 'smooth' });
+                    }
+                }
+            }, { passive: true });
+        }
         
         // 화면 크기 변경 감지
         window.addEventListener('resize', () => {
