@@ -2280,6 +2280,13 @@
             height: 350vh;
         }
         
+        /* 데스크탑에서만 높이 증가 - 카드 체류 시간 증가 */
+        @media (min-width: 769px) {
+            .stacking-cards-container {
+                height: 500vh; /* 350vh → 500vh로 증가하여 더 긴 스크롤 거리 확보 */
+            }
+        }
+        
         .stacking-cards-wrapper {
             position: sticky;
             top: 0;
@@ -6550,128 +6557,187 @@ and glorify your Father in heaven.
                 return;
             }
             
-            // 데스크탑과 동일한 스크롤 진행도 계산
-            // 섹션이 뷰포트에 들어오자마자 카드 벗겨지기 시작
-            // sectionTop이 windowHeight에서 시작해서 0이 되면 (섹션이 상단에 붙으면) 스크롤 시작
-            // sectionTop이 -scrollableDistance가 되면 (섹션이 끝나면) 스크롤 완료
-            const scrollStart = windowHeight;
-            const scrollEnd = -scrollableDistance;
+            // 스크롤 진행도 계산 - 시작 지점을 늦춰서 카드가 더 늦게 벗겨지도록
+            // 섹션이 화면에 충분히 들어온 후에 시작하도록 조정
+            const scrollStart = windowHeight * 0.5; // 섹션이 50% 들어왔을 때 시작 (더 늦게)
+            const scrollEnd = -scrollableDistance * 0.5; // 끝나는 지점도 조정
             const currentPosition = sectionTop;
             
             // 진행도 계산: 0 (섹션 진입) ~ 1 (섹션 완료)
-            // 섹션이 화면에 들어오자마자 계산 시작
-            const scrollProgress = Math.max(0, Math.min(1, (scrollStart - currentPosition) / (scrollStart - scrollEnd)));
+            // 시작 지점을 늦춰서 카드가 더 늦게 벗겨지도록
+            const rawProgress = (scrollStart - currentPosition) / (scrollStart - scrollEnd);
+            const scrollProgress = Math.max(0, Math.min(1, rawProgress));
             
             // 모바일/데스크탑에 따른 기본 transform
             // 모바일: CSS에서 top: 50%, transform: translateX(-50%) translateY(-50%)로 설정됨
             const baseTransform = 'translate(-50%, -50%)';
 
-            // 5개 카드를 0~1 범위에 균등하게 분배 (각 카드당 0.2씩)
-            // Card 1 (Yellow) - 0~0.2
-            if (scrollProgress < 0.2) {
-                const p = scrollProgress / 0.2;
-                const eased = p * p; // easeIn
-                stackCard1.style.transform = `${baseTransform} translateY(${-eased * 300}px) rotate(${-eased * 5}deg) scale(${1 - eased * 0.1})`;
-                stackCard1.style.opacity = 1 - eased;
-                stackCard1.style.zIndex = 4;
+            // 5개 카드를 0~1 범위에 더 넓게 분배하여 각 카드의 체류 시간 증가
+            // 각 카드의 60-70% 구간에서 정지 상태 유지, 나머지에서 벗겨짐
+            
+            // Card 1 (Yellow) - 0~0.25 (더 긴 체류 시간)
+            if (scrollProgress < 0.25) {
+                const p = scrollProgress / 0.25;
+                // 처음 65%는 정지 상태, 나머지 35%에서 벗겨짐
+                if (p < 0.65) {
+                    // 정지 상태 - 카드가 완전히 보임
+                    stackCard1.style.transform = baseTransform;
+                    stackCard1.style.opacity = 1;
+                    stackCard1.style.zIndex = 5;
+                } else {
+                    // 벗겨지기 시작
+                    const p2 = (p - 0.65) / 0.35;
+                    const eased = p2 * p2; // easeIn
+                    stackCard1.style.transform = `${baseTransform} translateY(${-eased * 300}px) rotate(${-eased * 5}deg) scale(${1 - eased * 0.1})`;
+                    stackCard1.style.opacity = 1 - eased;
+                    stackCard1.style.zIndex = 4;
+                }
             } else {
                 stackCard1.style.transform = `${baseTransform} translateY(-300px) rotate(-5deg) scale(0.9)`;
                 stackCard1.style.opacity = 0;
                 stackCard1.style.zIndex = 1;
             }
 
-            // Card 2 (Red) - 0.2~0.4
-            if (scrollProgress < 0.2) {
+            // Card 2 (Red) - 0.25~0.5
+            if (scrollProgress < 0.25) {
                 stackCard2.style.transform = `${baseTransform} translateY(20px) rotate(2deg) scale(0.95)`;
                 stackCard2.style.opacity = 0.7;
                 stackCard2.style.zIndex = 3;
-            } else if (scrollProgress < 0.4) {
-                const p = (scrollProgress - 0.2) / 0.2;
-                const eased = p * p;
-                stackCard2.style.transform = `${baseTransform} translateY(${20 - eased * 320}px) rotate(${2 - eased * 7}deg) scale(${0.95 + p * 0.05 - eased * 0.1})`;
-                stackCard2.style.opacity = 1 - eased;
-                stackCard2.style.zIndex = 4;
+            } else if (scrollProgress < 0.5) {
+                const p = (scrollProgress - 0.25) / 0.25;
+                if (p < 0.65) {
+                    // 정지 상태
+                    stackCard2.style.transform = baseTransform;
+                    stackCard2.style.opacity = 1;
+                    stackCard2.style.zIndex = 5;
+                } else {
+                    // 벗겨지기 시작
+                    const p2 = (p - 0.65) / 0.35;
+                    const eased = p2 * p2;
+                    stackCard2.style.transform = `${baseTransform} translateY(${-eased * 300}px) rotate(${-eased * 5}deg) scale(${1 - eased * 0.1})`;
+                    stackCard2.style.opacity = 1 - eased;
+                    stackCard2.style.zIndex = 4;
+                }
             } else {
                 stackCard2.style.transform = `${baseTransform} translateY(-300px) rotate(-5deg) scale(0.9)`;
                 stackCard2.style.opacity = 0;
                 stackCard2.style.zIndex = 1;
             }
 
-            // Card 3 (Blue) - 0.2~0.4 (겹침), 0.4~0.6 (벗겨짐)
-            if (scrollProgress < 0.2) {
-                stackCard3.style.transform = `${baseTransform} translateY(40px) rotate(-2deg) scale(0.9)`;
-                stackCard3.style.opacity = 0.5;
-                stackCard3.style.zIndex = 2;
-            } else if (scrollProgress < 0.4) {
-                const p = (scrollProgress - 0.2) / 0.2;
-                stackCard3.style.transform = `${baseTransform} translateY(${40 - p * 20}px) rotate(${-2 + p * 2}deg) scale(${0.9 + p * 0.05})`;
-                stackCard3.style.opacity = 0.5 + p * 0.3;
-                stackCard3.style.zIndex = 3;
-            } else if (scrollProgress < 0.6) {
-                const p = (scrollProgress - 0.4) / 0.2;
-                const eased = p * p;
-                stackCard3.style.transform = `${baseTransform} translateY(${20 - eased * 320}px) rotate(${0 - eased * 5}deg) scale(${0.95 + p * 0.05 - eased * 0.1})`;
-                stackCard3.style.opacity = 1 - eased;
-                stackCard3.style.zIndex = 4;
+            // Card 3 (Blue) - 0.5~0.75
+            if (scrollProgress < 0.5) {
+                if (scrollProgress < 0.25) {
+                    stackCard3.style.transform = `${baseTransform} translateY(40px) rotate(-2deg) scale(0.9)`;
+                    stackCard3.style.opacity = 0.5;
+                    stackCard3.style.zIndex = 2;
+                } else {
+                    const p = (scrollProgress - 0.25) / 0.25;
+                    stackCard3.style.transform = `${baseTransform} translateY(${40 - p * 20}px) rotate(${-2 + p * 2}deg) scale(${0.9 + p * 0.05})`;
+                    stackCard3.style.opacity = 0.5 + p * 0.3;
+                    stackCard3.style.zIndex = 3;
+                }
+            } else if (scrollProgress < 0.75) {
+                const p = (scrollProgress - 0.5) / 0.25;
+                if (p < 0.65) {
+                    // 정지 상태
+                    stackCard3.style.transform = baseTransform;
+                    stackCard3.style.opacity = 1;
+                    stackCard3.style.zIndex = 5;
+                } else {
+                    // 벗겨지기 시작
+                    const p2 = (p - 0.65) / 0.35;
+                    const eased = p2 * p2;
+                    stackCard3.style.transform = `${baseTransform} translateY(${-eased * 300}px) rotate(${-eased * 5}deg) scale(${1 - eased * 0.1})`;
+                    stackCard3.style.opacity = 1 - eased;
+                    stackCard3.style.zIndex = 4;
+                }
             } else {
                 stackCard3.style.transform = `${baseTransform} translateY(-300px) rotate(-5deg) scale(0.9)`;
                 stackCard3.style.opacity = 0;
                 stackCard3.style.zIndex = 1;
             }
 
-            // Card 4 (Green) - 0.2~0.6 (겹침), 0.6~0.8 (벗겨짐)
-            if (scrollProgress < 0.2) {
-                stackCard4.style.transform = `${baseTransform} translateY(60px) rotate(-3deg) scale(0.85)`;
-                stackCard4.style.opacity = 0.3;
-                stackCard4.style.zIndex = 1;
-            } else if (scrollProgress < 0.4) {
-                const p = (scrollProgress - 0.2) / 0.2;
-                stackCard4.style.transform = `${baseTransform} translateY(${60 - p * 20}px) rotate(${-3 + p * 3}deg) scale(${0.85 + p * 0.05})`;
-                stackCard4.style.opacity = 0.3 + p * 0.2;
-                stackCard4.style.zIndex = 2;
-            } else if (scrollProgress < 0.6) {
-                const p = (scrollProgress - 0.4) / 0.2;
-                stackCard4.style.transform = `${baseTransform} translateY(${40 - p * 20}px) rotate(${0 - p * 2}deg) scale(${0.9 + p * 0.05})`;
-                stackCard4.style.opacity = 0.5 + p * 0.3;
-                stackCard4.style.zIndex = 3;
-            } else if (scrollProgress < 0.8) {
-                const p = (scrollProgress - 0.6) / 0.2;
-                const eased = p * p;
-                stackCard4.style.transform = `${baseTransform} translateY(${20 - eased * 320}px) rotate(${-2 - eased * 3}deg) scale(${0.95 + p * 0.05 - eased * 0.1})`;
-                stackCard4.style.opacity = 1 - eased;
-                stackCard4.style.zIndex = 4;
+            // Card 4 (Green) - 0.75~0.95
+            if (scrollProgress < 0.75) {
+                if (scrollProgress < 0.5) {
+                    if (scrollProgress < 0.25) {
+                        stackCard4.style.transform = `${baseTransform} translateY(60px) rotate(-3deg) scale(0.85)`;
+                        stackCard4.style.opacity = 0.3;
+                        stackCard4.style.zIndex = 1;
+                    } else {
+                        const p = (scrollProgress - 0.25) / 0.25;
+                        stackCard4.style.transform = `${baseTransform} translateY(${60 - p * 20}px) rotate(${-3 + p * 3}deg) scale(${0.85 + p * 0.05})`;
+                        stackCard4.style.opacity = 0.3 + p * 0.2;
+                        stackCard4.style.zIndex = 2;
+                    }
+                } else {
+                    const p = (scrollProgress - 0.5) / 0.25;
+                    stackCard4.style.transform = `${baseTransform} translateY(${40 - p * 20}px) rotate(${0 - p * 2}deg) scale(${0.9 + p * 0.05})`;
+                    stackCard4.style.opacity = 0.5 + p * 0.3;
+                    stackCard4.style.zIndex = 3;
+                }
+            } else if (scrollProgress < 0.95) {
+                const p = (scrollProgress - 0.75) / 0.2;
+                if (p < 0.65) {
+                    // 정지 상태
+                    stackCard4.style.transform = baseTransform;
+                    stackCard4.style.opacity = 1;
+                    stackCard4.style.zIndex = 5;
+                } else {
+                    // 벗겨지기 시작
+                    const p2 = (p - 0.65) / 0.35;
+                    const eased = p2 * p2;
+                    stackCard4.style.transform = `${baseTransform} translateY(${-eased * 300}px) rotate(${-eased * 5}deg) scale(${1 - eased * 0.1})`;
+                    stackCard4.style.opacity = 1 - eased;
+                    stackCard4.style.zIndex = 4;
+                }
             } else {
                 stackCard4.style.transform = `${baseTransform} translateY(-300px) rotate(-5deg) scale(0.9)`;
                 stackCard4.style.opacity = 0;
                 stackCard4.style.zIndex = 1;
             }
 
-            // Card 5 (Purple) - 0.2~0.8 (겹침), 0.8~1.0 (정면)
-            if (scrollProgress < 0.2) {
-                stackCard5.style.transform = `${baseTransform} translateY(80px) rotate(2deg) scale(0.8)`;
-                stackCard5.style.opacity = 0.2;
-                stackCard5.style.zIndex = 0;
-            } else if (scrollProgress < 0.4) {
-                const p = (scrollProgress - 0.2) / 0.2;
-                stackCard5.style.transform = `${baseTransform} translateY(${80 - p * 20}px) rotate(${2 - p * 2}deg) scale(${0.8 + p * 0.05})`;
-                stackCard5.style.opacity = 0.2 + p * 0.2;
-                stackCard5.style.zIndex = 1;
-            } else if (scrollProgress < 0.6) {
-                const p = (scrollProgress - 0.4) / 0.2;
-                stackCard5.style.transform = `${baseTransform} translateY(${60 - p * 20}px) rotate(${0 - p * 2}deg) scale(${0.85 + p * 0.05})`;
-                stackCard5.style.opacity = 0.4 + p * 0.3;
-                stackCard5.style.zIndex = 2;
-            } else if (scrollProgress < 0.8) {
-                const p = (scrollProgress - 0.6) / 0.2;
-                stackCard5.style.transform = `${baseTransform} translateY(${40 - p * 20}px) rotate(${-2 + p * 2}deg) scale(${0.9 + p * 0.05})`;
-                stackCard5.style.opacity = 0.7 + p * 0.2;
-                stackCard5.style.zIndex = 3;
+            // Card 5 (Purple) - 0.95~1.0 (마지막 카드)
+            if (scrollProgress < 0.95) {
+                if (scrollProgress < 0.75) {
+                    if (scrollProgress < 0.5) {
+                        if (scrollProgress < 0.25) {
+                            stackCard5.style.transform = `${baseTransform} translateY(80px) rotate(2deg) scale(0.8)`;
+                            stackCard5.style.opacity = 0.2;
+                            stackCard5.style.zIndex = 0;
+                        } else {
+                            const p = (scrollProgress - 0.25) / 0.25;
+                            stackCard5.style.transform = `${baseTransform} translateY(${80 - p * 20}px) rotate(${2 - p * 2}deg) scale(${0.8 + p * 0.05})`;
+                            stackCard5.style.opacity = 0.2 + p * 0.2;
+                            stackCard5.style.zIndex = 1;
+                        }
+                    } else {
+                        const p = (scrollProgress - 0.5) / 0.25;
+                        stackCard5.style.transform = `${baseTransform} translateY(${60 - p * 20}px) rotate(${0 - p * 2}deg) scale(${0.85 + p * 0.05})`;
+                        stackCard5.style.opacity = 0.4 + p * 0.3;
+                        stackCard5.style.zIndex = 2;
+                    }
+                } else {
+                    const p = (scrollProgress - 0.75) / 0.2;
+                    stackCard5.style.transform = `${baseTransform} translateY(${40 - p * 20}px) rotate(${-2 + p * 2}deg) scale(${0.9 + p * 0.05})`;
+                    stackCard5.style.opacity = 0.7 + p * 0.2;
+                    stackCard5.style.zIndex = 3;
+                }
             } else {
-                const p = (scrollProgress - 0.8) / 0.2;
-                const eased = 1 - Math.pow(1 - p, 3); // easeOut
-                stackCard5.style.transform = `${baseTransform} translateY(${20 - eased * 20}px) rotate(${0 - eased * 2}deg) scale(${0.95 + eased * 0.05})`;
-                stackCard5.style.opacity = 0.9 + eased * 0.1;
-                stackCard5.style.zIndex = 4;
+                const p = (scrollProgress - 0.95) / 0.05;
+                if (p < 0.8) {
+                    // 정지 상태 - 마지막 카드는 더 오래 보임 (80% 구간)
+                    stackCard5.style.transform = baseTransform;
+                    stackCard5.style.opacity = 1;
+                    stackCard5.style.zIndex = 5;
+                } else {
+                    // 벗겨지기 시작
+                    const p2 = (p - 0.8) / 0.2;
+                    const eased = 1 - Math.pow(1 - p2, 3); // easeOut
+                    stackCard5.style.transform = `${baseTransform} translateY(${-eased * 20}px) rotate(${-eased * 2}deg) scale(${1 - eased * 0.05})`;
+                    stackCard5.style.opacity = 1 - eased * 0.3;
+                    stackCard5.style.zIndex = 4;
+                }
             }
         }
 
