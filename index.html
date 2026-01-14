@@ -4537,6 +4537,9 @@ and glorify your Father in heaven.
             lightbox.style.display = 'flex';
             document.body.style.overflow = 'hidden';
             
+            // 히스토리 상태 추가 (뒤로가기 버튼 처리)
+            history.pushState({ modal: 'lightbox', index: index }, '', window.location.href);
+            
             updateLightboxNavigation();
         }
         
@@ -5572,6 +5575,9 @@ and glorify your Father in heaven.
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
             
+            // 히스토리 상태 추가 (뒤로가기 버튼 처리)
+            history.pushState({ modal: 'notice', index: index }, '', window.location.href);
+            
             // 부드러운 애니메이션 (double RAF로 최적화)
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
@@ -5619,6 +5625,9 @@ and glorify your Father in heaven.
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
             
+            // 히스토리 상태 추가 (뒤로가기 버튼 처리)
+            history.pushState({ modal: 'prayer', index: index }, '', window.location.href);
+            
             // 부드러운 애니메이션 (double RAF로 최적화)
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
@@ -5658,6 +5667,37 @@ and glorify your Father in heaven.
                 if (modal.style.display === 'flex') {
                     closeContentModal();
                 }
+            }
+        });
+        
+        // 브라우저 뒤로가기 버튼 처리 (모달 닫기)
+        window.addEventListener('popstate', function(event) {
+            // 공지사항/기도제목 모달이 열려있으면 닫기
+            const contentModal = document.getElementById('content-modal');
+            if (contentModal && contentModal.style.display === 'flex') {
+                // 모달만 닫기 (히스토리는 이미 popstate로 처리됨)
+                const modalContentEl = contentModal.querySelector('.modal-content');
+                contentModal.classList.remove('modal-open');
+                modalContentEl.style.transform = 'scale(0.85) translateY(20px)';
+                modalContentEl.style.opacity = '0';
+                contentModal.style.background = 'rgba(0, 0, 0, 0)';
+                contentModal.style.backdropFilter = 'blur(0px)';
+                
+                setTimeout(() => {
+                    contentModal.style.display = 'none';
+                    document.body.style.overflow = '';
+                    modalContentEl.style.transform = 'scale(0.85) translateY(20px)';
+                    modalContentEl.style.opacity = '0';
+                }, 400);
+            }
+            
+            // 갤러리 라이트박스가 열려있으면 닫기
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox && lightbox.style.display !== 'none' && lightbox.style.display !== '') {
+                // 라이트박스만 닫기 (히스토리는 이미 popstate로 처리됨)
+                lightbox.style.display = 'none';
+                document.body.style.overflow = '';
+                lightboxIsDragging = false;
             }
         });
         
