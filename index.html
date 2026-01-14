@@ -16,7 +16,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.xn--9d0bk1sg8dc8rz8bl7s.kr/">
     <meta property="og:title" content="부천침례교회">
-    <meta property="og:description" content="살리는 빛 부천교회">
+    <meta property="og:description" content="살리는 빛 부천침례교회">
     <meta property="og:image" content="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/001.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -28,7 +28,7 @@
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://www.xn--9d0bk1sg8dc8rz8bl7s.kr/">
     <meta property="twitter:title" content="부천침례교회">
-    <meta property="twitter:description" content="살리는 빛 부천교회">
+    <meta property="twitter:description" content="살리는 빛 부천침례교회">
     <meta property="twitter:image" content="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/001.jpg">
     
     <!-- Favicon -->
@@ -73,6 +73,36 @@
             scroll-behavior: auto;
         }
         
+        /* 데스크탑 헤더 - 잘림 방지 및 z-index 조정 */
+        @media (min-width: 769px) {
+            .main-header {
+                overflow: visible !important;
+                z-index: 9999 !important;
+                position: fixed !important;
+            }
+            
+            .main-header > div {
+                overflow: visible !important;
+            }
+            
+            #heroSection {
+                z-index: 1 !important;
+                position: relative !important;
+            }
+            
+            /* 데스크탑에서는 내비게이션 섹션 보이기 */
+            #categorySliderSection,
+            section.category-slider-section {
+                display: block !important;
+                visibility: visible !important;
+                height: auto !important;
+                max-height: none !important;
+                overflow: visible !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+            }
+        }
+        
         html {
             scroll-behavior: auto;
         }
@@ -90,7 +120,7 @@
             }
             
             .main-header {
-                padding: 6px 16px !important;
+                padding: 4.2px 11.2px !important;
             }
             
             .header-logo, .header-logo-right {
@@ -177,6 +207,8 @@
                 margin-right: 0 !important;
                 padding-left: 0 !important;
                 padding-right: 0 !important;
+                position: relative !important;
+                z-index: 100 !important;
             }
             
             #heroSection img,
@@ -200,12 +232,40 @@
                 display: none !important;
             }
             
+            /* 히어로 바로 밑 내비게이션 섹션 숨기기 (모바일) */
+            #categorySliderSection,
+            section.category-slider-section,
+            .category-slider-section,
+            #categorySlider,
+            .category-slider-container,
+            section#categorySliderSection {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+                max-height: 0 !important;
+                overflow: hidden !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+            }
+            
+            #categorySliderSection *,
+            section.category-slider-section *,
+            .category-slider-section *,
+            #categorySlider *,
+            .category-slider-container * {
+                display: none !important;
+            }
+            
             /* 가로 스크롤 섹션 스타일은 하단 @media 블록에서 통합 관리 */
             
             /* 대형 문구 섹션 모바일 */
             #introStatement {
                 font-size: 24px !important;
                 padding: 20px !important;
+                position: relative !important;
+                z-index: 1 !important;
             }
             
             /* 교회 소개 섹션 모바일 */
@@ -213,17 +273,54 @@
                 padding: 0 !important;
                 margin-bottom: 0 !important;
                 min-height: auto !important;
+                position: relative !important;
+                z-index: 1 !important;
+            }
+            
+            #about > div.relative.z-10 {
+                padding-top: 80px !important;
+                padding-bottom: 80px !important;
             }
             
             #about h2 {
-                font-size: 2rem !important;
-                margin-bottom: 12px !important;
+                font-size: 30px !important;
+                margin-bottom: 32px !important;
             }
             
             #about p {
                 font-size: 16px !important;
-                line-height: 1.3 !important;
-                margin-bottom: 6px !important;
+                line-height: 1.6 !important;
+                margin-bottom: 8px !important;
+            }
+            
+            /* 대형 인용문 섹션 모바일 - 성경 구절 섹션만 적용 */
+            section.py-20:not(#notice):not(#prayer) {
+                padding: 30px 20px !important;
+                background-color: #E3F2FD !important;
+            }
+            
+            /* 공지사항 섹션 배경색 강제 적용 (데스크탑과 동일) */
+            #notice {
+                background-color: #EFEAE3 !important;
+            }
+            
+            /* 기도제목 섹션 배경색 강제 적용 (데스크탑과 동일) */
+            #prayer {
+                background-color: #4A7C59 !important;
+            }
+            
+            #quoteStatement {
+                font-size: 24px !important;
+            }
+            
+            #quoteStatement span:first-child {
+                font-weight: 700 !important;
+                font-size: 28px !important;
+            }
+            
+            #quoteStatement span:last-child {
+                font-weight: 300 !important;
+                font-size: 18px !important;
             }
             
             #about .w-full.max-w-3xl {
@@ -474,11 +571,11 @@
             
             /* 유튜브 섹션 모바일 */
             #sermon {
-                padding: 20px 15px !important;
+                padding: 60px 15px !important;
             }
             
             #sermon h2 {
-                font-size: 2rem !important;
+                font-size: 30px !important;
                 margin-bottom: 16px !important;
             }
             
@@ -500,7 +597,7 @@
             }
             
             #gallery h2 {
-                font-size: 20px !important;
+                font-size: 30px !important;
                 margin-bottom: 4px !important;
             }
             
@@ -603,38 +700,77 @@
                 right: 5px !important;
             }
             
-            /* 공지사항/기도제목 모바일 */
+            /* 공지사항/기도제목 모바일 - 2개씩 2줄 배치 (4개 표시, 항상 동일 크기) */
             .notice-carousel-wrapper,
             .prayer-carousel-wrapper {
                 padding: 15px 10px !important;
+                overflow: hidden !important;
+                min-height: 438px !important;
+                height: 438px !important;
+            }
+            
+            .notice-carousel-track,
+            .prayer-carousel-track {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 8px !important;
+                justify-content: flex-start !important;
+                align-content: flex-start !important;
+                transition: transform 0.5s ease !important;
+                min-height: 408px !important;
+                height: 408px !important;
             }
             
             .notice-card,
             .prayer-card {
-                padding: 16px 14px !important;
-                margin: 0 8px !important;
-                min-width: calc(100vw - 40px) !important;
-                max-width: calc(100vw - 40px) !important;
+                padding: 14px 12px !important;
+                margin: 0 !important;
+                width: calc(50% - 4px) !important;
+                min-width: calc(50% - 4px) !important;
+                max-width: calc(50% - 4px) !important;
+                height: 200px !important;
+                min-height: 200px !important;
+                max-height: 200px !important;
+                flex: 0 0 calc(50% - 4px) !important;
+                box-sizing: border-box !important;
+                flex-shrink: 0 !important;
             }
             
             .notice-card h3,
             .prayer-card h3 {
-                font-size: 18px !important;
-                margin-bottom: 8px !important;
+                font-size: 14px !important;
+                margin-bottom: 6px !important;
+                line-height: 1.3 !important;
             }
             
             .notice-card p,
             .prayer-card p {
-                font-size: 14px !important;
+                font-size: 11px !important;
                 line-height: 1.4 !important;
                 margin-bottom: 4px !important;
             }
             
-            .notice-nav-btn,
-            .prayer-nav-btn {
-                width: 40px !important;
-                height: 40px !important;
-                font-size: 18px !important;
+            /* 화살표 버튼 표시 (모바일에서 위치 조정) */
+            .notice-carousel-btn,
+            .prayer-carousel-btn {
+                display: none !important;
+                border-radius: 50% !important;
+            }
+            
+            .notice-carousel-prev,
+            .prayer-carousel-prev {
+                left: 5px !important;
+            }
+            
+            .notice-carousel-next,
+            .prayer-carousel-next {
+                right: 5px !important;
+            }
+            
+            /* 페이지네이션 표시 */
+            .notice-pagination,
+            .prayer-pagination {
+                display: flex !important;
             }
             
             /* 비전 섹션 모바일 */
@@ -643,7 +779,7 @@
             }
             
             #vision h2 {
-                font-size: 20px !important;
+                font-size: 30px !important;
                 margin-bottom: 8px !important;
                 line-height: 1.3 !important;
             }
@@ -659,45 +795,66 @@
                 padding: 0 10px !important;
             }
             
-            /* 예배시간 섹션 모바일 */
+            /* 예배시간 섹션 모바일 - 데스크탑 형식 유지, 글씨 크기만 축소 */
             .worship-content {
                 padding: 20px 15px !important;
             }
             
             .worship-title {
-                font-size: 32px !important;
-                margin-bottom: 16px !important;
+                font-size: 30px !important;
+                margin-bottom: 12px !important;
+                letter-spacing: 4px !important;
             }
             
+            /* 2개씩 가로 배치 (수요/금요, 학생부/유치부) */
             .worship-items-row {
-                flex-direction: column !important;
-                gap: 12px !important;
+                flex-direction: row !important;
+                gap: 24px !important;
+                flex-wrap: nowrap !important;
+                justify-content: center !important;
+                margin-bottom: 20px !important;
             }
             
-            .worship-item {
-                width: 100% !important;
-                padding: 16px !important;
+            .worship-items-row .worship-item {
+                width: auto !important;
+                padding: 0 !important;
+                flex: 0 0 auto !important;
             }
             
-            .worship-item .time {
-                font-size: 28px !important;
+            /* 글씨 크기만 축소 */
+            .worship-items-row .worship-item .time {
+                font-size: 20px !important;
             }
             
-            .worship-item .name {
-                font-size: 18px !important;
+            .worship-items-row .worship-item .name {
+                font-size: 14px !important;
             }
             
-            .worship-item .day {
-                font-size: 12px !important;
+            .worship-items-row .worship-item .day {
+                font-size: 10px !important;
             }
             
-            /* 오시는 길 섹션 모바일 */
+            /* 주일예배 단독 아이템도 글씨 크기 축소 */
+            .worship-item:not(.worship-items-row .worship-item) .time {
+                font-size: 24px !important;
+            }
+            
+            .worship-item:not(.worship-items-row .worship-item) .name {
+                font-size: 16px !important;
+            }
+            
+            .worship-item:not(.worship-items-row .worship-item) .day {
+                font-size: 11px !important;
+            }
+            
+            /* 오시는 길 섹션 모바일 - 미니멀 모던 디자인 */
             #location {
                 padding: 20px 15px !important;
+                background-color: #FFFFFF !important;
             }
             
             #location h2 {
-                font-size: 24px !important;
+                font-size: 30px !important;
                 margin-bottom: 12px !important;
             }
             
@@ -705,21 +862,193 @@
                 font-size: 14px !important;
             }
             
+            /* 지도 + 교통정보 그리드 모바일 - 세로 배치 */
+            #location .grid.grid-cols-1.lg\\:grid-cols-2 {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 16px !important;
+            }
+            
+            /* 지도 모바일 */
+            #location .rounded-2xl.aspect-square {
+                width: 100% !important;
+                aspect-ratio: 1 !important;
+                margin-bottom: 0 !important;
+            }
+            
+            /* 교통 정보 컨테이너 모바일 - 미니멀 모던 디자인 */
+            #location .location-transport-container {
+                display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: wrap !important;
+                gap: 12px !important;
+                align-items: flex-start !important;
+            }
+            
+            /* 지하철/버스 카드 모바일 - 한 줄에 2개 배치, 작은 직사각형 */
+            #location .location-transport-container > div.bg-white.rounded-2xl:not(.grid) {
+                flex: 0 0 calc(50% - 6px) !important;
+                width: calc(50% - 6px) !important;
+                max-width: calc(50% - 6px) !important;
+                padding: 16px !important;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+                border: 1px solid rgba(0, 0, 0, 0.05) !important;
+                transition: all 0.2s ease !important;
+                height: auto !important;
+                margin: 0 !important;
+            }
+            
+            /* 길안내 버튼 그리드 - 전체 너비로 아래 배치 */
+            #location .location-transport-container > div.grid.grid-cols-3 {
+                flex: 0 0 100% !important;
+                width: 100% !important;
+                display: grid !important;
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 8px !important;
+                margin-top: 0 !important;
+            }
+            
+            /* 카드 내부 아이콘 모바일 */
+            #location .w-16.h-16.rounded-full {
+                width: 40px !important;
+                height: 40px !important;
+                min-width: 40px !important;
+                min-height: 40px !important;
+            }
+            
+            #location .w-16.h-16.rounded-full span {
+                font-size: 20px !important;
+            }
+            
+            #location .w-16.h-16.rounded-full svg {
+                width: 20px !important;
+                height: 20px !important;
+            }
+            
+            /* 카드 내부 텍스트 모바일 */
+            #location .flex.items-center.gap-5 {
+                gap: 10px !important;
+                margin-bottom: 10px !important;
+            }
+            
+            #location h3.text-2xl {
+                font-size: 16px !important;
+                margin: 0 !important;
+                font-weight: 700 !important;
+            }
+            
+            #location .flex.items-center.gap-5 .text-gray-500 {
+                font-size: 12px !important;
+                margin: 0 !important;
+            }
+            
+            #location .text-lg {
+                font-size: 13px !important;
+                line-height: 1.5 !important;
+            }
+            
+            #location .text-gray-700 {
+                font-size: 13px !important;
+            }
+            
+            #location strong.text-gray-900 {
+                font-size: 13px !important;
+                font-weight: 600 !important;
+            }
+            
+            #location .text-gray-500:not(.flex.items-center.gap-5 .text-gray-500) {
+                font-size: 12px !important;
+            }
+            
+            /* 길안내 버튼 그리드 모바일 - 깔끔하게 한 줄에 3개 */
+            #location .grid.grid-cols-3 {
+                display: grid !important;
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 8px !important;
+                margin-top: 16px !important;
+                width: 100% !important;
+            }
+            
+            #location .grid.grid-cols-3 a {
+                padding: 12px 8px !important;
+                font-size: 13px !important;
+                border-radius: 12px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                gap: 6px !important;
+            }
+            
+            #location .grid.grid-cols-3 a svg {
+                width: 16px !important;
+                height: 16px !important;
+            }
+            
             /* 연락처 섹션 모바일 */
             #contact {
-                padding: 20px 15px !important;
+                padding: 40px 15px !important;
             }
             
             #contact h2 {
                 font-size: 20px !important;
                 line-height: 1.4 !important;
-                margin-bottom: 16px !important;
+                margin-bottom: 20px !important;
             }
             
             #contact a {
                 font-size: 16px !important;
                 padding: 12px 24px !important;
-                margin-top: 16px !important;
+                margin-top: 20px !important;
+            }
+            
+            /* 푸터 모바일 - 화이트 미니멀 모던 디자인 */
+            footer {
+                background-color: #FFFFFF !important;
+                padding: 32px 20px !important;
+            }
+            
+            /* 소셜 미디어 모바일 - 한 줄로 가로 나열 */
+            footer .flex.items-center.gap-4 {
+                flex-direction: row !important;
+                align-items: center !important;
+                gap: 16px !important;
+                margin-top: 0 !important;
+                flex-wrap: nowrap !important;
+            }
+            
+            /* 소셜 미디어 링크 모바일 - 가로 배치 강제 */
+            footer .flex.items-center.gap-4 > a {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: center !important;
+                white-space: nowrap !important;
+            }
+            
+            footer h3 {
+                font-size: 18px !important;
+                margin-bottom: 16px !important;
+            }
+            
+            footer .text-gray-600 {
+                font-size: 13px !important;
+            }
+            
+            footer .text-gray-500 {
+                font-size: 11px !important;
+            }
+            
+            footer .text-gray-400 {
+                font-size: 10px !important;
+            }
+            
+            footer .flex.items-center.gap-3 a,
+            footer .flex.items-center.gap-4 a {
+                font-size: 13px !important;
+            }
+            
+            footer .w-8.h-8 {
+                width: 32px !important;
+                height: 32px !important;
             }
             
             /* 카테고리 슬라이더 모바일 */
@@ -1095,6 +1424,7 @@
             margin-left: 2cm;
         }
         
+        
         .church-name {
             font-size: 20px;
             font-weight: bold;
@@ -1156,7 +1486,7 @@
             
             #vision h2.reveal-text {
                 word-break: keep-all !important;
-                font-size: 28px !important;
+                font-size: 30px !important;
             }
             
             /* ========== 가로 스크롤 카드 섹션 (모바일) - 세로스크롤→가로이동 ========== */
@@ -1299,37 +1629,29 @@
             }
             
             /* ========================================
-               간증 섹션 모바일 - 완벽 최적화 버전
+               간증 섹션 모바일 - 여백 최소화 버전
                ======================================== */
             
-            /* 컨테이너 - 스크롤 공간 최소화 (5개 카드에 딱 맞게) */
+            /* 컨테이너 - 여백 최소화 */
             section#testimonials.stacking-cards-container {
                 display: block !important;
-                height: 180vh !important;
-                min-height: 180vh !important;
+                height: 100vh !important;
+                min-height: 100vh !important;
                 position: relative !important;
                 background: #fff !important;
                 overflow: visible !important;
+                margin-bottom: 0 !important;
+                padding-bottom: 0 !important;
             }
             
-            /* 래퍼 - 화면에 고정 (sticky 필수) */
+            /* 래퍼 */
             section#testimonials .stacking-cards-wrapper {
-                position: -webkit-sticky !important;
-                position: sticky !important;
-                top: 0 !important;
-                left: 0 !important;
-                right: 0 !important;
+                position: relative !important;
                 height: 100vh !important;
-                height: 100dvh !important;
-                width: 100% !important;
-                max-width: 100% !important;
                 display: block !important;
                 padding: 0 !important;
                 margin: 0 !important;
                 overflow: visible !important;
-                background: #fff !important;
-                will-change: transform !important;
-                z-index: 1 !important;
             }
             
             /* 타이틀 박스 - 중앙 정렬, 내부는 이미지 너비에 맞춤 */
@@ -1380,23 +1702,21 @@
                 text-align: left !important;
             }
             
-            /* 타이틀 - 세 줄로 표시, 줄간격 훨씬 줄임 */
+            /* 타이틀 - 세 줄로 표시, 줄간격 줄임 */
             section#testimonials .testimonial-title-box h2 {
                 display: block !important;
-                font-size: 36px !important;
+                font-size: 30px !important;
                 line-height: 0.75 !important;
                 margin: 0 0 30px 0 !important;
                 text-align: left !important;
             }
             
-            /* 데스크탑 애니메이션 유지, 모바일 스타일만 오버라이드 */
             section#testimonials .testimonial-title-box h2 .testimonial-slide {
                 display: block !important;
                 white-space: normal !important;
                 font-size: 36px !important;
                 line-height: 0.75 !important;
                 margin-top: -5px !important;
-                /* opacity는 데스크탑 애니메이션이 제어하므로 !important 제거 */
             }
             
             section#testimonials .testimonial-title-box h2 .testimonial-slide:first-of-type {
@@ -1422,15 +1742,14 @@
                 max-width: 320px !important;
                 height: auto !important;
                 min-height: 280px !important;
-                padding: 18px !important;
+                padding: 15px !important;
                 border-radius: 16px !important;
                 box-shadow: 0 6px 24px rgba(0,0,0,0.12) !important;
-                /* transform은 JS가 제어 */
             }
             
             /* 카드 내부 요소 */
             section#testimonials .stack-card .flex {
-                margin-bottom: 8px !important;
+                margin-bottom: 6px !important;
             }
             
             section#testimonials .stack-card .text-6xl {
@@ -1446,16 +1765,24 @@
             section#testimonials .stack-card blockquote {
                 font-size: 12px !important;
                 line-height: 1.5 !important;
-                margin-top: 6px !important;
-                margin-bottom: 10px !important;
+                margin-top: 4px !important;
+                margin-bottom: 6px !important;
             }
             
             section#testimonials .stack-card .text-xl {
                 font-size: 14px !important;
+                margin-bottom: 2px !important;
             }
             
             section#testimonials .stack-card .text-sm {
                 font-size: 11px !important;
+                margin-bottom: 0 !important;
+            }
+            
+            /* 예배시간 섹션 - 간증 섹션 바로 아래 붙이기 */
+            section#worship-times.worship-section {
+                margin-top: 0 !important;
+                padding-top: 20px !important;
             }
         }
         
@@ -1716,10 +2043,11 @@
         }
         
         /* 호버로 드롭다운 열기 */
-        .nav-dropdown:hover .nav-dropdown-menu {
+        /* 호버로 드롭다운 열기 비활성화 - JavaScript로만 제어 */
+        /* .nav-dropdown:hover .nav-dropdown-menu {
             display: block !important;
             animation: dropdownFade 0.2s ease;
-        }
+        } */
         
         .nav-dropdown:hover .nav-dropdown-btn svg {
             transform: rotate(180deg);
@@ -2032,6 +2360,30 @@
             font-weight: 400;
         }
     </style>
+    
+    <!-- 모바일에서 내비게이션 섹션 즉시 삭제 (head에서 실행) -->
+    <script>
+        (function() {
+            function removeCategorySlider() {
+                if (window.innerWidth <= 768) {
+                    const slider = document.getElementById('categorySliderSection');
+                    if (slider) {
+                        slider.remove();
+                    }
+                }
+            }
+            
+            // DOM이 준비되면 즉시 실행
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', removeCategorySlider);
+            } else {
+                removeCategorySlider();
+            }
+            
+            // 추가 보장
+            window.addEventListener('load', removeCategorySlider);
+        })();
+    </script>
 </head>
 <body class="bg-white text-black" style="padding-top: 0; margin: 0;">
 
@@ -2049,7 +2401,7 @@
                 </div>
                 <a href="#heroSection" class="church-name flex items-center" style="text-decoration: none; cursor: pointer;">
                     <span class="text-xs md:text-sm" style="font-family: 'Noto Sans KR', sans-serif; font-weight: 400; color: #FFB800;">살리는 빛</span>
-                    <span class="text-base md:text-xl font-bold ml-2" style="color: white;">부천교회</span>
+                    <span class="text-base md:text-xl font-bold ml-2" style="color: white;">부천침례교회</span>
                 </a>
             </div>
             
@@ -2188,7 +2540,7 @@
     </div>
 
     <!-- 3. 히어로 섹션 - Figma 디자인 정확히 반영 (1920 x 1006) -->
-    <section id="heroSection" class="relative w-full" style="height: calc(100vh - 40px); max-height: calc(100vh - 40px); overflow: hidden; width: 100%; margin: 0; padding: 0; margin-top: 40px; background-color: #000000; position: relative;">
+    <section id="heroSection" class="relative w-full" style="height: calc(100vh - 40px); max-height: calc(100vh - 40px); overflow: hidden; width: 100%; margin: 0; padding: 0; margin-top: 40px; background-color: #000000; position: relative; z-index: 100;">
         <!-- 배경 이미지 슬라이드쇼 -->
         <div id="heroSlideshow" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;">
             <img class="hero-slide active" src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/001.jpg" alt="부천교회 슬라이드 1" fetchpriority="high" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 1; transition: opacity 1s ease-in-out;">
@@ -2336,8 +2688,21 @@ and glorify your Father in heaven.
     </style>
 
     <!-- 4-1. 유튜브 재생목록 섹션 (히어로 바로 밑) - YouTube 화면만 -->
-    <section id="sermon" class="relative px-4 md:px-8" style="background: #FFFFFF; padding-top: 40px; padding-bottom: 40px;">
+    <section id="sermon" class="relative px-4 md:px-8" style="background: #FFFFFF; padding-top: 80px; padding-bottom: 80px; z-index: 1;">
         <div class="max-w-6xl mx-auto">
+            <!-- 채널 정보 - 영상 위로 이동 (제목) -->
+            <div class="flex items-center gap-4 mb-8 fade-in">
+                <div class="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                    </svg>
+                </div>
+                <div>
+                    <p style="font-family: 'Noto Sans KR', sans-serif; font-weight: 500; font-size: 18px; color: #333;">살리는빛부천침례교회</p>
+                    <p style="font-family: 'Inter', sans-serif; font-size: 14px; color: #888;">매주 주일예배 설교 업로드</p>
+                </div>
+            </div>
+            
             <!-- 영상 컨테이너 -->
             <div class="relative bg-black rounded-2xl md:rounded-3xl overflow-hidden" style="box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
                 <!-- 16:9 비율 유지 -->
@@ -2354,20 +2719,9 @@ and glorify your Father in heaven.
                 </div>
             </div>
             
-            <!-- 하단 정보 - 미니멀 스타일 -->
-            <div class="flex flex-col md:flex-row justify-between items-center mt-10 gap-6 fade-in">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
-                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <p style="font-family: 'Noto Sans KR', sans-serif; font-weight: 500; font-size: 18px; color: #333;">살리는빛부천침례교회</p>
-                        <p style="font-family: 'Inter', sans-serif; font-size: 14px; color: #888;">매주 주일예배 설교 업로드</p>
-                    </div>
-                </div>
-                <div class="flex gap-3 flex-wrap">
+            <!-- 버튼들 - 영상 아래 -->
+            <div class="flex flex-col md:flex-row justify-center items-center mt-10 gap-6 fade-in">
+                <div class="flex gap-3 flex-wrap justify-center">
                     <a href="https://www.youtube.com/@살리는빛부천침례교회?sub_confirmation=1" 
                        target="_blank"
                        style="font-family: 'Inter', sans-serif; font-size: 13px; color: #fff; background: #FF0000; padding: 10px 20px; border-radius: 30px; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: all 0.3s;"
@@ -2401,7 +2755,7 @@ and glorify your Father in heaven.
     </section>
 
     <!-- 5. 교회 소개 섹션 (Canva 디자인) -->
-    <section id="about" class="relative" style="min-height: 100vh; overflow: hidden; margin: 0; padding: 0; border: none; background-color: #000;">
+    <section id="about" class="relative" style="min-height: 100vh; overflow: hidden; margin: 0; padding: 0; border: none; background-color: #000; z-index: 1;">
         <!-- 배경 이미지 + 오버레이 -->
         <div class="absolute inset-0 z-0">
             <img src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/KakaoTalk_Photo_2025-12-16-19-24-26%20001.jpg" 
@@ -2412,12 +2766,12 @@ and glorify your Father in heaven.
         </div>
         
         <!-- 콘텐츠 -->
-        <div class="relative z-10 flex flex-col items-center justify-center text-center px-4 md:px-8" style="min-height: 100vh; padding-top: 60px; padding-bottom: 60px;">
+        <div class="relative z-10 flex flex-col items-center justify-center text-center px-4 md:px-8" style="min-height: 100vh; padding-top: 100px; padding-bottom: 100px;">
             
             <!-- 상단 작은 텍스트 -->
             <p class="text-white text-sm md:text-base tracking-[0.3em] md:tracking-[0.4em] mb-6 md:mb-8" 
                style="font-family: 'Noto Sans KR', sans-serif; font-weight: 300; letter-spacing: 0.4em;">
-                살리는 빛 부천교회
+                살리는 빛 부천침례교회
             </p>
             
             <!-- 가로선 -->
@@ -2432,7 +2786,7 @@ and glorify your Father in heaven.
             <!-- 본문 텍스트 1 -->
             <p class="text-white text-lg md:text-xl lg:text-2xl mb-2 font-semibold" 
                style="font-family: 'Noto Sans KR', sans-serif; line-height: 1.8;">
-                살리는 빛 부천 침례교회는 하나님을 갈망하는 사람들이 모인 공동체입니다.
+                살리는 빛 부천 침례교회는<br class="md:hidden"> 하나님을 갈망하는 사람들이 모인 공동체입니다.
             </p>
             
             <!-- 본문 텍스트 2 -->
@@ -2465,14 +2819,15 @@ and glorify your Father in heaven.
             
             <!-- 예배 안내 버튼 -->
             <a href="#worship" 
-               class="inline-block border-2 border-white text-white px-6 md:px-10 py-2.5 md:py-3 rounded-lg transition-all duration-300 hover:bg-white hover:text-gray-900"
+               onclick="event.preventDefault(); const el = document.getElementById('worship'); if (el) { const headerHeight = window.innerWidth <= 768 ? 50 : 40; const offset = el.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20; window.scrollTo({ top: Math.max(0, offset), behavior: 'smooth' }); } else { window.location.hash = 'worship'; } return false;"
+               class="inline-block border-2 border-white text-white px-6 md:px-10 py-2.5 md:py-3 rounded-lg transition-all duration-300 hover:bg-white hover:text-gray-900 mt-12 md:mt-16"
                style="font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: 0.5em;">
                 예 배 안 내
             </a>
         </div>
     </section>
     
-    <section class="category-slider-section" style="margin: 0 !important; padding: 0 !important; border: none !important; background-color: #000000 !important;">
+    <section class="category-slider-section" style="margin: 0 !important; padding: 0 !important; border: none !important; background-color: #000000 !important; display: none !important;" id="categorySliderSection" data-mobile-hide="true">
         <div class="category-slider-container" id="categorySlider" style="margin: 0 !important; padding: 5mm 0 !important; background-color: #FFFFFF !important;">
             <!-- 좌측 네비게이션 버튼 -->
             <button class="slider-nav-btn prev" id="sliderPrev" aria-label="이전 슬라이드">
@@ -2565,7 +2920,7 @@ and glorify your Father in heaven.
     </section>
 
     <!-- 6. 목사님 소개 섹션 (Canva 디자인 99% 정밀 구현 - position absolute) -->
-    <section id="pastor" class="pastor-section-canva" style="background-color: #E8E4DE; position: relative; width: 100%; min-height: 100vh; overflow: hidden;">
+    <section id="pastor" class="pastor-section-canva" style="background-color: #E8E4DE; position: relative; width: 100%; min-height: 100vh; overflow: hidden; z-index: 1;">
         <!-- 배경 이미지 레이어 -->
         <div style="position: absolute; inset: 0; pointer-events: none; background-image: url('https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/004.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.35; z-index: 0;"></div>
         
@@ -2632,7 +2987,7 @@ and glorify your Father in heaven.
     </section>
 
     <!-- 4. 대형 문구 섹션 - 비전 (Canva 디자인 99% 정밀 구현) -->
-    <section id="vision" style="width: 100%; background-color: #FFFFFF; padding: 50px 20px 55px 20px; margin: 0;">
+    <section id="vision" style="width: 100%; background-color: #FFFFFF; padding: 50px 20px 55px 20px; margin: 0; position: relative; z-index: 1;">
         <div style="width: 100%; max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center;">
             
             <!-- [1] 메인 타이틀 -->
@@ -2678,7 +3033,7 @@ and glorify your Father in heaven.
     </section>
 
     <!-- 6. ⭐ 가로 스크롤 서비스 카드 섹션 -->
-    <section id="worship" class="horizontal-scroll-container">
+    <section id="worship" class="horizontal-scroll-container" style="position: relative; z-index: 1;">
         <div class="horizontal-scroll-wrapper">
             <div class="horizontal-track" id="horizontalTrack">
                 
@@ -2741,7 +3096,7 @@ and glorify your Father in heaven.
     </section>
 
     <!-- 8. 특징 섹션 (Canva 레퍼런스 99% 구현) -->
-    <section id="features" class="relative bg-white overflow-hidden" style="padding: 60px 5% 80px 5%;">
+    <section id="features" class="relative bg-white overflow-hidden" style="padding: 60px 5% 80px 5%; z-index: 1;">
         <!-- 구름 패턴 -->
         <div class="absolute inset-0 opacity-20">
             <div class="absolute top-20 left-20 w-96 h-96 bg-white rounded-full blur-3xl"></div>
@@ -2827,20 +3182,20 @@ and glorify your Father in heaven.
     </section>
 
     <!-- 7. 대형 인용문 섹션 -->
-    <section class="py-20 bg-gray-100" style="padding-left: 80px; padding-right: 80px;">
+    <section class="py-20" style="padding: 40px 80px; background-color: #E3F2FD; position: relative; z-index: 1;">
         <div class="max-w-4xl mx-auto">
             <div class="text-center reveal-text visible">
                 <p id="quoteStatement" style="
                     font-family: 'Noto Sans KR', sans-serif;
-                    font-weight: 300;
-                    font-size: clamp(24px, 3vw, 42px);
+                    font-weight: 700;
+                    font-size: clamp(28px, 3.5vw, 48px);
                     line-height: 1.6;
                     color: #2D2D2D;
                     margin: 0;
                     letter-spacing: 0.02em;
                 ">
-                    너희는 세상의 빛이라<br>
-                    산 위에 있는 동네가 숨겨지지 못할 것이요
+                    <span style="font-weight: 700; font-size: clamp(28px, 3.5vw, 48px);">너희는 세상의 빛이라</span><br>
+                    <span style="font-weight: 300; font-size: clamp(18px, 2.2vw, 32px);">산 위에 있는 동네가 숨겨지지 못할 것이요</span>
                 </p>
                 <p style="
                     font-family: 'Noto Sans KR', sans-serif;
@@ -2857,7 +3212,7 @@ and glorify your Father in heaven.
     </section>
 
     <!-- 10. ⭐ 스택 카드 간증 섹션 -->
-    <section id="testimonials" class="stacking-cards-container bg-white">
+    <section id="testimonials" class="stacking-cards-container bg-white" style="position: relative; z-index: 1;">
         <div class="stacking-cards-wrapper" id="stackingCardsWrapper">
             <!-- 좌측 타이틀 -->
             <div class="testimonial-title-box" style="position: absolute; left: 15%; top: 50%; transform: translateY(-50%); z-index: 10; width: 30%; max-width: 450px; padding-left: 60px; padding-right: 30px; box-sizing: border-box;">
@@ -2992,7 +3347,7 @@ and glorify your Father in heaven.
     </section>
 
     <!-- 12.5. 공지사항 섹션 (레퍼런스 99% 구현 + 캐러셀) -->
-    <section id="notice" class="relative py-20 px-8" style="background-color: #EFEAE3; position: relative; overflow: visible; padding-top: 80px; padding-bottom: 80px;">
+    <section id="notice" class="relative py-20 px-8" style="background-color: #EFEAE3; position: relative; overflow: visible; padding-top: 80px; padding-bottom: 80px; z-index: 1;">
         <!-- 배경 질감 -->
         <div style="position: absolute; inset: 0; pointer-events: none; background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E'); opacity: 0.15;"></div>
         
@@ -3044,7 +3399,7 @@ and glorify your Father in heaven.
         // 공지사항 페이지네이션 기능
         let noticeCarouselTrack = null;
         let noticeCurrentPage = 1;
-        let noticeItemsPerPage = 3;
+        let noticeItemsPerPage = window.innerWidth <= 768 ? 4 : 3;
         let noticeAllData = [];
         
         function initNoticeCarousel() {
@@ -3072,6 +3427,10 @@ and glorify your Father in heaven.
             const endIndex = startIndex + noticeItemsPerPage;
             const pageData = noticeAllData.slice(startIndex, endIndex);
             
+            // 모바일 여부 확인
+            const isMobile = window.innerWidth <= 768;
+            const dateFontSize = isMobile ? '32px' : '20px';
+            
             // 카드 렌더링
             noticeCarouselTrack.innerHTML = pageData.map((item, localIndex) => {
                 const globalIndex = startIndex + localIndex;
@@ -3093,24 +3452,13 @@ and glorify your Father in heaven.
                         <div style="position: relative; z-index: 1; margin-bottom: 20px;">
                             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
                                 <h3 style="font-family: 'Noto Sans KR', sans-serif; font-weight: 700; font-size: 28px; color: #2D2D2D; letter-spacing: 0.05em; margin: 0; text-transform: uppercase;">NOTICE</h3>
-                                ${dateStr ? `<p style="font-family: 'Nanum Pen Script', cursive; font-size: 16px; color: #8B7355; margin: 0; transform: rotate(-2deg); font-weight: 400; letter-spacing: 0.5px;">${dateStr}</p>` : ''}
+                                ${dateStr ? `<p style="font-family: 'Nanum Pen Script', cursive; font-size: ${dateFontSize}; color: #8B7355; margin: 0; transform: rotate(-2deg); font-weight: 400; letter-spacing: 0.5px;">${dateStr}</p>` : ''}
                             </div>
                             <div style="width: 100%; height: 1px; background-color: #2D2D2D; margin-top: 8px;"></div>
                         </div>
-                        <div style="position: relative; z-index: 1; flex: 1; overflow: hidden; margin-bottom: 16px;">
+                        <div style="position: relative; z-index: 1; flex: 1; overflow: hidden; margin-bottom: 20px; padding-bottom: 4px;">
                             ${previewLines.map(line => `<p style="font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 16px; color: #4A4A4A; line-height: 1.8; margin: 0 0 12px 0;">${line.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>`).join('')}
-                            ${hasMore ? '<p style="font-family: \'Noto Sans KR\', sans-serif; font-weight: 400; font-size: 14px; color: #888888; margin: 8px 0 0 0; font-style: italic;">... 더 보기</p>' : ''}
-                        </div>
-                        <div style="position: relative; z-index: 1; margin-top: auto;">
-                            <p style="font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 12px; color: #888888; font-style: italic; margin: 0;">@bucheonchurch</p>
-                        </div>
-                        <div style="position: absolute; bottom: 20px; right: 20px; width: 80px; height: 80px; z-index: 1; opacity: 0.6;">
-                            <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-                                <path d="M50 80 Q40 60 35 50 Q30 40 25 30 Q20 20 15 15 Q10 10 10 5" stroke="#4A4A4A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                                <path d="M35 50 Q30 35 25 25" stroke="#4A4A4A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                                <ellipse cx="25" cy="25" rx="8" ry="12" fill="none" stroke="#4A4A4A" stroke-width="1.5"/>
-                                <ellipse cx="15" cy="15" rx="6" ry="10" fill="none" stroke="#4A4A4A" stroke-width="1.5"/>
-                            </svg>
+                            ${hasMore ? '<p style="font-family: \'Noto Sans KR\', sans-serif; font-weight: 400; font-size: 14px; color: #888888; margin: 12px 0 0 0; font-style: italic; padding-bottom: 4px;">... 더 보기</p>' : ''}
                         </div>
                     </div>
                 `;
@@ -3198,7 +3546,7 @@ and glorify your Father in heaven.
     </script>
 
     <!-- 12.6. 기도제목 섹션 (공지사항과 동일 형식 + 고급스러운 그린 배경) -->
-    <section id="prayer" class="relative py-20 px-8" style="background-color: #4A7C59; position: relative; overflow: visible; padding-top: 80px; padding-bottom: 80px;">
+    <section id="prayer" class="relative py-20 px-8" style="background-color: #4A7C59; position: relative; overflow: visible; padding-top: 80px; padding-bottom: 80px; z-index: 1;">
         <!-- 배경 질감 -->
         <div style="position: absolute; inset: 0; pointer-events: none; background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E'); opacity: 0.15;"></div>
         
@@ -3250,7 +3598,7 @@ and glorify your Father in heaven.
         // 기도제목 페이지네이션 기능
         let prayerCarouselTrack = null;
         let prayerCurrentPage = 1;
-        let prayerItemsPerPage = 3;
+        let prayerItemsPerPage = window.innerWidth <= 768 ? 4 : 3;
         let prayerAllData = [];
         
         function initPrayerCarousel() {
@@ -3278,6 +3626,10 @@ and glorify your Father in heaven.
             const endIndex = startIndex + prayerItemsPerPage;
             const pageData = prayerAllData.slice(startIndex, endIndex);
             
+            // 모바일 여부 확인
+            const isMobile = window.innerWidth <= 768;
+            const dateFontSize = isMobile ? '32px' : '20px';
+            
             // 카드 렌더링
             prayerCarouselTrack.innerHTML = pageData.map((item, localIndex) => {
                 const globalIndex = startIndex + localIndex;
@@ -3299,24 +3651,13 @@ and glorify your Father in heaven.
                         <div style="position: relative; z-index: 1; margin-bottom: 20px;">
                             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
                                 <h3 style="font-family: 'Noto Sans KR', sans-serif; font-weight: 700; font-size: 28px; color: #2D2D2D; letter-spacing: 0.05em; margin: 0; text-transform: uppercase;">PRAYER</h3>
-                                ${dateStr ? `<p style="font-family: 'Nanum Pen Script', cursive; font-size: 16px; color: #8B7355; margin: 0; transform: rotate(-2deg); font-weight: 400; letter-spacing: 0.5px;">${dateStr}</p>` : ''}
+                                ${dateStr ? `<p style="font-family: 'Nanum Pen Script', cursive; font-size: ${dateFontSize}; color: #8B7355; margin: 0; transform: rotate(-2deg); font-weight: 400; letter-spacing: 0.5px;">${dateStr}</p>` : ''}
                             </div>
                             <div style="width: 100%; height: 1px; background-color: #2D2D2D; margin-top: 8px;"></div>
                         </div>
-                        <div style="position: relative; z-index: 1; flex: 1; overflow: hidden; margin-bottom: 16px;">
+                        <div style="position: relative; z-index: 1; flex: 1; overflow: hidden; margin-bottom: 20px; padding-bottom: 4px;">
                             ${previewLines.map(line => `<p style="font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 16px; color: #4A4A4A; line-height: 1.8; margin: 0 0 12px 0;">${line.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>`).join('')}
-                            ${hasMore ? '<p style="font-family: \'Noto Sans KR\', sans-serif; font-weight: 400; font-size: 14px; color: #888888; margin: 8px 0 0 0; font-style: italic;">... 더 보기</p>' : ''}
-                        </div>
-                        <div style="position: relative; z-index: 1; margin-top: auto;">
-                            <p style="font-family: 'Noto Sans KR', sans-serif; font-weight: 400; font-size: 12px; color: #888888; font-style: italic; margin: 0;">@bucheonchurch</p>
-                        </div>
-                        <div style="position: absolute; bottom: 20px; right: 20px; width: 80px; height: 80px; z-index: 1; opacity: 0.6;">
-                            <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-                                <path d="M50 80 Q40 60 35 50 Q30 40 25 30 Q20 20 15 15 Q10 10 10 5" stroke="#4A4A4A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                                <path d="M35 50 Q30 35 25 25" stroke="#4A4A4A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                                <ellipse cx="25" cy="25" rx="8" ry="12" fill="none" stroke="#4A4A4A" stroke-width="1.5"/>
-                                <ellipse cx="15" cy="15" rx="6" ry="10" fill="none" stroke="#4A4A4A" stroke-width="1.5"/>
-                            </svg>
+                            ${hasMore ? '<p style="font-family: \'Noto Sans KR\', sans-serif; font-weight: 400; font-size: 14px; color: #888888; margin: 12px 0 0 0; font-style: italic; padding-bottom: 4px;">... 더 보기</p>' : ''}
                         </div>
                     </div>
                 `;
@@ -3403,7 +3744,7 @@ and glorify your Father in heaven.
     </script>
 
     <!-- 12.7. 갤러리 섹션 (폴라로이드 스타일) -->
-    <section id="gallery" class="py-8 px-8" style="background: #E5E3E0; position: relative; overflow: hidden;">
+    <section id="gallery" class="py-8 px-8" style="background: #E5E3E0; position: relative; overflow: hidden; z-index: 1;">
         <!-- 배경 질감 -->
         <div style="position: absolute; inset: 0; pointer-events: none; background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E'); opacity: 0.15;"></div>
         <div class="max-w-6xl mx-auto" style="max-width: 1200px; margin: 0 auto; padding: 20px 20px; position: relative; z-index: 1; min-height: 700px;">
@@ -4345,7 +4686,7 @@ and glorify your Father in heaven.
     </script>
 
     <!-- 12.8. 오시는 길 섹션 -->
-    <section id="location" class="relative py-20 px-8" style="background-color: #EFEAE3; position: relative; overflow: hidden;">
+    <section id="location" class="relative py-20 px-8" style="background-color: #EFEAE3; position: relative; overflow: hidden; z-index: 1;">
         <!-- 배경 질감 -->
         <div style="position: absolute; inset: 0; pointer-events: none; background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E'); opacity: 0.15;"></div>
         
@@ -4379,7 +4720,7 @@ and glorify your Father in heaven.
                 </div>
                 
                 <!-- 오른쪽: 교통 정보 -->
-                <div class="flex flex-col gap-6">
+                <div class="flex flex-col gap-6 location-transport-container">
                     <!-- 지하철 -->
                     <div class="bg-white rounded-2xl p-8 flex-1" style="box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 10px 30px rgba(0, 0, 0, 0.1); transform: translateY(-5px); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 25px 70px rgba(0, 0, 0, 0.2), 0 15px 40px rgba(0, 0, 0, 0.15)';" onmouseout="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 20px 60px rgba(0, 0, 0, 0.15), 0 10px 30px rgba(0, 0, 0, 0.1)';">
                         <div class="flex items-center gap-5 mb-4">
@@ -4416,8 +4757,7 @@ and glorify your Father in heaven.
                         </div>
                         <div class="pl-2">
                             <p class="text-gray-700 text-lg leading-relaxed">
-                                <strong class="text-gray-900">중동 주공아파트</strong> 정류장 하차<br>
-                                <span class="text-gray-500">도보 약 3분</span>
+                                <strong class="text-gray-900">중동 주공아파트</strong> 정류장 하차 <span class="text-gray-500">도보 약 3분</span>
                             </p>
                         </div>
                     </div>
@@ -4446,13 +4786,13 @@ and glorify your Father in heaven.
     </section>
 
     <!-- 12.7. CTA 섹션 -->
-    <section id="contact" class="py-40 px-8 bg-white">
+    <section id="contact" class="py-40 px-8 bg-white" style="position: relative; z-index: 1;">
         <div class="max-w-5xl mx-auto text-center">
             <h2 class="text-3xl md:text-4xl font-bold reveal-text" style="line-height: 1.8;">
                 인생의 고민이나 힘든 일이 있으신가요?<br>
                 목사님께 이메일로 편지를 보내주세요.
             </h2>
-            <a href="mailto:pastor@bucheonchurch.org" class="inline-block mt-12 bg-black text-white px-12 py-5 rounded-full text-xl font-semibold hover:bg-gray-800 transition reveal-text">
+            <a href="mailto:wltn85203@naver.com" class="inline-block mt-12 bg-black text-white px-12 py-5 rounded-full text-xl font-semibold hover:bg-gray-800 transition reveal-text">
                 목사님께 이메일 보내기 →
             </a>
         </div>
@@ -4475,65 +4815,96 @@ and glorify your Father in heaven.
         </div>
     </div>
 
-    <!-- 13. 푸터 -->
-    <footer style="background-color: #2d2d2d; position: relative;" class="py-10 px-8">
+    <!-- 13. 푸터 - 화이트 미니멀 모던 디자인 -->
+    <footer style="background-color: #FFFFFF; position: relative;" class="py-12 px-8">
         <div class="max-w-6xl mx-auto">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
                 <!-- 좌측: 교회 정보 -->
                 <div>
-                    <h3 class="text-white text-2xl font-semibold mb-3">살리는 빛 부천침례교회</h3>
-                    <div class="text-gray-300 text-base space-y-2">
-                        <div>📍 경기 부천시 중동로71번길 66 | 📞 032-654-1004</div>
-                        <div class="text-gray-400">헌금계좌: 농협 351-0428-5575-33 (일반) / 216012-51-312535 (특별)</div>
-                    </div>
+                    <h3 class="text-gray-900 text-xl font-semibold mb-4" style="font-family: 'Noto Sans KR', sans-serif; letter-spacing: -0.5px;">살리는 빛 부천침례교회</h3>
+                    <div class="text-gray-600 text-sm space-y-2" style="font-family: 'Noto Sans KR', sans-serif; line-height: 1.6;">
+                        <div class="flex items-center gap-2">
+                            <span style="color: #8B7355;">📍</span>
+                            <span>경기 부천시 중동로71번길 66</span>
                         </div>
-                
-                <!-- 우측: 소셜 미디어 -->
-                <div class="flex items-center gap-6">
-                    <a href="https://cafe.daum.net/buchonbaptist" target="_blank" class="flex items-center gap-3 text-gray-300 hover:text-white transition text-lg">
-                        <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
-                            <circle cx="12" cy="12" r="10" fill="#FF6B00"/>
-                            <text x="12" y="16" text-anchor="middle" fill="white" font-size="10" font-weight="bold">C</text>
-                        </svg>
-                        카페
-                    </a>
-                    <a href="https://blog.naver.com/bucheonbaptist" target="_blank" class="flex items-center gap-3 text-gray-300 hover:text-white transition text-lg">
-                        <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
-                            <rect width="24" height="24" rx="4" fill="#03C75A"/>
-                            <text x="12" y="17" text-anchor="middle" fill="white" font-size="12" font-weight="bold">N</text>
-                        </svg>
-                        블로그
-                    </a>
-                    <a href="https://www.youtube.com/@살리는빛부천침례교회" target="_blank" class="flex items-center gap-3 text-gray-300 hover:text-white transition text-lg">
-                        <svg class="w-7 h-7 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                        유튜브
-                    </a>
+                        <div class="flex items-center gap-2">
+                            <span style="color: #8B7355;">📞</span>
+                            <span>032-654-1004</span>
+                        </div>
+                        <div class="text-gray-500 text-xs mt-3 pt-3 border-t border-gray-200 space-y-2">
+                            <div class="mb-2">
+                                <span class="font-medium">헌금계좌</span>
+                            </div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="font-medium">농협(일반)</span>
+                                <span class="font-mono text-xs">351-0428-5575-33</span>
+                                <button onclick="copyToClipboard('351-0428-5575-33', this)" class="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded transition text-gray-600" title="복사">
+                                    복사
+                                </button>
+                            </div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="font-medium">농협(특별)</span>
+                                <span class="font-mono text-xs">216012-51-312535</span>
+                                <button onclick="copyToClipboard('216012-51-312535', this)" class="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded transition text-gray-600" title="복사">
+                                    복사
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            
-            <!-- 하단 저작권 -->
-            <div class="text-center mt-8 pt-6 border-t border-gray-600">
-                <div class="text-gray-400 text-base">
-                    © 2025 살리는 빛 부천침례교회. All Rights Reserved.
-                </div>
-                <div class="text-gray-500 text-sm mt-3">
-                    Design by <a href="https://church-beta-one.vercel.app/" target="_blank" class="text-gray-400 hover:text-white transition underline">마라나타 스튜디오 (Maranatha Studio)</a>
+                
+                <!-- 우측: 소셜 미디어 - 한 줄로 가로 나열 -->
+                <div class="flex items-center gap-3" style="flex-direction: row !important; flex-wrap: nowrap !important;">
+                    <a href="https://cafe.daum.net/buchonbaptist" target="_blank" class="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition text-sm" style="font-family: 'Noto Sans KR', sans-serif;">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background-color: #FFF5E6;">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="#FF6B00">
+                                <circle cx="12" cy="12" r="10"/>
+                                <text x="12" y="16" text-anchor="middle" fill="white" font-size="8" font-weight="bold">C</text>
+                            </svg>
+                        </div>
+                        <span>카페</span>
+                    </a>
+                    <a href="https://blog.naver.com/bucheonbaptist" target="_blank" class="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition text-sm" style="font-family: 'Noto Sans KR', sans-serif;">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background-color: #E8F5E9;">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="#03C75A">
+                                <rect width="24" height="24" rx="4"/>
+                                <text x="12" y="17" text-anchor="middle" fill="white" font-size="10" font-weight="bold">N</text>
+                            </svg>
+                        </div>
+                        <span>블로그</span>
+                    </a>
+                    <a href="https://www.youtube.com/@살리는빛부천침례교회" target="_blank" class="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition text-sm" style="font-family: 'Noto Sans KR', sans-serif;">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background-color: #FFEBEE;">
+                            <svg class="w-4 h-4" fill="#FF0000" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        </div>
+                        <span>유튜브</span>
+                    </a>
                 </div>
             </div>
             
-            <!-- 관리자 페이지 접근 링크 (푸터 내부 고정) -->
-            <div style="position: absolute; bottom: 20px; right: 20px;">
+            <!-- 하단 저작권 -->
+            <div class="text-center mt-10 pt-6 border-t border-gray-200">
+                <div class="text-gray-500 text-xs" style="font-family: 'Noto Sans KR', sans-serif;">
+                    © 2025 살리는 빛 부천침례교회. All Rights Reserved.
+                </div>
+                <div class="text-gray-400 text-xs mt-2">
+                    Design by <a href="https://church-beta-one.vercel.app/" target="_blank" class="text-gray-500 hover:text-gray-700 transition underline" style="font-family: 'Noto Sans KR', sans-serif;">마라나타 스튜디오 (Maranatha Studio)</a>
+                </div>
+            </div>
+            
+            <!-- 관리자 페이지 접근 링크 (푸터 내부 고정) - 아주 작게 -->
+            <div style="position: absolute; bottom: 15px; right: 15px;">
                 <a href="admin/content-manage.html" 
-                   style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 14px; background-color: rgba(255, 255, 255, 0.95); border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.15); transition: all 0.3s ease; text-decoration: none; backdrop-filter: blur(10px);"
-                   onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 16px rgba(0,0,0,0.25)';"
-                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 12px rgba(0,0,0,0.15)';"
+                   style="display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 8px; background-color: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0,0,0,0.08); border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: all 0.3s ease; text-decoration: none; backdrop-filter: blur(10px);"
+                   onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 2px 6px rgba(0,0,0,0.1)'; this.style.backgroundColor='rgba(255, 255, 255, 1)';"
+                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 1px 4px rgba(0,0,0,0.06)'; this.style.backgroundColor='rgba(255, 255, 255, 0.9)';"
                    title="관리자 모드">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                         <circle cx="12" cy="16" r="1"></circle>
                         <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                     </svg>
-                    <span style="font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #333; font-weight: 500; white-space: nowrap;">관리자 모드</span>
+                    <span style="font-family: 'Noto Sans KR', sans-serif; font-size: 8px; color: #666; font-weight: 500; white-space: nowrap;">관리자</span>
                 </a>
             </div>
         </div>
@@ -4789,8 +5160,10 @@ and glorify your Father in heaven.
                 if (error) throw error;
                 
                 if (data) {
-                    document.getElementById('heroTitle').textContent = data.main_title;
-                    document.getElementById('heroSubtitle').textContent = data.sub_text;
+                    const heroTitle = document.getElementById('heroTitle');
+                    const heroSubtitle = document.getElementById('heroSubtitle');
+                    if (heroTitle) heroTitle.textContent = data.main_title;
+                    if (heroSubtitle) heroSubtitle.textContent = data.sub_text;
                     console.log('✅ Hero section loaded');
                 }
             } catch (error) {
@@ -4916,35 +5289,101 @@ and glorify your Father in heaven.
                         };
                     });
                     
-                    // 레이아웃: 주일예배 단독, 나머지 4개는 한 줄로 가로 배치
+                    // 모바일 여부 확인
+                    const isMobile = window.innerWidth <= 768;
+                    
                     let html = '';
                     
-                    // 주일예배 찾기 (단독 배치)
-                    const sunday1 = formatData.find(item => item.name === '주일예배');
-                    if (sunday1) {
-                        html += `
-                            <div class="worship-item">
-                                ${sunday1.day ? `<span class="day">${sunday1.day}</span>` : ''}
-                                <span class="name">${sunday1.name}</span>
-                                <span class="time">${sunday1.time}</span>
-                            </div>
-                        `;
-                    }
-                    
-                    // 나머지 4개 (수요, 금요, 학생, 유치) 찾기
-                    const others = formatData.filter(item => item.name !== '주일예배');
-                    if (others.length > 0) {
-                        html += `
-                            <div class="worship-items-row">
-                                ${others.map(item => `
-                                    <div class="worship-item">
-                                        ${item.day ? `<span class="day">${item.day}</span>` : ''}
-                                        <span class="name">${item.name}</span>
-                                        <span class="time">${item.time}</span>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        `;
+                    if (isMobile) {
+                        // 모바일: 주일예배 단독, 수요/금요 한 줄, 학생부/유치부 한 줄
+                        // 주일예배 찾기 (단독 배치)
+                        const sunday1 = formatData.find(item => item.name === '주일예배');
+                        if (sunday1) {
+                            html += `
+                                <div class="worship-item">
+                                    ${sunday1.day ? `<span class="day">${sunday1.day}</span>` : ''}
+                                    <span class="name">${sunday1.name}</span>
+                                    <span class="time">${sunday1.time}</span>
+                                </div>
+                            `;
+                        }
+                        
+                        // 수요예배, 금요예배 찾기 (한 줄)
+                        const wednesday = formatData.find(item => item.name === '수요예배');
+                        const friday = formatData.find(item => item.name === '금요예배');
+                        if (wednesday || friday) {
+                            html += `
+                                <div class="worship-items-row">
+                                    ${wednesday ? `
+                                        <div class="worship-item">
+                                            ${wednesday.day ? `<span class="day">${wednesday.day}</span>` : ''}
+                                            <span class="name">${wednesday.name}</span>
+                                            <span class="time">${wednesday.time}</span>
+                                        </div>
+                                    ` : ''}
+                                    ${friday ? `
+                                        <div class="worship-item">
+                                            ${friday.day ? `<span class="day">${friday.day}</span>` : ''}
+                                            <span class="name">${friday.name}</span>
+                                            <span class="time">${friday.time}</span>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            `;
+                        }
+                        
+                        // 학생부, 유치부 찾기 (한 줄)
+                        const student = formatData.find(item => item.name === '학생부예배' || item.name === '학생부');
+                        const kindergarten = formatData.find(item => item.name === '유치부예배' || item.name === '유치부');
+                        if (student || kindergarten) {
+                            html += `
+                                <div class="worship-items-row">
+                                    ${student ? `
+                                        <div class="worship-item">
+                                            ${student.day ? `<span class="day">${student.day}</span>` : ''}
+                                            <span class="name">${student.name}</span>
+                                            <span class="time">${student.time}</span>
+                                        </div>
+                                    ` : ''}
+                                    ${kindergarten ? `
+                                        <div class="worship-item">
+                                            ${kindergarten.day ? `<span class="day">${kindergarten.day}</span>` : ''}
+                                            <span class="name">${kindergarten.name}</span>
+                                            <span class="time">${kindergarten.time}</span>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            `;
+                        }
+                    } else {
+                        // 데스크탑: 주일예배 단독, 나머지 4개는 한 줄로 가로 배치
+                        // 주일예배 찾기 (단독 배치)
+                        const sunday1 = formatData.find(item => item.name === '주일예배');
+                        if (sunday1) {
+                            html += `
+                                <div class="worship-item">
+                                    ${sunday1.day ? `<span class="day">${sunday1.day}</span>` : ''}
+                                    <span class="name">${sunday1.name}</span>
+                                    <span class="time">${sunday1.time}</span>
+                                </div>
+                            `;
+                        }
+                        
+                        // 나머지 4개 (수요, 금요, 학생, 유치) 찾기
+                        const others = formatData.filter(item => item.name !== '주일예배');
+                        if (others.length > 0) {
+                            html += `
+                                <div class="worship-items-row">
+                                    ${others.map(item => `
+                                        <div class="worship-item">
+                                            ${item.day ? `<span class="day">${item.day}</span>` : ''}
+                                            <span class="name">${item.name}</span>
+                                            <span class="time">${item.time}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            `;
+                        }
                     }
                     
                     container.innerHTML = html;
@@ -5664,9 +6103,10 @@ and glorify your Father in heaven.
             const sectionTop = rect.top;
             const sectionHeight = stackingSection.offsetHeight;
             const windowHeight = window.innerHeight;
+            const isMobileView = window.innerWidth <= 768;
             
-            // 섹션이 뷰포트에 들어왔는지 확인
-            if (sectionTop > windowHeight || rect.bottom < 0) {
+            // 섹션이 완전히 화면 밖에 나갔으면 리턴
+            if (rect.bottom < 0 || sectionTop > windowHeight * 1.5) {
                 return;
             }
             
@@ -5677,19 +6117,18 @@ and glorify your Father in heaven.
                 return;
             }
             
-            // 섹션이 뷰포트 상단에 도달했을 때부터 스크롤 진행도 계산
+            // 데스크탑과 동일한 스크롤 진행도 계산
+            // 섹션이 뷰포트에 들어오자마자 카드 벗겨지기 시작
             // sectionTop이 windowHeight에서 시작해서 0이 되면 (섹션이 상단에 붙으면) 스크롤 시작
             // sectionTop이 -scrollableDistance가 되면 (섹션이 끝나면) 스크롤 완료
-            // 섹션이 뷰포트에 들어오자마자 (sectionTop < windowHeight) 카드 벗겨지기 시작
             const scrollStart = windowHeight;
             const scrollEnd = -scrollableDistance;
             const currentPosition = sectionTop;
             
             // 진행도 계산: 0 (섹션 진입) ~ 1 (섹션 완료)
+            // 섹션이 화면에 들어오자마자 계산 시작
             const scrollProgress = Math.max(0, Math.min(1, (scrollStart - currentPosition) / (scrollStart - scrollEnd)));
             
-            // 모바일 여부 확인
-            const isMobileView = window.innerWidth <= 768;
             // 모바일/데스크탑에 따른 기본 transform
             const baseTransform = isMobileView ? 'translateX(-50%)' : 'translate(-50%, -50%)';
 
@@ -6045,23 +6484,59 @@ and glorify your Father in heaven.
         console.log('✅ 가로 스크롤 활성화 (400vh)');
         console.log('✅ 스택 카드 애니메이션 활성화 (500vh)');
         
+        // 모바일에서 내비게이션 섹션 완전히 삭제 (즉시 실행)
+        (function removeCategorySliderOnMobile() {
+            function removeIt() {
+                const categorySlider = document.getElementById('categorySliderSection');
+                if (categorySlider) {
+                    // 모바일 체크
+                    if (window.innerWidth <= 768) {
+                        categorySlider.remove();
+                        console.log('✅ 모바일: 내비게이션 섹션 삭제됨');
+                    }
+                }
+            }
+            
+            // 즉시 실행
+            removeIt();
+            
+            // DOMContentLoaded 시 실행
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', removeIt);
+            }
+            
+            // window.onload 시에도 실행
+            window.addEventListener('load', removeIt);
+            
+            // 리사이즈 시에도 체크
+            window.addEventListener('resize', function() {
+                if (window.innerWidth <= 768) {
+                    removeIt();
+                }
+            });
+        })();
+        
         // ========================================
         // 드롭다운 메뉴
         // ========================================
         function toggleDropdown(event, menuId) {
             event.stopPropagation();
+            
             const menu = document.getElementById(menuId);
             const allMenus = document.querySelectorAll('.nav-dropdown-menu');
             const allButtons = document.querySelectorAll('.nav-dropdown-btn svg');
             
-            // 다른 메뉴 닫기
+            // 다른 모든 드롭다운 메뉴 닫기
             allMenus.forEach(m => {
                 if (m.id !== menuId) {
                     m.style.display = 'none';
                 }
             });
+            
+            // 다른 모든 버튼의 화살표 원래대로
             allButtons.forEach(btn => {
-                if (btn.closest('.nav-dropdown-btn') !== event.currentTarget) {
+                const btnElement = btn.closest('.nav-dropdown-btn');
+                if (btnElement && btnElement !== event.currentTarget) {
                     btn.style.transform = 'rotate(0deg)';
                 }
             });
@@ -6090,6 +6565,30 @@ and glorify your Father in heaven.
             if (menu) {
                 menu.classList.remove('active');
                 document.body.style.overflow = '';
+            }
+        }
+        
+        // 데스크탑/모바일 공통 섹션으로 스크롤 함수
+        function scrollToSection(hash) {
+            console.log('scrollToSection called with:', hash);
+            const element = document.querySelector(hash);
+            if (element) {
+                console.log('Element found:', element);
+                const headerHeight = window.innerWidth <= 768 ? 50 : 40;
+                const offset = headerHeight + 20; // 여유 공간 추가
+                
+                const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+                const offsetPosition = Math.max(0, elementPosition - offset);
+                
+                console.log('Scrolling to:', offsetPosition);
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            } else {
+                console.error('Element not found for hash:', hash);
+                // 폴백: 직접 URL 해시 사용
+                window.location.hash = hash;
             }
         }
         
@@ -6129,6 +6628,24 @@ and glorify your Father in heaven.
                     submenu.classList.remove('active');
                 }
             }
+        }
+        
+        // 계좌번호 복사 함수
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(function() {
+                const originalText = button.textContent;
+                button.textContent = '복사됨!';
+                button.style.backgroundColor = '#4CAF50';
+                button.style.color = 'white';
+                setTimeout(function() {
+                    button.textContent = originalText;
+                    button.style.backgroundColor = '';
+                    button.style.color = '';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('복사 실패:', err);
+                alert('복사에 실패했습니다. 계좌번호를 직접 복사해주세요: ' + text);
+            });
         }
         
         // 외부 클릭 시 드롭다운 닫기
