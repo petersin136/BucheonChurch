@@ -1687,11 +1687,9 @@
                 top: auto !important;
                 left: auto !important;
                 transform: none !important;
-                width: 90% !important;
-                max-width: 320px !important;
-                padding: 20px 0 25px 0 !important;
-                padding-left: 0 !important;
-                padding-right: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 40px 20px 30px 20px !important;
                 margin: 0 auto !important;
                 text-align: center !important;
                 z-index: 10 !important;
@@ -1702,56 +1700,58 @@
                 box-sizing: border-box !important;
             }
             
-            /* 이미지 - 중앙 정렬, 작게 */
+            /* 이미지 숨김 */
             section#testimonials .testimonial-title-box > img {
+                display: none !important;
+            }
+            
+            /* 교회 로고 표시 */
+            section#testimonials .testimonial-title-box .church-logo-mobile {
                 display: block !important;
-                width: 140px !important;
-                max-width: 140px !important;
-                height: auto !important;
-                object-fit: cover !important;
-                border-radius: 12px !important;
-                margin: 0 auto 20px auto !important;
-                box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
             }
             
             /* TESTIMONIALS 텍스트 */
             section#testimonials .testimonial-title-box p.testimonial-fade,
             section#testimonials .testimonial-title-box .text-gray-400 {
                 display: block !important;
-                font-size: 11px !important;
-                letter-spacing: 0.2em !important;
+                font-size: 12px !important;
+                letter-spacing: 0.3em !important;
                 color: #999 !important;
-                margin-bottom: 8px !important;
+                margin-bottom: 20px !important;
                 text-align: center !important;
                 text-transform: uppercase !important;
             }
             
-            /* 타이틀 - 한 줄로 */
+            /* 타이틀 - 세 줄로 표시 */
             section#testimonials .testimonial-title-box h2 {
                 display: block !important;
-                font-size: 26px !important;
-                line-height: 1.3 !important;
+                font-size: 28px !important;
+                line-height: 1.4 !important;
                 margin: 0 !important;
                 text-align: center !important;
                 color: #1a1a1a !important;
             }
             
             section#testimonials .testimonial-title-box h2 .testimonial-slide {
-                display: inline !important;
-                white-space: nowrap !important;
-                font-size: 26px !important;
-                line-height: 1.3 !important;
+                display: block !important;
+                white-space: normal !important;
+                font-size: 28px !important;
+                line-height: 1.4 !important;
                 margin: 0 !important;
             }
             
             section#testimonials .testimonial-title-box h2 br {
-                display: none !important;
+                display: block !important;
             }
             
-            /* 밑줄 숨김 */
+            /* 밑줄 표시 */
             section#testimonials .testimonial-title-box .w-20,
             section#testimonials .testimonial-title-box .testimonial-line {
-                display: none !important;
+                display: block !important;
+                width: 60px !important;
+                height: 2px !important;
+                background-color: #1a1a1a !important;
+                margin: 20px auto 0 auto !important;
             }
             
             /* 래퍼를 세로 방향으로 변경 */
@@ -3314,6 +3314,11 @@ and glorify your Father in heaven.
         <div class="stacking-cards-wrapper" id="stackingCardsWrapper">
             <!-- 좌측 타이틀 -->
             <div class="testimonial-title-box" style="position: absolute; left: 15%; top: 50%; transform: translateY(-50%); z-index: 10; width: 30%; max-width: 450px; padding-left: 60px; padding-right: 30px; box-sizing: border-box;">
+                <!-- 교회 로고 (모바일에서만 표시) -->
+                <div class="church-logo-mobile" style="display: none; text-align: center; margin-bottom: 30px;">
+                    <div style="font-family: 'Inter', 'Noto Sans KR', sans-serif; font-size: 36px; font-weight: 700; color: #1a1a1a; letter-spacing: 0.05em; margin-bottom: 8px;">BUCHEON</div>
+                    <div style="font-family: 'Inter', 'Noto Sans KR', sans-serif; font-size: 14px; font-weight: 400; color: #1a1a1a; letter-spacing: 0.1em; text-transform: uppercase;">BAPTIST CHURCH</div>
+                </div>
                 <img src="https://fkqxalcwhqohrkdzwhvv.supabase.co/storage/v1/object/public/media/3.jpg" 
                      alt="간증 섹션 이미지" 
                      class="mb-8 object-cover"
