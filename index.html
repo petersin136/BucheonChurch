@@ -1655,10 +1655,13 @@
                ======================================== */
             
             /* 컨테이너 - 여백 최소화 */
+            /* ========================================
+               모바일 간증 섹션 - 스택 카드 효과
+               ======================================== */
             section#testimonials.stacking-cards-container {
                 display: block !important;
-                height: 100vh !important;
-                min-height: 100vh !important;
+                height: 400vh !important; /* 카드 5장 × 80vh */
+                min-height: 400vh !important;
                 position: relative !important;
                 background: #fff !important;
                 overflow: visible !important;
@@ -1666,50 +1669,54 @@
                 padding-bottom: 0 !important;
             }
             
-            /* 래퍼 */
+            /* 래퍼 - sticky로 고정 */
             section#testimonials .stacking-cards-wrapper {
-                position: relative !important;
+                position: sticky !important;
+                top: 0 !important;
                 height: 100vh !important;
-                display: block !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
                 padding: 0 !important;
                 margin: 0 !important;
-                overflow: visible !important;
+                overflow: hidden !important;
             }
             
-            /* 타이틀 박스 - 중앙 정렬, 내부는 이미지 너비에 맞춤 */
+            /* 타이틀 박스 - 상단에 고정 */
             section#testimonials .testimonial-title-box {
-                position: absolute !important;
-                top: 25px !important;
-                left: 50% !important;
-                transform: translateX(-50%) !important;
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                transform: none !important;
                 width: 90% !important;
-                max-width: 240px !important;
-                padding: 0 !important;
+                max-width: 280px !important;
+                padding: 20px 0 15px 0 !important;
                 text-align: left !important;
                 z-index: 100 !important;
                 display: flex !important;
                 flex-direction: column !important;
                 align-items: center !important;
                 background: transparent !important;
+                flex-shrink: 0 !important;
             }
             
             /* 이미지 - 중앙 정렬 */
             section#testimonials .testimonial-title-box > img {
                 display: block !important;
                 width: 100% !important;
-                max-width: 240px !important;
+                max-width: 200px !important;
                 height: auto !important;
                 object-fit: contain !important;
-                border-radius: 0 !important;
-                margin: 0 auto 20px auto !important;
-                box-shadow: none !important;
+                border-radius: 8px !important;
+                margin: 0 auto 15px auto !important;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
             }
             
-            /* 텍스트 컨테이너 - 이미지 너비에 맞춰 왼쪽 정렬 */
+            /* 텍스트 컨테이너 */
             section#testimonials .testimonial-title-box > p,
             section#testimonials .testimonial-title-box > h2 {
                 width: 100% !important;
-                max-width: 240px !important;
+                max-width: 200px !important;
                 text-align: left !important;
             }
             
@@ -1717,31 +1724,27 @@
             section#testimonials .testimonial-title-box p.testimonial-fade,
             section#testimonials .testimonial-title-box .text-gray-400 {
                 display: block !important;
-                font-size: 11px !important;
-                letter-spacing: 0.2em !important;
+                font-size: 10px !important;
+                letter-spacing: 0.15em !important;
                 color: #888 !important;
-                margin-bottom: 8px !important;
+                margin-bottom: 6px !important;
                 text-align: left !important;
             }
             
-            /* 타이틀 - 세 줄로 표시, 줄간격 줄임 */
+            /* 타이틀 - 세 줄로 표시 */
             section#testimonials .testimonial-title-box h2 {
                 display: block !important;
-                font-size: 30px !important;
-                line-height: 0.75 !important;
-                margin: 0 0 30px 0 !important;
+                font-size: 24px !important;
+                line-height: 1.1 !important;
+                margin: 0 !important;
                 text-align: left !important;
             }
             
             section#testimonials .testimonial-title-box h2 .testimonial-slide {
                 display: block !important;
                 white-space: normal !important;
-                font-size: 36px !important;
-                line-height: 0.75 !important;
-                margin-top: -5px !important;
-            }
-            
-            section#testimonials .testimonial-title-box h2 .testimonial-slide:first-of-type {
+                font-size: 24px !important;
+                line-height: 1.1 !important;
                 margin-top: 0 !important;
             }
             
@@ -1755,56 +1758,72 @@
                 display: none !important;
             }
             
-            /* 카드 - 텍스트 아래 간격 두고 배치 */
+            /* 카드 컨테이너 영역 */
+            section#testimonials .stacking-cards-wrapper::after {
+                content: '';
+                flex: 1;
+            }
+            
+            /* 카드 - 스택으로 쌓임 */
             section#testimonials .stack-card {
                 position: absolute !important;
-                top: 320px !important;
+                top: 50% !important;
                 left: 50% !important;
+                transform: translateX(-50%) translateY(-50%) !important;
                 width: 88% !important;
                 max-width: 320px !important;
                 height: auto !important;
-                min-height: 280px !important;
-                padding: 15px !important;
+                min-height: 300px !important;
+                max-height: 400px !important;
+                padding: 20px !important;
                 border-radius: 16px !important;
-                box-shadow: 0 6px 24px rgba(0,0,0,0.12) !important;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.15) !important;
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                            opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                overflow: hidden !important;
             }
             
             /* 카드 내부 요소 */
             section#testimonials .stack-card .flex {
-                margin-bottom: 6px !important;
+                margin-bottom: 10px !important;
             }
             
             section#testimonials .stack-card .text-6xl {
-                font-size: 28px !important;
+                font-size: 32px !important;
             }
             
             section#testimonials .stack-card .flex img {
-                width: 50px !important;
-                height: 50px !important;
-                border-radius: 8px !important;
+                width: 60px !important;
+                height: 60px !important;
+                border-radius: 10px !important;
             }
             
             section#testimonials .stack-card blockquote {
-                font-size: 12px !important;
+                font-size: 13px !important;
                 line-height: 1.5 !important;
-                margin-top: 4px !important;
-                margin-bottom: 6px !important;
+                margin-top: 8px !important;
+                margin-bottom: 10px !important;
+                overflow: hidden !important;
+                display: -webkit-box !important;
+                -webkit-line-clamp: 6 !important;
+                line-clamp: 6 !important;
+                -webkit-box-orient: vertical !important;
             }
             
             section#testimonials .stack-card .text-xl {
-                font-size: 14px !important;
+                font-size: 16px !important;
                 margin-bottom: 2px !important;
             }
             
             section#testimonials .stack-card .text-sm {
-                font-size: 11px !important;
+                font-size: 12px !important;
                 margin-bottom: 0 !important;
             }
             
             /* 예배시간 섹션 - 간증 섹션 바로 아래 붙이기 */
             section#worship-times.worship-section {
                 margin-top: 0 !important;
-                padding-top: 20px !important;
+                padding-top: 40px !important;
             }
         }
         
@@ -4905,7 +4924,7 @@ and glorify your Father in heaven.
                             </div>
                         </div>
                     </div>
-                </div>
+                        </div>
                 
                 <!-- 우측: 소셜 미디어 - 한 줄로 가로 나열 -->
                 <div class="flex items-center gap-3" style="flex-direction: row !important; flex-wrap: nowrap !important;">
@@ -4914,7 +4933,7 @@ and glorify your Father in heaven.
                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="#FF6B00">
                                 <circle cx="12" cy="12" r="10"/>
                                 <text x="12" y="16" text-anchor="middle" fill="white" font-size="8" font-weight="bold">C</text>
-                            </svg>
+                        </svg>
                         </div>
                         <span>카페</span>
                     </a>
@@ -4923,7 +4942,7 @@ and glorify your Father in heaven.
                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="#03C75A">
                                 <rect width="24" height="24" rx="4"/>
                                 <text x="12" y="17" text-anchor="middle" fill="white" font-size="10" font-weight="bold">N</text>
-                            </svg>
+                        </svg>
                         </div>
                         <span>블로그</span>
                     </a>
@@ -4933,8 +4952,8 @@ and glorify your Father in heaven.
                         </div>
                         <span>유튜브</span>
                     </a>
+                    </div>
                 </div>
-            </div>
             
             <!-- 하단 저작권 -->
             <div class="text-center mt-10 pt-6 border-t border-gray-200">
@@ -5411,32 +5430,32 @@ and glorify your Father in heaven.
                         }
                     } else {
                         // 데스크탑: 주일예배 단독, 나머지 4개는 한 줄로 가로 배치
-                        // 주일예배 찾기 (단독 배치)
-                        const sunday1 = formatData.find(item => item.name === '주일예배');
-                        if (sunday1) {
-                            html += `
-                                <div class="worship-item">
-                                    ${sunday1.day ? `<span class="day">${sunday1.day}</span>` : ''}
-                                    <span class="name">${sunday1.name}</span>
-                                    <span class="time">${sunday1.time}</span>
-                                </div>
-                            `;
-                        }
-                        
-                        // 나머지 4개 (수요, 금요, 학생, 유치) 찾기
-                        const others = formatData.filter(item => item.name !== '주일예배');
-                        if (others.length > 0) {
-                            html += `
-                                <div class="worship-items-row">
-                                    ${others.map(item => `
-                                        <div class="worship-item">
-                                            ${item.day ? `<span class="day">${item.day}</span>` : ''}
-                                            <span class="name">${item.name}</span>
-                                            <span class="time">${item.time}</span>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            `;
+                    // 주일예배 찾기 (단독 배치)
+                    const sunday1 = formatData.find(item => item.name === '주일예배');
+                    if (sunday1) {
+                        html += `
+                            <div class="worship-item">
+                                ${sunday1.day ? `<span class="day">${sunday1.day}</span>` : ''}
+                                <span class="name">${sunday1.name}</span>
+                                <span class="time">${sunday1.time}</span>
+                            </div>
+                        `;
+                    }
+                    
+                    // 나머지 4개 (수요, 금요, 학생, 유치) 찾기
+                    const others = formatData.filter(item => item.name !== '주일예배');
+                    if (others.length > 0) {
+                        html += `
+                            <div class="worship-items-row">
+                                ${others.map(item => `
+                                    <div class="worship-item">
+                                        ${item.day ? `<span class="day">${item.day}</span>` : ''}
+                                        <span class="name">${item.name}</span>
+                                        <span class="time">${item.time}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
                         }
                     }
                     
@@ -6283,7 +6302,8 @@ and glorify your Father in heaven.
             const scrollProgress = Math.max(0, Math.min(1, (scrollStart - currentPosition) / (scrollStart - scrollEnd)));
             
             // 모바일/데스크탑에 따른 기본 transform
-            const baseTransform = isMobileView ? 'translateX(-50%)' : 'translate(-50%, -50%)';
+            // 모바일: CSS에서 top: 50%, transform: translateX(-50%) translateY(-50%)로 설정됨
+            const baseTransform = 'translate(-50%, -50%)';
 
             // 5개 카드를 0~1 범위에 균등하게 분배 (각 카드당 0.2씩)
             // Card 1 (Yellow) - 0~0.2
