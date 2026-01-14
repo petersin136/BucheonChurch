@@ -114,6 +114,17 @@
         
         /* 모바일 최적화 */
         @media (max-width: 768px) {
+            /* 모바일 스크롤 성능 최적화 */
+            html, body {
+                -webkit-overflow-scrolling: touch !important;
+                scroll-behavior: auto !important;
+                overscroll-behavior: contain !important;
+            }
+            
+            * {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
             /* 모바일 전용 줄바꿈 보이기 */
             .mobile-br {
                 display: block !important;
@@ -4464,6 +4475,10 @@ and glorify your Father in heaven.
         }
         
         // 라이트박스 열기
+        // 라이트박스용 스크롤 위치 저장 변수
+        let savedLightboxScrollPosition = 0;
+        let isLightboxOpen = false;
+        
         function openLightbox(imageUrl, imageName, index) {
             const lightbox = document.getElementById('lightbox');
             const lightboxImage = document.getElementById('lightbox-image');
@@ -4472,6 +4487,13 @@ and glorify your Father in heaven.
                 console.error('라이트박스 요소를 찾을 수 없습니다.');
                 return;
             }
+            
+            if (isLightboxOpen) return; // 중복 열기 방지
+            
+            isLightboxOpen = true;
+            
+            // 현재 스크롤 위치 저장
+            savedLightboxScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
             
             currentLightboxIndex = index !== undefined ? index : 0;
             
@@ -4534,11 +4556,17 @@ and glorify your Father in heaven.
             
             lightboxImage.src = imageUrl;
             lightboxImage.alt = imageName || '';
-            lightbox.style.display = 'flex';
+            
+            // body 고정 (스크롤 위치 유지)
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${savedLightboxScrollPosition}px`;
+            document.body.style.width = '100%';
             document.body.style.overflow = 'hidden';
             
+            lightbox.style.display = 'flex';
+            
             // 히스토리 상태 추가 (뒤로가기 버튼 처리)
-            history.pushState({ modal: 'lightbox', index: index }, '', window.location.href);
+            history.pushState({ modal: 'lightbox', index: index, scrollY: savedLightboxScrollPosition }, '', window.location.href);
             
             updateLightboxNavigation();
         }
@@ -4644,10 +4672,22 @@ and glorify your Father in heaven.
                 return;
             }
             
+            if (!isLightboxOpen) return; // 이미 닫혀있으면 무시
+            
             const lightbox = document.getElementById('lightbox');
             lightbox.style.display = 'none';
+            
+            // body 고정 해제 및 스크롤 위치 복원
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
             document.body.style.overflow = '';
+            
+            // 저장된 스크롤 위치로 복원
+            window.scrollTo(0, savedLightboxScrollPosition);
+            
             lightboxIsDragging = false;
+            isLightboxOpen = false;
         }
         
         // 키보드 이벤트 (ESC, 화살표 키)
@@ -5536,8 +5576,19 @@ and glorify your Father in heaven.
         // ========================================
         // 공지사항/기도제목 모달 함수
         // ========================================
+        
+        // 모달 열기 전 스크롤 위치 저장용 변수
+        let savedScrollPosition = 0;
+        let isModalOpen = false;
+        
         function openNoticeModalFromData(index) {
             if (!window.noticesData || !window.noticesData[index]) return;
+            if (isModalOpen) return; // 중복 열기 방지
+            
+            isModalOpen = true;
+            
+            // 현재 스크롤 위치 저장
+            savedScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
             
             const item = window.noticesData[index];
             const modal = document.getElementById('content-modal');
@@ -5572,11 +5623,16 @@ and glorify your Father in heaven.
             modal.style.background = 'rgba(0, 0, 0, 0)';
             modal.style.backdropFilter = 'blur(0px)';
             
-            modal.style.display = 'flex';
+            // body 고정 (스크롤 위치 유지)
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${savedScrollPosition}px`;
+            document.body.style.width = '100%';
             document.body.style.overflow = 'hidden';
             
+            modal.style.display = 'flex';
+            
             // 히스토리 상태 추가 (뒤로가기 버튼 처리)
-            history.pushState({ modal: 'notice', index: index }, '', window.location.href);
+            history.pushState({ modal: 'notice', index: index, scrollY: savedScrollPosition }, '', window.location.href);
             
             // 부드러운 애니메이션 (double RAF로 최적화)
             requestAnimationFrame(() => {
@@ -5588,6 +5644,12 @@ and glorify your Father in heaven.
         
         function openPrayerModalFromData(index) {
             if (!window.prayerData || !window.prayerData[index]) return;
+            if (isModalOpen) return; // 중복 열기 방지
+            
+            isModalOpen = true;
+            
+            // 현재 스크롤 위치 저장
+            savedScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
             
             const item = window.prayerData[index];
             const modal = document.getElementById('content-modal');
@@ -5622,11 +5684,16 @@ and glorify your Father in heaven.
             modal.style.background = 'rgba(0, 0, 0, 0)';
             modal.style.backdropFilter = 'blur(0px)';
             
-            modal.style.display = 'flex';
+            // body 고정 (스크롤 위치 유지)
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${savedScrollPosition}px`;
+            document.body.style.width = '100%';
             document.body.style.overflow = 'hidden';
             
+            modal.style.display = 'flex';
+            
             // 히스토리 상태 추가 (뒤로가기 버튼 처리)
-            history.pushState({ modal: 'prayer', index: index }, '', window.location.href);
+            history.pushState({ modal: 'prayer', index: index, scrollY: savedScrollPosition }, '', window.location.href);
             
             // 부드러운 애니메이션 (double RAF로 최적화)
             requestAnimationFrame(() => {
@@ -5641,6 +5708,8 @@ and glorify your Father in heaven.
                 return;
             }
             
+            if (!isModalOpen) return; // 이미 닫혀있으면 무시
+            
             const modal = document.getElementById('content-modal');
             const modalContentEl = modal.querySelector('.modal-content');
             
@@ -5653,10 +5722,21 @@ and glorify your Father in heaven.
             
             setTimeout(() => {
                 modal.style.display = 'none';
+                
+                // body 고정 해제 및 스크롤 위치 복원
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
                 document.body.style.overflow = '';
+                
+                // 저장된 스크롤 위치로 복원
+                window.scrollTo(0, savedScrollPosition);
+                
                 // 초기 상태로 리셋
                 modalContentEl.style.transform = 'scale(0.85) translateY(20px)';
                 modalContentEl.style.opacity = '0';
+                
+                isModalOpen = false;
             }, 400);
         }
         
@@ -5674,7 +5754,7 @@ and glorify your Father in heaven.
         window.addEventListener('popstate', function(event) {
             // 공지사항/기도제목 모달이 열려있으면 닫기
             const contentModal = document.getElementById('content-modal');
-            if (contentModal && contentModal.style.display === 'flex') {
+            if (contentModal && contentModal.style.display === 'flex' && isModalOpen) {
                 // 모달만 닫기 (히스토리는 이미 popstate로 처리됨)
                 const modalContentEl = contentModal.querySelector('.modal-content');
                 contentModal.classList.remove('modal-open');
@@ -5685,19 +5765,41 @@ and glorify your Father in heaven.
                 
                 setTimeout(() => {
                     contentModal.style.display = 'none';
+                    
+                    // body 고정 해제 및 스크롤 위치 복원
+                    document.body.style.position = '';
+                    document.body.style.top = '';
+                    document.body.style.width = '';
                     document.body.style.overflow = '';
+                    
+                    // 저장된 스크롤 위치로 복원
+                    window.scrollTo(0, savedScrollPosition);
+                    
                     modalContentEl.style.transform = 'scale(0.85) translateY(20px)';
                     modalContentEl.style.opacity = '0';
+                    
+                    isModalOpen = false;
                 }, 400);
+                return; // 모달 닫기 처리 후 종료
             }
             
             // 갤러리 라이트박스가 열려있으면 닫기
             const lightbox = document.getElementById('lightbox');
-            if (lightbox && lightbox.style.display !== 'none' && lightbox.style.display !== '') {
+            if (lightbox && lightbox.style.display !== 'none' && lightbox.style.display !== '' && isLightboxOpen) {
                 // 라이트박스만 닫기 (히스토리는 이미 popstate로 처리됨)
                 lightbox.style.display = 'none';
+                
+                // body 고정 해제 및 스크롤 위치 복원
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
                 document.body.style.overflow = '';
+                
+                // 저장된 스크롤 위치로 복원
+                window.scrollTo(0, savedLightboxScrollPosition);
+                
                 lightboxIsDragging = false;
+                isLightboxOpen = false;
             }
         });
         
