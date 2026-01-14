@@ -1689,13 +1689,17 @@
                 transform: none !important;
                 width: 90% !important;
                 max-width: 320px !important;
-                padding: 0 0 25px 0 !important;
+                padding: 20px 0 25px 0 !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                margin: 0 auto !important;
                 text-align: center !important;
                 z-index: 10 !important;
                 display: flex !important;
                 flex-direction: column !important;
                 align-items: center !important;
                 background: transparent !important;
+                box-sizing: border-box !important;
             }
             
             /* 이미지 - 중앙 정렬, 작게 */
@@ -1750,36 +1754,57 @@
                 display: none !important;
             }
             
-            /* 카드 수평 스크롤 컨테이너 */
+            /* 래퍼를 세로 방향으로 변경 */
             section#testimonials .stacking-cards-wrapper {
+                display: flex !important;
+                flex-direction: column !important;
                 width: 100% !important;
+                gap: 0 !important;
+                padding: 0 !important;
+                overflow: visible !important;
+            }
+            
+            /* 타이틀 박스는 위에 배치 */
+            section#testimonials .testimonial-title-box {
+                flex-shrink: 0 !important;
+                order: -1 !important;
+                width: 100% !important;
+                margin-bottom: 20px !important;
+            }
+            
+            /* 카드들을 담을 수평 스크롤 컨테이너 (JavaScript로 생성됨) */
+            section#testimonials .testimonial-cards-scroll-container {
+                width: 100% !important;
+                overflow-x: auto !important;
+                overflow-y: hidden !important;
+                -webkit-overflow-scrolling: touch !important;
+                scroll-behavior: smooth !important;
+                scrollbar-width: thin !important;
+                scrollbar-color: rgba(0,0,0,0.2) transparent !important;
+                order: 1 !important;
+            }
+            
+            section#testimonials .testimonial-cards-scroll-container::-webkit-scrollbar {
+                height: 4px !important;
+            }
+            
+            section#testimonials .testimonial-cards-scroll-container::-webkit-scrollbar-track {
+                background: transparent !important;
+            }
+            
+            section#testimonials .testimonial-cards-scroll-container::-webkit-scrollbar-thumb {
+                background: rgba(0,0,0,0.2) !important;
+                border-radius: 2px !important;
+            }
+            
+            /* 카드들을 수평으로 나열 */
+            section#testimonials .testimonial-cards-scroll-container {
                 display: flex !important;
                 flex-direction: row !important;
                 gap: 20px !important;
                 padding-left: 20px !important;
                 padding-right: 20px !important;
                 padding-bottom: 10px !important;
-                align-items: stretch !important;
-                overflow-x: auto !important;
-                overflow-y: hidden !important;
-                -webkit-overflow-scrolling: touch !important;
-                scroll-behavior: smooth !important;
-                /* 스크롤바 스타일 */
-                scrollbar-width: thin !important;
-                scrollbar-color: rgba(0,0,0,0.2) transparent !important;
-            }
-            
-            section#testimonials .stacking-cards-wrapper::-webkit-scrollbar {
-                height: 4px !important;
-            }
-            
-            section#testimonials .stacking-cards-wrapper::-webkit-scrollbar-track {
-                background: transparent !important;
-            }
-            
-            section#testimonials .stacking-cards-wrapper::-webkit-scrollbar-thumb {
-                background: rgba(0,0,0,0.2) !important;
-                border-radius: 2px !important;
             }
             
             /* 카드 스타일 */
@@ -6200,15 +6225,36 @@ and glorify your Father in heaven.
             const existingNav = wrapper.parentElement.querySelector('.testimonial-carousel-nav');
             if (existingNav) existingNav.remove();
             
+            // 기존 스크롤 컨테이너가 있으면 제거
+            const existingScrollContainer = wrapper.querySelector('.testimonial-cards-scroll-container');
+            if (existingScrollContainer) {
+                // 카드들을 다시 wrapper로 이동
+                const cards = existingScrollContainer.querySelectorAll('.stack-card');
+                cards.forEach(card => wrapper.appendChild(card));
+                existingScrollContainer.remove();
+            }
+            
             // 카드들 가져오기
             const cards = wrapper.querySelectorAll('.stack-card');
             if (cards.length === 0) return;
             
-            // 모든 카드를 표시 (수평 스크롤용)
+            // 카드들을 감싸는 스크롤 컨테이너 생성
+            const scrollContainer = document.createElement('div');
+            scrollContainer.className = 'testimonial-cards-scroll-container';
+            
+            // 카드들을 스크롤 컨테이너로 이동
             cards.forEach((card) => {
                 card.classList.remove('mobile-active');
-                // 모든 카드가 표시되도록 함 (CSS에서 display: flex로 설정됨)
+                scrollContainer.appendChild(card);
             });
+            
+            // 스크롤 컨테이너를 wrapper에 추가
+            wrapper.appendChild(scrollContainer);
+            
+            // 스크롤을 처음으로 설정
+            setTimeout(() => {
+                scrollContainer.scrollLeft = 0;
+            }, 100);
             
             console.log('✅ Mobile testimonial horizontal scroll initialized');
         }
