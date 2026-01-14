@@ -1656,100 +1656,92 @@
             
             /* 컨테이너 - 여백 최소화 */
             /* ========================================
-               모바일 간증 섹션 - 스택 카드 효과
+               모바일 간증 섹션 - 수평 스와이프 캐러셀
                ======================================== */
             section#testimonials.stacking-cards-container {
                 display: block !important;
-                height: 400vh !important; /* 카드 5장 × 80vh */
-                min-height: 400vh !important;
+                height: auto !important;
+                min-height: auto !important;
                 position: relative !important;
-                background: #fff !important;
-                overflow: visible !important;
+                background: linear-gradient(180deg, #FAFAFA 0%, #F5F5F5 100%) !important;
+                overflow: hidden !important;
                 margin-bottom: 0 !important;
-                padding-bottom: 0 !important;
+                padding: 40px 0 50px 0 !important;
             }
             
-            /* 래퍼 - sticky로 고정 */
+            /* 래퍼 - 플렉스 컬럼 */
             section#testimonials .stacking-cards-wrapper {
-                position: sticky !important;
-                top: 0 !important;
-                height: 100vh !important;
+                position: relative !important;
+                height: auto !important;
                 display: flex !important;
                 flex-direction: column !important;
                 align-items: center !important;
                 padding: 0 !important;
                 margin: 0 !important;
-                overflow: hidden !important;
+                overflow: visible !important;
             }
             
-            /* 타이틀 박스 - 상단에 고정 */
+            /* 타이틀 박스 - 상단 중앙 */
             section#testimonials .testimonial-title-box {
                 position: relative !important;
                 top: auto !important;
                 left: auto !important;
                 transform: none !important;
                 width: 90% !important;
-                max-width: 280px !important;
-                padding: 20px 0 15px 0 !important;
-                text-align: left !important;
-                z-index: 100 !important;
+                max-width: 320px !important;
+                padding: 0 0 25px 0 !important;
+                text-align: center !important;
+                z-index: 10 !important;
                 display: flex !important;
                 flex-direction: column !important;
                 align-items: center !important;
                 background: transparent !important;
-                flex-shrink: 0 !important;
             }
             
-            /* 이미지 - 중앙 정렬 */
+            /* 이미지 - 중앙 정렬, 작게 */
             section#testimonials .testimonial-title-box > img {
                 display: block !important;
-                width: 100% !important;
-                max-width: 200px !important;
+                width: 140px !important;
+                max-width: 140px !important;
                 height: auto !important;
-                object-fit: contain !important;
-                border-radius: 8px !important;
-                margin: 0 auto 15px auto !important;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
-            }
-            
-            /* 텍스트 컨테이너 */
-            section#testimonials .testimonial-title-box > p,
-            section#testimonials .testimonial-title-box > h2 {
-                width: 100% !important;
-                max-width: 200px !important;
-                text-align: left !important;
+                object-fit: cover !important;
+                border-radius: 12px !important;
+                margin: 0 auto 20px auto !important;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
             }
             
             /* TESTIMONIALS 텍스트 */
             section#testimonials .testimonial-title-box p.testimonial-fade,
             section#testimonials .testimonial-title-box .text-gray-400 {
                 display: block !important;
-                font-size: 10px !important;
-                letter-spacing: 0.15em !important;
-                color: #888 !important;
-                margin-bottom: 6px !important;
-                text-align: left !important;
+                font-size: 11px !important;
+                letter-spacing: 0.2em !important;
+                color: #999 !important;
+                margin-bottom: 8px !important;
+                text-align: center !important;
+                text-transform: uppercase !important;
             }
             
-            /* 타이틀 - 세 줄로 표시 */
+            /* 타이틀 - 한 줄로 */
             section#testimonials .testimonial-title-box h2 {
                 display: block !important;
-                font-size: 24px !important;
-                line-height: 1.1 !important;
+                font-size: 26px !important;
+                line-height: 1.3 !important;
                 margin: 0 !important;
-                text-align: left !important;
+                text-align: center !important;
+                color: #1a1a1a !important;
             }
             
             section#testimonials .testimonial-title-box h2 .testimonial-slide {
-                display: block !important;
-                white-space: normal !important;
-                font-size: 24px !important;
-                line-height: 1.1 !important;
-                margin-top: 0 !important;
+                display: inline !important;
+                white-space: nowrap !important;
+                font-size: 26px !important;
+                line-height: 1.3 !important;
+                margin: 0 !important;
             }
             
             section#testimonials .testimonial-title-box h2 br {
-                display: block !important;
+                display: none !important;
             }
             
             /* 밑줄 숨김 */
@@ -1758,69 +1750,141 @@
                 display: none !important;
             }
             
-            /* 카드 컨테이너 영역 */
-            section#testimonials .stacking-cards-wrapper::after {
-                content: '';
-                flex: 1;
+            /* 카드 캐러셀 컨테이너 */
+            section#testimonials .stacking-cards-wrapper {
+                width: 100% !important;
             }
             
-            /* 카드 - 스택으로 쌓임 */
+            /* 카드들을 수평 스크롤로 배치 */
             section#testimonials .stack-card {
-                position: absolute !important;
-                top: 50% !important;
-                left: 50% !important;
-                transform: translateX(-50%) translateY(-50%) !important;
-                width: 88% !important;
-                max-width: 320px !important;
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                transform: none !important;
+                display: none !important; /* 기본 숨김, JS로 활성화 */
+                width: 85% !important;
+                max-width: 340px !important;
+                min-width: 280px !important;
                 height: auto !important;
-                min-height: 300px !important;
-                max-height: 400px !important;
-                padding: 20px !important;
-                border-radius: 16px !important;
-                box-shadow: 0 8px 32px rgba(0,0,0,0.15) !important;
-                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                            opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-                overflow: hidden !important;
+                min-height: 320px !important;
+                padding: 24px !important;
+                margin: 0 auto !important;
+                border-radius: 20px !important;
+                box-shadow: 0 12px 40px rgba(0,0,0,0.12) !important;
+                opacity: 1 !important;
+                z-index: 1 !important;
+            }
+            
+            /* 활성 카드만 표시 */
+            section#testimonials .stack-card.mobile-active {
+                display: flex !important;
+                flex-direction: column !important;
+                animation: cardFadeIn 0.4s ease-out !important;
+            }
+            
+            @keyframes cardFadeIn {
+                from {
+                    opacity: 0;
+                    transform: scale(0.95) translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: scale(1) translateY(0);
+                }
             }
             
             /* 카드 내부 요소 */
             section#testimonials .stack-card .flex {
-                margin-bottom: 10px !important;
+                margin-bottom: 16px !important;
             }
             
             section#testimonials .stack-card .text-6xl {
-                font-size: 32px !important;
+                font-size: 40px !important;
+                font-weight: 700 !important;
             }
             
             section#testimonials .stack-card .flex img {
-                width: 60px !important;
-                height: 60px !important;
-                border-radius: 10px !important;
+                width: 70px !important;
+                height: 70px !important;
+                border-radius: 12px !important;
+                object-fit: cover !important;
             }
             
             section#testimonials .stack-card blockquote {
-                font-size: 13px !important;
-                line-height: 1.5 !important;
-                margin-top: 8px !important;
-                margin-bottom: 10px !important;
+                font-size: 14px !important;
+                line-height: 1.6 !important;
+                margin-top: 0 !important;
+                margin-bottom: 16px !important;
+                flex: 1 !important;
                 overflow: hidden !important;
                 display: -webkit-box !important;
-                -webkit-line-clamp: 6 !important;
-                line-clamp: 6 !important;
+                -webkit-line-clamp: 7 !important;
+                line-clamp: 7 !important;
                 -webkit-box-orient: vertical !important;
+                color: #333 !important;
             }
             
             section#testimonials .stack-card .text-xl {
-                font-size: 16px !important;
-                margin-bottom: 2px !important;
+                font-size: 18px !important;
+                font-weight: 700 !important;
+                margin-bottom: 4px !important;
             }
             
             section#testimonials .stack-card .text-sm {
-                font-size: 12px !important;
+                font-size: 13px !important;
                 margin-bottom: 0 !important;
+                opacity: 0.7 !important;
             }
             
-            /* 예배시간 섹션 - 간증 섹션 바로 아래 붙이기 */
+            /* 캐러셀 네비게이션 인디케이터 */
+            .testimonial-carousel-nav {
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                gap: 10px !important;
+                margin-top: 25px !important;
+                padding: 0 20px !important;
+            }
+            
+            .testimonial-carousel-dot {
+                width: 10px !important;
+                height: 10px !important;
+                border-radius: 50% !important;
+                background: #ddd !important;
+                border: none !important;
+                cursor: pointer !important;
+                transition: all 0.3s ease !important;
+                padding: 0 !important;
+            }
+            
+            .testimonial-carousel-dot.active {
+                background: #FFB800 !important;
+                transform: scale(1.3) !important;
+            }
+            
+            /* 좌우 버튼 */
+            .testimonial-carousel-btn {
+                width: 36px !important;
+                height: 36px !important;
+                border-radius: 50% !important;
+                background: white !important;
+                border: 1px solid #eee !important;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+                cursor: pointer !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                transition: all 0.2s ease !important;
+                color: #666 !important;
+                font-size: 16px !important;
+            }
+            
+            .testimonial-carousel-btn:active {
+                transform: scale(0.95) !important;
+                background: #f5f5f5 !important;
+            }
+            
+            /* 예배시간 섹션 */
             section#worship-times.worship-section {
                 margin-top: 0 !important;
                 padding-top: 40px !important;
@@ -6149,8 +6213,149 @@ and glorify your Father in heaven.
         // 스택 카드 섹션
         // ========================================
         const stackingSection = document.querySelector('.stacking-cards-container');
+        
+        // ========================================
+        // 모바일 간증 캐러셀
+        // ========================================
+        let mobileTestimonialIndex = 0;
+        let testimonialTouchStartX = 0;
+        let testimonialTouchEndX = 0;
+        
+        function initMobileTestimonialCarousel() {
+            const isMobileView = window.innerWidth <= 768;
+            if (!isMobileView) return;
+            
+            const wrapper = document.getElementById('stackingCardsWrapper');
+            if (!wrapper) return;
+            
+            // 기존 네비게이션 제거
+            const existingNav = wrapper.parentElement.querySelector('.testimonial-carousel-nav');
+            if (existingNav) existingNav.remove();
+            
+            // 카드들 가져오기
+            const cards = wrapper.querySelectorAll('.stack-card');
+            if (cards.length === 0) return;
+            
+            // 모든 카드 숨기고 첫 번째 카드만 표시
+            cards.forEach((card, index) => {
+                card.classList.remove('mobile-active');
+                if (index === mobileTestimonialIndex) {
+                    card.classList.add('mobile-active');
+                }
+            });
+            
+            // 네비게이션 생성
+            const nav = document.createElement('div');
+            nav.className = 'testimonial-carousel-nav';
+            nav.innerHTML = `
+                <button class="testimonial-carousel-btn testimonial-prev" onclick="changeTestimonialCard(-1)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15,18 9,12 15,6"></polyline>
+                    </svg>
+                </button>
+                ${Array.from(cards).map((_, i) => `
+                    <button class="testimonial-carousel-dot ${i === mobileTestimonialIndex ? 'active' : ''}" 
+                            onclick="goToTestimonialCard(${i})"></button>
+                `).join('')}
+                <button class="testimonial-carousel-btn testimonial-next" onclick="changeTestimonialCard(1)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9,18 15,12 9,6"></polyline>
+                    </svg>
+                </button>
+            `;
+            
+            // 네비게이션을 wrapper 뒤에 추가
+            wrapper.parentElement.appendChild(nav);
+            
+            // 터치 스와이프 이벤트 추가
+            wrapper.removeEventListener('touchstart', handleTestimonialTouchStart);
+            wrapper.removeEventListener('touchend', handleTestimonialTouchEnd);
+            wrapper.addEventListener('touchstart', handleTestimonialTouchStart, { passive: true });
+            wrapper.addEventListener('touchend', handleTestimonialTouchEnd, { passive: true });
+            
+            console.log('✅ Mobile testimonial carousel initialized');
+        }
+        
+        function handleTestimonialTouchStart(e) {
+            testimonialTouchStartX = e.changedTouches[0].screenX;
+        }
+        
+        function handleTestimonialTouchEnd(e) {
+            testimonialTouchEndX = e.changedTouches[0].screenX;
+            handleTestimonialSwipe();
+        }
+        
+        function handleTestimonialSwipe() {
+            const swipeThreshold = 50;
+            const diff = testimonialTouchStartX - testimonialTouchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // 왼쪽으로 스와이프 = 다음 카드
+                    changeTestimonialCard(1);
+                } else {
+                    // 오른쪽으로 스와이프 = 이전 카드
+                    changeTestimonialCard(-1);
+                }
+            }
+        }
+        
+        function changeTestimonialCard(direction) {
+            const wrapper = document.getElementById('stackingCardsWrapper');
+            if (!wrapper) return;
+            
+            const cards = wrapper.querySelectorAll('.stack-card');
+            const totalCards = cards.length;
+            
+            // 현재 카드 숨기기
+            cards[mobileTestimonialIndex].classList.remove('mobile-active');
+            
+            // 새 인덱스 계산
+            mobileTestimonialIndex += direction;
+            if (mobileTestimonialIndex < 0) mobileTestimonialIndex = totalCards - 1;
+            if (mobileTestimonialIndex >= totalCards) mobileTestimonialIndex = 0;
+            
+            // 새 카드 표시
+            cards[mobileTestimonialIndex].classList.add('mobile-active');
+            
+            // 도트 업데이트
+            updateTestimonialDots();
+        }
+        
+        function goToTestimonialCard(index) {
+            const wrapper = document.getElementById('stackingCardsWrapper');
+            if (!wrapper) return;
+            
+            const cards = wrapper.querySelectorAll('.stack-card');
+            
+            // 현재 카드 숨기기
+            cards[mobileTestimonialIndex].classList.remove('mobile-active');
+            
+            // 새 인덱스
+            mobileTestimonialIndex = index;
+            
+            // 새 카드 표시
+            cards[mobileTestimonialIndex].classList.add('mobile-active');
+            
+            // 도트 업데이트
+            updateTestimonialDots();
+        }
+        
+        function updateTestimonialDots() {
+            const dots = document.querySelectorAll('.testimonial-carousel-dot');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === mobileTestimonialIndex);
+            });
+        }
 
         function initStackingCards() {
+            // 모바일이면 캐러셀 초기화
+            const isMobileView = window.innerWidth <= 768;
+            if (isMobileView) {
+                initMobileTestimonialCarousel();
+                return; // 모바일에서는 기존 스택 카드 로직 실행 안 함
+            }
+            
             // 카드들의 초기 위치 설정
             const stackCard1 = document.getElementById('stackCard1');
             const stackCard2 = document.getElementById('stackCard2');
@@ -6160,22 +6365,16 @@ and glorify your Father in heaven.
             
             // iPad/태블릿에서 카드를 오른쪽으로 이동하여 간격 확보 (768px ~ 1400px)
             const isTablet = window.innerWidth >= 768 && window.innerWidth <= 1400;
-            const isMobileView = window.innerWidth <= 768;
             
-            // 모바일/데스크탑에 따른 기본 transform 및 top
-            const baseTransform = isMobileView ? 'translateX(-50%)' : 'translate(-50%, -50%)';
-            const cardTop = isMobileView ? '320px' : '50%';
+            // 데스크탑에서는 기본 transform
+            const baseTransform = 'translate(-50%, -50%)';
+            const cardTop = '50%';
             
             if (stackCard1) {
-                if (isMobileView) {
-                    stackCard1.style.top = cardTop;
-                }
                 stackCard1.style.transform = baseTransform;
                 stackCard1.style.opacity = '1';
                 stackCard1.style.zIndex = '5';
-                if (isMobileView) {
-                    stackCard1.style.left = '50%';
-                } else if (window.innerWidth > 1400) {
+                if (window.innerWidth > 1400) {
                     stackCard1.style.left = 'calc(50% + 5cm)';
                 } else if (isTablet) {
                     stackCard1.style.left = '70%';
@@ -6184,15 +6383,10 @@ and glorify your Father in heaven.
                 }
             }
             if (stackCard2) {
-                if (isMobileView) {
-                    stackCard2.style.top = cardTop;
-                }
                 stackCard2.style.transform = `${baseTransform} translateY(20px) rotate(2deg) scale(0.95)`;
                 stackCard2.style.opacity = '0.7';
                 stackCard2.style.zIndex = '4';
-                if (isMobileView) {
-                    stackCard2.style.left = '50%';
-                } else if (window.innerWidth > 1400) {
+                if (window.innerWidth > 1400) {
                     stackCard2.style.left = 'calc(50% + 5cm)';
                 } else if (isTablet) {
                     stackCard2.style.left = '70%';
@@ -6201,15 +6395,10 @@ and glorify your Father in heaven.
                 }
             }
             if (stackCard3) {
-                if (isMobileView) {
-                    stackCard3.style.top = cardTop;
-                }
                 stackCard3.style.transform = `${baseTransform} translateY(40px) rotate(-2deg) scale(0.9)`;
                 stackCard3.style.opacity = '0.5';
                 stackCard3.style.zIndex = '3';
-                if (isMobileView) {
-                    stackCard3.style.left = '50%';
-                } else if (window.innerWidth > 1400) {
+                if (window.innerWidth > 1400) {
                     stackCard3.style.left = 'calc(50% + 5cm)';
                 } else if (isTablet) {
                     stackCard3.style.left = '70%';
@@ -6218,15 +6407,10 @@ and glorify your Father in heaven.
                 }
             }
             if (stackCard4) {
-                if (isMobileView) {
-                    stackCard4.style.top = cardTop;
-                }
                 stackCard4.style.transform = `${baseTransform} translateY(60px) rotate(2deg) scale(0.85)`;
                 stackCard4.style.opacity = '0.4';
                 stackCard4.style.zIndex = '2';
-                if (isMobileView) {
-                    stackCard4.style.left = '50%';
-                } else if (window.innerWidth > 1400) {
+                if (window.innerWidth > 1400) {
                     stackCard4.style.left = 'calc(50% + 5cm)';
                 } else if (isTablet) {
                     stackCard4.style.left = '70%';
@@ -6235,15 +6419,10 @@ and glorify your Father in heaven.
                 }
             }
             if (stackCard5) {
-                if (isMobileView) {
-                    stackCard5.style.top = cardTop;
-                }
                 stackCard5.style.transform = `${baseTransform} translateY(80px) rotate(-2deg) scale(0.8)`;
                 stackCard5.style.opacity = '0.3';
                 stackCard5.style.zIndex = '1';
-                if (isMobileView) {
-                    stackCard5.style.left = '50%';
-                } else if (window.innerWidth > 1400) {
+                if (window.innerWidth > 1400) {
                     stackCard5.style.left = 'calc(50% + 5cm)';
                 } else if (isTablet) {
                     stackCard5.style.left = '70%';
@@ -6254,6 +6433,11 @@ and glorify your Father in heaven.
         }
         
         function updateStackingCards() {
+            // 모바일에서는 캐러셀 사용, 스택 카드 업데이트 스킵
+            if (window.innerWidth <= 768) {
+                return;
+            }
+            
             // stackingSection이 없으면 리턴
             if (!stackingSection) {
                 return;
@@ -6275,7 +6459,6 @@ and glorify your Father in heaven.
             const sectionTop = rect.top;
             const sectionHeight = stackingSection.offsetHeight;
             const windowHeight = window.innerHeight;
-            const isMobileView = window.innerWidth <= 768;
             
             // 섹션이 완전히 화면 밖에 나갔으면 리턴
             if (rect.bottom < 0 || sectionTop > windowHeight * 1.5) {
