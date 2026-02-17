@@ -308,31 +308,7 @@
                 display: none !important;
             }
             
-            /* 히어로 바로 밑 내비게이션 섹션 숨기기 (모바일) */
-            #categorySliderSection,
-            section.category-slider-section,
-            .category-slider-section,
-            #categorySlider,
-            .category-slider-container,
-            section#categorySliderSection {
-                display: none !important;
-                visibility: hidden !important;
-                height: 0 !important;
-                max-height: 0 !important;
-                overflow: hidden !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                opacity: 0 !important;
-                pointer-events: none !important;
-            }
-            
-            #categorySliderSection *,
-            section.category-slider-section *,
-            .category-slider-section *,
-            #categorySlider *,
-            .category-slider-container * {
-                display: none !important;
-            }
+            /* 카테고리 슬라이더: 데스크탑·모바일 모두 표시 (모바일 전용 스타일은 하단 @media에서 적용) */
             
             /* 가로 스크롤 섹션 스타일은 하단 @media 블록에서 통합 관리 */
             
@@ -1171,14 +1147,45 @@
                 line-height: 1.4 !important;
             }
             
-            /* 카테고리 슬라이더 모바일 */
+            /* 카테고리 슬라이더 모바일 - 반드시 표시 */
+            #categorySliderSection,
+            section.category-slider-section {
+                display: block !important;
+                visibility: visible !important;
+                height: auto !important;
+                min-height: 0 !important;
+                max-height: none !important;
+                overflow: visible !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            #categorySlider,
             .category-slider-container {
+                display: block !important;
+                visibility: visible !important;
                 height: 40vh !important;
                 min-height: 250px !important;
+                overflow: hidden !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
             }
-            
+            #sliderTrack,
+            .category-slider-track {
+                display: flex !important;
+                visibility: visible !important;
+                height: 100% !important;
+            }
             .category-slide-item {
+                display: flex !important;
+                visibility: visible !important;
                 width: 80vw !important;
+            }
+            .slider-nav-btn.prev,
+            .slider-nav-btn.next {
+                display: flex !important;
+                visibility: visible !important;
             }
             
             /* 네비게이션 모바일 */
@@ -2570,29 +2577,7 @@
         }
     </style>
     
-    <!-- 모바일에서 내비게이션 섹션 즉시 삭제 (head에서 실행) -->
-    <script>
-        (function() {
-            function removeCategorySlider() {
-                if (window.innerWidth <= 768) {
-                    const slider = document.getElementById('categorySliderSection');
-                    if (slider) {
-                        slider.remove();
-                    }
-                }
-            }
-            
-            // DOM이 준비되면 즉시 실행
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', removeCategorySlider);
-            } else {
-                removeCategorySlider();
-            }
-            
-            // 추가 보장
-            window.addEventListener('load', removeCategorySlider);
-        })();
-    </script>
+    <!-- 카테고리 슬라이더: 모바일에서도 표시 (삭제 스크립트 제거) -->
 </head>
 <body class="bg-white text-black" style="padding-top: 0; margin: 0;">
 
@@ -3036,7 +3021,7 @@ and glorify your Father in heaven.
         </div>
     </section>
     
-    <section class="category-slider-section" style="margin: 0 !important; padding: 0 !important; border: none !important; background-color: #000000 !important;" id="categorySliderSection" data-mobile-hide="true">
+    <section class="category-slider-section" style="margin: 0 !important; padding: 0 !important; border: none !important; background-color: #000000 !important;" id="categorySliderSection">
         <div class="category-slider-container" id="categorySlider" style="margin: 0 !important; padding: 5mm 0 !important; background-color: #FFFFFF !important;">
             <!-- 좌측 네비게이션 버튼 -->
             <button class="slider-nav-btn prev" id="sliderPrev" aria-label="이전 슬라이드">
@@ -6993,37 +6978,7 @@ and glorify your Father in heaven.
         console.log('✅ 가로 스크롤 활성화 (400vh)');
         console.log('✅ 스택 카드 애니메이션 활성화 (500vh)');
         
-        // 모바일에서 내비게이션 섹션 완전히 삭제 (즉시 실행)
-        (function removeCategorySliderOnMobile() {
-            function removeIt() {
-                const categorySlider = document.getElementById('categorySliderSection');
-                if (categorySlider) {
-                    // 모바일 체크
-                    if (window.innerWidth <= 768) {
-                        categorySlider.remove();
-                        console.log('✅ 모바일: 내비게이션 섹션 삭제됨');
-                    }
-                }
-            }
-            
-            // 즉시 실행
-            removeIt();
-            
-            // DOMContentLoaded 시 실행
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', removeIt);
-            }
-            
-            // window.onload 시에도 실행
-            window.addEventListener('load', removeIt);
-            
-            // 리사이즈 시에도 체크
-            window.addEventListener('resize', function() {
-                if (window.innerWidth <= 768) {
-                    removeIt();
-                }
-            });
-        })();
+        // 카테고리 슬라이더: 모바일에서도 표시 (삭제 로직 제거)
         
         // ========================================
         // 드롭다운 메뉴
