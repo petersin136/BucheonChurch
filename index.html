@@ -665,15 +665,22 @@
             }
             
             .gallery-container {
-                min-height: auto !important;
+                height: 650px !important;
                 position: relative !important;
+                overflow: visible !important;
+                margin-bottom: 10px !important;
+                padding-bottom: 0 !important;
+                box-sizing: border-box !important;
             }
             
             .polaroid-grid {
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 8px !important;
-                padding: 8px 0 !important;
-                min-height: auto !important;
+                padding: 8px 0 60px 0 !important;
+                height: 650px !important;
+                overflow: hidden !important;
+                margin-bottom: 0 !important;
+                box-sizing: border-box !important;
             }
             
             .polaroid {
@@ -709,7 +716,7 @@
             }
             
             .gallery-pagination {
-                margin-top: 10px !important;
+                margin-top: 20px !important;
             }
             
             .gallery-pagination button {
@@ -3977,12 +3984,12 @@ and glorify your Father in heaven.
             </div>
             
             <!-- 빈 상태 메시지 -->
-            <div id="gallery-empty" class="text-center py-20" style="display: none; position: absolute; left: 0; right: 0; top: 0; height: 650px; z-index: 5; align-items: center; justify-content: center; pointer-events: none;">
+            <div id="gallery-empty" class="text-center py-20" style="display: none; position: absolute; left: 0; right: 0; top: 0; min-height: 650px; z-index: 5; align-items: center; justify-content: center; pointer-events: none;">
                 <p class="text-gray-600 text-lg" style="color: #666; font-size: 18px; font-family: 'Noto Sans KR', sans-serif; margin: 0;">표시할 이미지가 없습니다.</p>
             </div>
             
             <!-- 갤러리 컨테이너 -->
-            <div class="gallery-container relative" style="position: relative; height: 650px;">
+            <div class="gallery-container relative" style="position: relative; height: 650px; overflow: visible; margin-bottom: 10px; padding-bottom: 0; box-sizing: border-box;">
                 <!-- 좌측 화살표 -->
                 <button id="gallery-prev" class="gallery-nav-btn" onclick="goToGalleryPage(galleryCurrentPage - 1)" style="position: absolute; left: -60px; top: 50%; transform: translateY(-50%); z-index: 20; width: 48px; height: 48px; border-radius: 50%; background-color: #FFFFFF; border: 2px solid #E0E0E0; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s; opacity: 0.5; pointer-events: none;" onmouseover="if(this.style.pointerEvents !== 'none') { this.style.backgroundColor='#F5F5F5'; this.style.borderColor='#2D2D2D'; }" onmouseout="if(this.style.pointerEvents !== 'none') { this.style.backgroundColor='#FFFFFF'; this.style.borderColor='#E0E0E0'; }">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2D2D2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -3991,7 +3998,7 @@ and glorify your Father in heaven.
                 </button>
                 
                 <!-- 폴라로이드 그리드 -->
-                <div id="gallery-grid" class="polaroid-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; height: 650px !important; grid-auto-rows: auto; overflow: visible; align-items: start;">
+                <div id="gallery-grid" class="polaroid-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; height: 650px; grid-auto-rows: auto; overflow: hidden; align-items: start; margin-bottom: 0; padding: 8px 0 60px 0; box-sizing: border-box;">
                     <!-- 폴라로이드 카드들이 여기에 동적으로 추가됩니다 -->
                 </div>
                 
@@ -4004,7 +4011,7 @@ and glorify your Father in heaven.
             </div>
             
             <!-- 페이지네이션 -->
-            <div id="gallery-pagination" class="gallery-pagination" style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 32px; min-height: 40px; flex-wrap: wrap;">
+            <div id="gallery-pagination" class="gallery-pagination" style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 20px; min-height: 40px; padding-top: 0; position: relative; z-index: 100; flex-wrap: wrap;">
                 <!-- 페이지 번호가 여기에 동적으로 추가됩니다 -->
             </div>
         </div>
@@ -4076,7 +4083,7 @@ and glorify your Father in heaven.
         }
         
         .polaroid:hover {
-            transform: translateY(-20px) scale(0.86) !important;
+            transform: translateY(-8px) scale(0.86) !important;
             box-shadow: 0 24px 64px rgba(0, 0, 0, 0.32), 0 16px 40px rgba(0, 0, 0, 0.28);
         }
         
@@ -4107,12 +4114,29 @@ and glorify your Father in heaven.
             line-height: 1.3;
         }
         
+        .gallery-container {
+            height: 650px;
+            margin-bottom: 10px;
+            position: relative;
+            overflow: visible;
+            padding-bottom: 0;
+            box-sizing: border-box;
+        }
+
         .polaroid-grid {
             height: 650px !important;
             grid-auto-rows: auto;
-            overflow: visible;
+            overflow: hidden;
             gap: 8px !important;
             align-items: start;
+            margin-bottom: 0;
+            padding: 8px 0 60px 0;
+            box-sizing: border-box;
+        }
+
+        .gallery-pagination {
+            position: relative;
+            z-index: 100;
         }
         
         @media (min-width: 768px) {
@@ -4557,12 +4581,14 @@ and glorify your Father in heaven.
                 `;
             }).join('');
             
-            // 그리드 최소 높이 설정
+            // 그리드 높이 고정 설정
             if (gridEl) {
                 gridEl.style.height = '650px';
-                gridEl.style.overflow = 'visible';
+                gridEl.style.overflow = 'hidden';
                 gridEl.style.gridAutoRows = 'auto';
                 gridEl.style.alignItems = 'start';
+                gridEl.style.padding = '8px 0 60px 0';
+                gridEl.style.boxSizing = 'border-box';
             }
             
             // 페이지네이션 업데이트
