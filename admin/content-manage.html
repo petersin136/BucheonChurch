@@ -239,9 +239,17 @@
                                 class="gallery-folder-btn px-6 py-4 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg border-2 border-blue-500 bg-blue-600 text-white hover:bg-blue-700">
                             👶 유치부 폴더 열기
                         </button>
+                        <button onclick="openGoogleDriveFolder('student')" 
+                                class="gallery-folder-btn px-6 py-4 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg border-2 border-indigo-500 bg-indigo-600 text-white hover:bg-indigo-700">
+                            🎓 학생부 폴더 열기
+                        </button>
                         <button onclick="openGoogleDriveFolder('youth')" 
                                 class="gallery-folder-btn px-6 py-4 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg border-2 border-purple-500 bg-purple-600 text-white hover:bg-purple-700">
                             👥 청년부 폴더 열기
+                        </button>
+                        <button onclick="openGoogleDriveFolder('senior')" 
+                                class="gallery-folder-btn px-6 py-4 rounded-xl font-semibold transition-all shadow-md hover:shadow-lg border-2 border-amber-500 bg-amber-600 text-white hover:bg-amber-700">
+                            🧑 장년부 폴더 열기
                         </button>
                     </div>
                     
@@ -278,7 +286,9 @@
                             <option value="worship">예배</option>
                             <option value="sermon">설교</option>
                             <option value="event">행사</option>
+                            <option value="student">학생부</option>
                             <option value="youth">청년부</option>
+                            <option value="senior">장년부</option>
                             <option value="kids">주일학교</option>
                             <option value="general">기타</option>
                         </select>
@@ -1109,14 +1119,18 @@
         const GOOGLE_DRIVE_FOLDERS = {
             'event': '1LjNa6LTwdZrGFcsDjereCDsP7QBZVryt',      // 교회행사
             'kids': '1vhJxT8UCFbwOWQ4LOCwYgitndwFs3yvl',       // 유치부
-            'youth': '1JxUQ4AoFu1J3YGL_92kpKsyzjVXrQmXu'      // 청년부
+            'student': '1EBtYMGgJehVGN1CcbyrMd28J5BjHeoIF',    // 학생부
+            'youth': '1JxUQ4AoFu1J3YGL_92kpKsyzjVXrQmXu',      // 청년부
+            'senior': '1cUxlblL-kxSrNsY513pKsaXMzQkhOYP4'      // 장년부
         };
         
         // 카테고리 이름 매핑
         const CATEGORY_NAMES = {
             'event': '교회행사',
             'kids': '유치부',
-            'youth': '청년부'
+            'student': '학생부',
+            'youth': '청년부',
+            'senior': '장년부'
         };
         
         let galleryGoogleAuthToken = null;
@@ -1353,7 +1367,9 @@
                     worship: '예배',
                     sermon: '설교',
                     event: '행사',
+                    student: '학생부',
                     youth: '청년부',
+                    senior: '장년부',
                     kids: '주일학교',
                     general: '기타'
                 };
