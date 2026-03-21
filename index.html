@@ -661,12 +661,15 @@
             }
             
             /* 갤러리 섹션 모바일 - 데스크톱과 유사하게 최적화 */
-            /* 제목·탭·그리드·페이지네이션을 감싸는 컨테이너: 최소 한 화면 높이 */
+            /* 제목·탭·그리드·페이지네이션을 감싸는 컨테이너: 최소 한 화면 높이(사진 적을 때 아래 섹션 안 붙음) */
             #gallery .max-w-6xl {
                 min-height: 100vh !important;
+                display: flex !important;
+                flex-direction: column !important;
             }
             
             #gallery {
+                position: relative !important;
                 padding: 15px 10px !important;
                 min-height: auto !important;
             }
@@ -687,7 +690,8 @@
                 margin: 2px !important;
             }
             
-            .gallery-container {
+            #gallery .gallery-container {
+                flex-grow: 0 !important;
                 min-height: auto !important;
                 height: auto !important;
                 position: relative !important;
@@ -770,21 +774,27 @@
                 display: none !important;
             }
             
-            /* 갤러리 페이지네이션: 카드 그리드 바로 아래 (16~20px) */
-            #gallery #gallery-pagination.gallery-pagination,
-            #gallery .gallery-pagination {
-                margin-top: 18px !important;
-                min-height: 0 !important;
+            /* 갤러리 페이지네이션: 그리드 바로 아래 20px, 한 줄 정렬 */
+            #gallery #gallery-pagination.gallery-pagination {
+                position: relative !important;
+                bottom: auto !important;
+                left: auto !important;
+                transform: none !important;
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                justify-content: center !important;
+                align-items: center !important;
+                gap: 4px !important;
+                margin-top: 20px !important;
+                margin-bottom: 0 !important;
                 padding-top: 0 !important;
+                flex-shrink: 0 !important;
+                min-height: 0 !important;
+                z-index: 100 !important;
             }
             
             #gallery #gallery-grid.polaroid-grid {
                 margin-bottom: 0 !important;
-            }
-            
-            #gallery .gallery-container {
-                margin-bottom: 0 !important;
-                padding-bottom: 0 !important;
             }
             
             .gallery-pagination button,
