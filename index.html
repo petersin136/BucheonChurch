@@ -57,7 +57,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@200;300;400;500;600;700;800;900&family=Noto+Serif+KR:wght@400;700&family=Homenaje:wght@400&family=Playfair+Display:wght@400;500;600;700&family=Space+Mono&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
     <!-- Nanum Pen Script 단독 로드: 모바일에서 묶음 CSS 지연 시에도 손글씨 면이 빠르게 적용되도록 -->
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
-    <link rel="preload" href="https://fonts.gstatic.com/s/nanumpenscript/v19/daaDSSYiLGqEal3MvdA_FOL_3FkN2z7-aMFCcTU.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/NanumPenScript-Regular.woff2" as="font" type="font/woff2" crossorigin>
     
     <!-- JavaScript - Tailwind must load immediately, Supabase can defer -->
     <script src="https://cdn.tailwindcss.com?v=20260321"></script>
@@ -69,8 +69,7 @@
             font-style: normal;
             font-weight: 400;
             font-display: swap;
-            src: url('https://fonts.gstatic.com/s/nanumpenscript/v19/daaDSSYiLGqEal3MvdA_FOL_3FkN2z7-aMFCcTU.woff2') format('woff2'),
-                 url('https://fonts.gstatic.com/s/nanumpenscript/v19/daaDSSYiLGqEal3MvdA_FOL_3FkN2z7-aA.woff') format('woff');
+            src: url('/fonts/NanumPenScript-Regular.woff2') format('woff2');
         }
 
         * {
@@ -662,6 +661,10 @@
             }
             
             /* 갤러리 섹션 모바일 - 데스크톱과 유사하게 최적화 */
+            #gallery .max-w-6xl {
+                min-height: auto !important;
+            }
+            
             #gallery {
                 padding: 15px 10px !important;
                 min-height: auto !important;
@@ -684,16 +687,16 @@
             }
             
             .gallery-container {
-                min-height: 650px !important;
+                min-height: auto !important;
                 height: auto !important;
                 position: relative !important;
                 overflow: visible !important;
-                margin-bottom: 10px !important;
+                margin-bottom: 0 !important;
                 padding-bottom: 0 !important;
                 box-sizing: border-box !important;
             }
             
-            /* 갤러리: 모바일만 3열, 이미지 프레임 3:4 통일로 그리드 정렬 */
+            /* 갤러리: 모바일만 3열, 이미지 정사각형 + 하단 텍스트로 카드 비율 형성 */
             #gallery .polaroid-grid {
                 grid-template-columns: repeat(3, 1fr) !important;
                 gap: 10px !important;
@@ -703,6 +706,10 @@
                 overflow: visible !important;
                 margin-bottom: 0 !important;
                 box-sizing: border-box !important;
+            }
+            
+            #gallery #gallery-empty {
+                min-height: auto !important;
             }
             
             #gallery .polaroid {
@@ -718,10 +725,10 @@
                 align-items: stretch !important;
             }
             
-            /* 동일 비율 프레임 + cover로 행 정렬 */
+            /* 정사각형 이미지 + 하단 날짜·제목 → 카드 전체가 세로 직사각형 */
             #gallery .polaroid img {
                 width: 100% !important;
-                aspect-ratio: 4 / 5 !important;
+                aspect-ratio: 1 / 1 !important;
                 height: auto !important;
                 max-width: 100% !important;
                 object-fit: cover !important;
@@ -763,9 +770,16 @@
                 display: none !important;
             }
             
-            /* 갤러리 페이지네이션: 그리드 바로 아래 */
+            /* 갤러리 페이지네이션: 그리드와 적당한 여유 */
+            #gallery #gallery-pagination.gallery-pagination,
             #gallery .gallery-pagination {
-                margin-top: 10px !important;
+                margin-top: 18px !important;
+                min-height: 0 !important;
+                padding-top: 0 !important;
+            }
+            
+            #gallery #gallery-grid.polaroid-grid {
+                margin-bottom: 0 !important;
             }
             
             #gallery .gallery-container {
