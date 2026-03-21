@@ -665,7 +665,8 @@
             }
             
             .gallery-container {
-                height: 650px !important;
+                min-height: 650px !important;
+                height: auto !important;
                 position: relative !important;
                 overflow: visible !important;
                 margin-bottom: 10px !important;
@@ -673,38 +674,65 @@
                 box-sizing: border-box !important;
             }
             
-            .polaroid-grid {
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 8px !important;
-                padding: 8px 0 60px 0 !important;
-                height: 650px !important;
-                overflow: hidden !important;
+            /* 갤러리: 모바일만 3열, 이미지 프레임 3:4 통일로 그리드 정렬 */
+            #gallery .polaroid-grid {
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 10px !important;
+                padding: 6px 0 0 0 !important;
+                height: auto !important;
+                min-height: 0 !important;
+                overflow: visible !important;
                 margin-bottom: 0 !important;
                 box-sizing: border-box !important;
             }
             
-            .polaroid {
+            #gallery .polaroid {
                 transform: rotate(0deg) scale(1) !important;
-                padding: 6px 6px 12px 6px !important;
+                padding: 6px 6px 8px 6px !important;
                 margin: 0 !important;
-            }
-            
-            .polaroid img {
+                overflow: visible !important;
+                min-width: 0 !important;
                 width: 100% !important;
+                box-sizing: border-box !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: stretch !important;
+            }
+            
+            /* 동일 비율 프레임 + cover로 행 정렬 */
+            #gallery .polaroid img {
+                width: 100% !important;
+                aspect-ratio: 3 / 4 !important;
                 height: auto !important;
-                aspect-ratio: 4/3 !important;
+                max-width: 100% !important;
                 object-fit: cover !important;
+                object-position: center !important;
+                display: block !important;
+                flex-shrink: 0 !important;
             }
             
-            .polaroid-caption {
-                font-size: 10px !important;
+            #gallery .polaroid-caption {
+                font-size: 20px !important;
                 margin-top: 4px !important;
-                line-height: 1.2 !important;
+                line-height: 1.3 !important;
+                overflow: visible !important;
+                white-space: normal !important;
+                word-break: break-all !important;
             }
             
-            .polaroid-filename {
-                font-size: 12px !important;
+            #gallery .polaroid-filename {
+                font-size: 22px !important;
                 margin-top: 2px !important;
+                line-height: 1.25 !important;
+                overflow: visible !important;
+                white-space: normal !important;
+                word-break: break-all !important;
+            }
+            
+            /* 모바일: PC용 hover(translateY/scale)가 레이아웃을 밀지 않도록 갤러리만 무효화 */
+            #gallery .polaroid:hover {
+                transform: rotate(0deg) scale(1) !important;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16), 0 4px 12px rgba(0, 0, 0, 0.12) !important;
             }
             
             .gallery-nav-btn {
@@ -715,11 +743,19 @@
                 display: none !important;
             }
             
-            .gallery-pagination {
-                margin-top: 20px !important;
+            /* 갤러리 페이지네이션: 그리드 바로 아래 */
+            #gallery .gallery-pagination {
+                margin-top: 10px !important;
             }
             
-            .gallery-pagination button {
+            #gallery .gallery-container {
+                margin-bottom: 0 !important;
+                padding-bottom: 0 !important;
+            }
+            
+            .gallery-pagination button,
+            .notice-pagination button,
+            .prayer-pagination button {
                 font-size: 12px !important;
                 padding: 4px 10px !important;
             }
@@ -3590,7 +3626,7 @@ and glorify your Father in heaven.
             </div>
             
             <!-- 페이지네이션 -->
-            <div id="notice-pagination" class="notice-pagination" style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 32px; flex-wrap: wrap;">
+            <div id="notice-pagination" class="notice-pagination gallery-pagination" style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 20px; min-height: 40px; padding-top: 0; position: relative; z-index: 100; flex-wrap: wrap;">
                 <!-- 페이지 번호가 여기에 동적으로 추가됩니다 -->
             </div>
         </div>
@@ -3674,8 +3710,9 @@ and glorify your Father in heaven.
             const paginationEl = document.getElementById('notice-pagination');
             if (!paginationEl) return;
             
+            // 갤러리와 동일: 1페이지 이하(항목 0개 포함)에서도 최소 "1" 버튼 표시
             if (totalPages <= 1) {
-                paginationEl.innerHTML = '';
+                paginationEl.innerHTML = `<button onclick="goToNoticePage(1)" style="padding: 8px 12px; border: 1px solid #333; background: #333; color: #fff; border-radius: 4px; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; font-size: 14px; font-weight: 600;">1</button>`;
                 return;
             }
             
@@ -3789,7 +3826,7 @@ and glorify your Father in heaven.
             </div>
             
             <!-- 페이지네이션 -->
-            <div id="prayer-pagination" class="prayer-pagination" style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 32px; flex-wrap: wrap;">
+            <div id="prayer-pagination" class="prayer-pagination gallery-pagination" style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 20px; min-height: 40px; padding-top: 0; position: relative; z-index: 100; flex-wrap: wrap;">
                 <!-- 페이지 번호가 여기에 동적으로 추가됩니다 -->
             </div>
         </div>
@@ -3873,8 +3910,9 @@ and glorify your Father in heaven.
             const paginationEl = document.getElementById('prayer-pagination');
             if (!paginationEl) return;
             
+            // 갤러리와 동일: 1페이지 이하(항목 0개 포함)에서도 최소 "1" 버튼 표시
             if (totalPages <= 1) {
-                paginationEl.innerHTML = '';
+                paginationEl.innerHTML = `<button onclick="goToPrayerPage(1)" style="padding: 8px 12px; border: 1px solid #333; background: #333; color: #fff; border-radius: 4px; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; font-size: 14px; font-weight: 600;">1</button>`;
                 return;
             }
             
@@ -3992,7 +4030,7 @@ and glorify your Father in heaven.
             </div>
             
             <!-- 갤러리 컨테이너 -->
-            <div class="gallery-container relative" style="position: relative; height: 650px; overflow: visible; margin-bottom: 10px; padding-bottom: 0; box-sizing: border-box;">
+            <div class="gallery-container relative" style="position: relative; min-height: 650px; height: auto; overflow: visible; margin-bottom: 10px; padding-bottom: 0; box-sizing: border-box;">
                 <!-- 좌측 화살표 -->
                 <button id="gallery-prev" class="gallery-nav-btn" onclick="goToGalleryPage(galleryCurrentPage - 1)" style="position: absolute; left: -60px; top: 50%; transform: translateY(-50%); z-index: 20; width: 48px; height: 48px; border-radius: 50%; background-color: #FFFFFF; border: 2px solid #E0E0E0; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s; opacity: 0.5; pointer-events: none;" onmouseover="if(this.style.pointerEvents !== 'none') { this.style.backgroundColor='#F5F5F5'; this.style.borderColor='#2D2D2D'; }" onmouseout="if(this.style.pointerEvents !== 'none') { this.style.backgroundColor='#FFFFFF'; this.style.borderColor='#E0E0E0'; }">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2D2D2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -4001,7 +4039,7 @@ and glorify your Father in heaven.
                 </button>
                 
                 <!-- 폴라로이드 그리드 -->
-                <div id="gallery-grid" class="polaroid-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; height: 650px; grid-auto-rows: auto; overflow: hidden; align-items: start; margin-bottom: 0; padding: 8px 0 60px 0; box-sizing: border-box;">
+                <div id="gallery-grid" class="polaroid-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; height: auto; min-height: 0; grid-auto-rows: auto; overflow: visible; align-items: start; margin-bottom: 12px; padding: 8px 0 72px 0; box-sizing: border-box;">
                     <!-- 폴라로이드 카드들이 여기에 동적으로 추가됩니다 -->
                 </div>
                 
@@ -4118,7 +4156,8 @@ and glorify your Father in heaven.
         }
         
         .gallery-container {
-            height: 650px;
+            min-height: 650px;
+            height: auto;
             margin-bottom: 10px;
             position: relative;
             overflow: visible;
@@ -4127,13 +4166,15 @@ and glorify your Father in heaven.
         }
 
         .polaroid-grid {
-            height: 650px !important;
+            height: auto !important;
+            min-height: 0 !important;
             grid-auto-rows: auto;
-            overflow: hidden;
+            overflow: visible;
             gap: 8px !important;
             align-items: start;
-            margin-bottom: 0;
-            padding: 8px 0 60px 0;
+            align-content: start;
+            margin-bottom: 12px;
+            padding: 8px 0 72px 0;
             box-sizing: border-box;
         }
 
@@ -4145,7 +4186,8 @@ and glorify your Father in heaven.
         @media (min-width: 768px) {
             .polaroid-grid {
                 grid-template-columns: repeat(4, 1fr) !important;
-                height: 650px !important;
+                height: auto !important;
+                min-height: 0 !important;
                 gap: 8px !important;
                 grid-auto-rows: auto !important;
             }
@@ -4154,7 +4196,8 @@ and glorify your Father in heaven.
         @media (min-width: 1024px) {
             .polaroid-grid {
                 grid-template-columns: repeat(4, 1fr) !important;
-                height: 650px !important;
+                height: auto !important;
+                min-height: 0 !important;
                 gap: 8px !important;
                 grid-auto-rows: auto !important;
             }
@@ -4355,7 +4398,10 @@ and glorify your Father in heaven.
         let currentFilteredImages = [];
         let currentLightboxIndex = 0;
         let galleryCurrentPage = 1;
-        const galleryItemsPerPage = 8; // 4x2 그리드
+        /** 모바일(768px 이하): 3x3=9개, PC: 4x2=8개 — PC 스타일/CSS는 변경하지 않음 */
+        function getGalleryItemsPerPage() {
+            return window.innerWidth <= 768 ? 9 : 8;
+        }
         let lightboxDragStartX = 0;
         let lightboxDragStartY = 0;
         let lightboxIsDragging = false;
@@ -4520,14 +4566,15 @@ and glorify your Father in heaven.
                 return;
             }
             
-            // 페이지 계산
-            const totalPages = Math.ceil(images.length / galleryItemsPerPage);
+            // 페이지 계산 (뷰포트별 페이지당 개수)
+            const perPage = getGalleryItemsPerPage();
+            const totalPages = Math.ceil(images.length / perPage);
             galleryCurrentPage = Math.min(galleryCurrentPage, totalPages || 1);
             galleryCurrentPage = Math.max(galleryCurrentPage, 1);
             
             // 현재 페이지의 이미지 추출
-            const startIndex = (galleryCurrentPage - 1) * galleryItemsPerPage;
-            const endIndex = startIndex + galleryItemsPerPage;
+            const startIndex = (galleryCurrentPage - 1) * perPage;
+            const endIndex = startIndex + perPage;
             const pageImages = images.slice(startIndex, endIndex);
             
             emptyEl.style.display = 'none';
@@ -4588,13 +4635,16 @@ and glorify your Father in heaven.
                 `;
             }).join('');
             
-            // 그리드 높이 고정 설정
+            // 그리드: 내용 높이에 맞춤 (하단 행 캡션 잘림 방지)
             if (gridEl) {
-                gridEl.style.height = '650px';
-                gridEl.style.overflow = 'hidden';
+                gridEl.style.height = 'auto';
+                gridEl.style.minHeight = '0';
+                gridEl.style.overflow = 'visible';
                 gridEl.style.gridAutoRows = 'auto';
                 gridEl.style.alignItems = 'start';
-                gridEl.style.padding = '8px 0 60px 0';
+                gridEl.style.alignContent = 'start';
+                gridEl.style.padding = '8px 0 72px 0';
+                gridEl.style.marginBottom = '12px';
                 gridEl.style.boxSizing = 'border-box';
             }
             
@@ -4653,7 +4703,8 @@ and glorify your Father in heaven.
         
         // 갤러리 네비게이션 버튼 업데이트
         function updateGalleryNavButtons() {
-            const totalPages = Math.ceil(currentFilteredImages.length / galleryItemsPerPage);
+            const perPage = getGalleryItemsPerPage();
+            const totalPages = Math.ceil(currentFilteredImages.length / perPage);
             const prevBtn = document.getElementById('gallery-prev');
             const nextBtn = document.getElementById('gallery-next');
             
@@ -4677,6 +4728,21 @@ and glorify your Father in heaven.
                 }
             }
         }
+        
+        /* PC/모바일 전환 시 페이지당 개수(8↔9) 반영 */
+        let galleryLayoutResizeTimer = null;
+        window.addEventListener('resize', () => {
+            clearTimeout(galleryLayoutResizeTimer);
+            galleryLayoutResizeTimer = setTimeout(() => {
+                if (!document.getElementById('gallery-grid')) return;
+                const len = currentFilteredImages.length;
+                if (len === 0) return;
+                const perPage = getGalleryItemsPerPage();
+                const totalPages = Math.max(1, Math.ceil(len / perPage));
+                galleryCurrentPage = Math.min(Math.max(1, galleryCurrentPage), totalPages);
+                displayImages(currentFilteredImages);
+            }, 200);
+        });
         
         // 탭 전환
         function switchGalleryTab(tab, buttonElement) {
@@ -5724,6 +5790,10 @@ and glorify your Father in heaven.
                     updateNoticeCarousel();
                     console.log('✅ Notices rendered:', data.length, 'items');
                 } else {
+                    window.noticesData = [];
+                    noticeAllData = [];
+                    noticeCurrentPage = 1;
+                    updateNoticeCarousel();
                     console.error('❌ No notices data to render');
                 }
             } catch (error) {
