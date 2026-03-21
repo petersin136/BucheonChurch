@@ -55,6 +55,8 @@
     
     <!-- Fonts with display=swap (already optimized) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@200;300;400;500;600;700;800;900&family=Noto+Serif+KR:wght@400;700&family=Homenaje:wght@400&family=Playfair+Display:wght@400;500;600;700&family=Space+Mono&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+    <!-- Nanum Pen Script 단독 로드: 모바일에서 묶음 CSS 지연 시에도 손글씨 면이 빠르게 적용되도록 -->
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
     
     <!-- JavaScript - Tailwind must load immediately, Supabase can defer -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -712,8 +714,11 @@
             }
             
             /* PC와 동일 손글씨체(Nanum Pen Script), 크기만 이전 대비 80% */
+            /* font-weight는 400만 제공 — 모바일 Safari 등에서 700이면 전체 글꼴이 시스템체로 대체될 수 있음 */
             #gallery .polaroid-caption {
                 font-family: 'Nanum Pen Script', cursive !important;
+                font-weight: 400 !important;
+                font-synthesis: none !important;
                 font-size: 16px !important;
                 margin-top: 4px !important;
                 line-height: 1.3 !important;
@@ -724,6 +729,8 @@
             
             #gallery .polaroid-filename {
                 font-family: 'Nanum Pen Script', cursive !important;
+                font-weight: 400 !important;
+                font-synthesis: none !important;
                 font-size: 17.6px !important;
                 margin-top: 2px !important;
                 line-height: 1.25 !important;
@@ -4424,9 +4431,19 @@ and glorify your Father in heaven.
             return (Math.random() * 4 - 2).toFixed(1);
         }
         
-        // 파일명에서 확장자 제거
+        // 파일명에서 확장자 제거 (화면 표시용만, 원본 image.name 등은 변경하지 않음)
         function getFileNameWithoutExtension(filename) {
-            return filename.replace(/\.(jpg|jpeg|png|gif|webp)$/i, '');
+            if (filename == null || filename === '') return '';
+            let s = String(filename).trim().replace(/\uFF0E/g, '.'); /* 전각 마침표 → ASCII */
+            const extPattern = /\.(heic|heif|jpg|jpeg|jpe|png|gif|webp|bmp|tiff?|svg|avif)\s*$/i;
+            let prev;
+            do {
+                prev = s;
+                s = s.replace(extPattern, '');
+            } while (s !== prev);
+            /* 임시: 호출 여부·결과 확인 후 제거 가능 */
+            console.log('[gallery] getFileNameWithoutExtension', filename, '→', s);
+            return s;
         }
         
         // Google Drive 폴더에서 이미지 가져오기
@@ -4587,7 +4604,7 @@ and glorify your Father in heaven.
                 const dateString = image.modifiedTime || image.createdTime || '';
                 const formattedDate = dateString ? formatDate(dateString) : '';
                 
-                // 파일명 (확장자 제거)
+                // 파일명 (확장자 제거) — 카드 제목·라이트박스 alt·onclick에 동일 표시명 사용
                 const fileName = getFileNameWithoutExtension(image.name);
                 
                 // 랜덤 회전 각도
@@ -4595,7 +4612,7 @@ and glorify your Father in heaven.
                 
                 // 이미지 URL 이스케이프 처리 및 대체 URL 생성
                 const fileId = image.googleDriveId || image.id;
-                const safeName = (image.name || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                const safeName = (fileName || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
                 
                 // 썸네일 대체 URL 배열 (우선순위 순서)
                 const thumbnailFallbacks = (image.thumbnailUrls || [
@@ -4917,7 +4934,7 @@ and glorify your Father in heaven.
             };
             
             lightboxImage.src = image.original;
-            lightboxImage.alt = image.name;
+            lightboxImage.alt = getFileNameWithoutExtension(image.name);
             
             updateLightboxNavigation();
         }
