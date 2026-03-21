@@ -660,14 +660,7 @@
                 padding-right: 20px !important;
             }
             
-            /* 갤러리 섹션 모바일 - 데스크톱과 유사하게 최적화 */
-            /* 제목·탭·그리드·페이지네이션을 감싸는 컨테이너: 최소 한 화면 높이(사진 적을 때 아래 섹션 안 붙음) */
-            #gallery .max-w-6xl {
-                min-height: 100vh !important;
-                display: flex !important;
-                flex-direction: column !important;
-            }
-            
+            /* 갤러리 섹션 모바일 - 데스크톱과 유사하게 최적화 (그리드 height 고정으로 페이지네이션 Y 일정) */
             #gallery {
                 position: relative !important;
                 padding: 15px 10px !important;
@@ -702,12 +695,14 @@
             }
             
             /* 갤러리: 모바일만 3열, 이미지 정사각형 + 하단 텍스트로 카드 비율 형성 */
+            /* 3행×3열 높이 고정: (열 너비≈(100vw-80px)/3 의 정사각 이미지)×3행 + 행간 gap 10px×2 + 카드당 텍스트·패딩 52px×3 */
             #gallery .polaroid-grid {
                 grid-template-columns: repeat(3, 1fr) !important;
                 gap: 10px !important;
                 padding: 6px 0 0 0 !important;
-                height: auto !important;
-                overflow: visible !important;
+                height: calc((100vw - 80px) + (3 * 52px) + 20px) !important;
+                align-content: start !important;
+                overflow: hidden !important;
                 margin-bottom: 0 !important;
                 box-sizing: border-box !important;
             }
