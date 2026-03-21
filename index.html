@@ -661,8 +661,9 @@
             }
             
             /* 갤러리 섹션 모바일 - 데스크톱과 유사하게 최적화 */
+            /* 제목·탭·그리드·페이지네이션을 감싸는 컨테이너: 최소 한 화면 높이 */
             #gallery .max-w-6xl {
-                min-height: auto !important;
+                min-height: 100vh !important;
             }
             
             #gallery {
@@ -702,7 +703,6 @@
                 gap: 10px !important;
                 padding: 6px 0 0 0 !important;
                 height: auto !important;
-                min-height: 0 !important;
                 overflow: visible !important;
                 margin-bottom: 0 !important;
                 box-sizing: border-box !important;
@@ -770,7 +770,7 @@
                 display: none !important;
             }
             
-            /* 갤러리 페이지네이션: 그리드와 적당한 여유 */
+            /* 갤러리 페이지네이션: 카드 그리드 바로 아래 (16~20px) */
             #gallery #gallery-pagination.gallery-pagination,
             #gallery .gallery-pagination {
                 margin-top: 18px !important;
